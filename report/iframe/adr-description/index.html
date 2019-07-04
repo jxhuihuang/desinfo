@@ -1,0 +1,206 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta charset="UTF-8">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/css/portal.min.css" />
+    <style>
+        body {
+            padding: 15px;
+        }      
+        /**大于768**/
+        @media screen and (min-width:768px){  
+            .small{
+                padding:0 20px;
+                width: 80%;
+                margin: auto;
+            }
+
+        }
+        
+        .small .form-row{
+            margin-bottom: 20px;
+        }
+        .small label{
+            font-size: 15px;
+        }
+        .small .form-control{
+            height: 40px;
+            line-height: 40px; 
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        /**小于768**/
+        @media screen and (max-width:768px){  
+            .small label{
+               margin-bottom: 1rem;
+            }
+           
+        }
+    </style>
+</head>
+
+<body>
+    <form class="small" data-target="">
+        <div class="form-row ">
+            <label class="col-sm-4 col-form-label">是否对不良反应采取措施</label>
+            <div class="col-sm-8">
+                <select class="form-control form-control-sm select" id="has_measure" name="has_measure" required><option value="">请选择</option><option value="是">是</option><option value="否">否</option></select>
+            </div>
+        </div>
+
+        <input class="btn btn-sm btn-primary btn-block layer-button" id="submit" name="submit" type="button" value="提交">
+    </form>
+
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/plugins/layer-3.1.1/layer.js"></script>
+<script>
+    function setFormTarget(target) {
+        $('form').data('target', target);
+    }
+</script>
+
+
+    <script>
+        var index = parent.layer.getFrameIndex(window.name);
+        var message = [];
+        var flag = true;
+
+        var patient_name = parent.$("#patient_name").val();
+        var patient_original_disease = parent.$("#patient_original_disease").val();
+        var adr_time = parent.$("#adr_time").val();
+        var adr_name = parent.$("#adr_name").val();
+        var adr_result = parent.$("#adr_result").val();
+        var reduce_after_reduction = parent.$("#reduce_after_reduction").val();
+        var repeat_after_using_again = parent.$("#repeat_after_using_again").val();
+
+        if (!(patient_name && patient_original_disease && adr_time && adr_name && adr_result &&
+            reduce_after_reduction && repeat_after_using_again)) {
+            flag = false;
+            if (!patient_name) message.push("请填写患者姓名！" );
+            if (!patient_original_disease) message.push("请填写原患疾病！");
+            if (!adr_time) message.push("请填写不良反应/事件发生时间！");
+            if (!adr_name) message.push("请填写不良反应/事件名称！");
+            if (!adr_result) message.push("请填写不良反应/事件的结果！");
+            if (!reduce_after_reduction) message.push("请选择停药或减量后反应/事件是否消失或减轻！");
+            if (!repeat_after_using_again) message.push("请选择再次使用可疑药品后是否再次出现同样反应/事件！");
+        }
+
+        var reduce_after_reduction_description = '';
+        switch (reduce_after_reduction) {
+            case '是':
+                reduce_after_reduction_description = '停药或减量后，反应/事件消失或减轻';
+                break;
+            case '否':
+                reduce_after_reduction_description = '停药或减量后，反应/事件没有消失或减轻';
+                break;
+            case '不明':
+                reduce_after_reduction_description = '停药或减量后，反应/事件状态不明';
+                break;
+            case '未停药或未减量':
+                reduce_after_reduction_description = '患者未停药或未减量';
+                break;
+        }
+
+        var repeat_after_using_again_description = '';
+        switch (repeat_after_using_again) {
+            case '是':
+                repeat_after_using_again_description = '再次使用可疑药品后再次出现同样反应/事件';
+                break;
+            case '否':
+                repeat_after_using_again_description = '再次使用可疑药品后未出现同样反应/事件';
+                break;
+            case '不明':
+                repeat_after_using_again_description = '再次使用可疑药品后不确定是否再次出现同样反应/事件';
+                break;
+            case '未再使用':
+                repeat_after_using_again_description = '未再使用可以药品';
+                break;
+        }
+
+        var regex = new RegExp("medication_record" + ".*-(\\d{1,4})-.*", "m");
+
+        var suspected_drug_description = '';
+        var suspected_drugs = parent.$("[id^=medication_records-][id$=-category]").filter(function(){return this.value=='怀疑药品'});
+        if (suspected_drugs.length != 1) {
+            flag = false;
+            message.push("只能选择一个怀疑药品！");
+        } else {
+            var seq = parseInt($(suspected_drugs[0]).attr("id").replace(regex, '$1'));
+
+            var suspected_drug_time_start = parent.$('#medication_records-' + seq + '-medication_time_start').val();
+            var suspected_drug_time_end = parent.$('#medication_records-' + seq + '-medication_time_end').val();
+            var suspected_drug_dosage = parent.$('#medication_records-' + seq + '-dosage').val().slice(0,-1);
+            var suspected_drug_name = parent.$('#medication_records-' + seq + '-drug_id').text().split('/')[1];
+
+            if (!(suspected_drug_time_start && suspected_drug_time_end && suspected_drug_dosage && suspected_drug_name)) {
+                flag = false;
+                message.push("请返回上页补充完整怀疑药品信息！");
+            } else {
+                suspected_drug_description = '于' + suspected_drug_time_start + '~' + suspected_drug_time_end +
+                    '使用怀疑药品：' + suspected_drug_name + '（' + suspected_drug_dosage + '）';
+            }
+        }
+
+        var combined_drug_description = '';
+        var combined_drug_description_list = [];
+        var combined_drugs = parent.$("[id^=medication_records-][id$=-category]").filter(function(){return this.value=='并用药品'});
+        combined_drugs.each(function () {
+            var seq = parseInt($(this).attr("id").replace(regex, '$1'));
+            var combined_drug_dosage = parent.$('#medication_records-' + seq + '-dosage').val().slice(0,-1);
+            var combined_drug_name = parent.$('#medication_records-' + seq + '-drug_id').text().split('/')[1];
+            if (!(combined_drug_dosage && combined_drug_name)) {
+                flag = false;
+                message.push("请返回上页补充完整并用药品信息！");
+            } else {
+                combined_drug_description_list.push(combined_drug_name + '（' + combined_drug_dosage + '）');
+            }
+        });
+        if (combined_drug_description_list.length > 0) {
+            combined_drug_description = '和并用药品：' + combined_drug_description_list.join('、');
+        }
+
+        if (!flag) {
+            parent.layer.msg(message.join('<br/>'));
+            parent.layer.close(index);
+        }
+
+        $('#submit').on('click', function () {
+            var target = $('form').data('target');
+
+            var measure = '';
+            if ($("#has_measure").val() == '是') {
+                measure = '已对不良反应采取措施';
+            }else if ($("#has_measure").val() == '否') {
+                measure = '未对不良反应采取措施';
+            } else {
+                alert("请选择是否对不良反应采取措施！");
+                return false;
+            }
+
+            var content = '患者' + patient_name + '因患' + patient_original_disease +
+                suspected_drug_description + combined_drug_description + '，患者于' + adr_time + '出现' +
+                adr_name + '等症状，' + reduce_after_reduction_description +
+                '，' + repeat_after_using_again_description + '，' + measure + '，患者' + adr_result;
+
+            if (content) {
+                content = parent.$('.layui-layer-title').text() + '\n' + content + '。';
+                var content_old = parent.$('#' + target).val();
+                if (content_old) {
+                    content = content_old + '\n' + content;
+                }
+            }
+
+            parent.$('#' + target).val(content);
+            parent.layer.close(index);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+
+    <title>药品不良反应上报系统 - 登录</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/antd-mobile.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/header.min.css" />
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+</head>
+<body ontouchstart class="login-main">
+<header  class="pc-show fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <div class="navbar-left-icon mobile-show" onclick="toback()"><i class="myIconfont">&#xe82b;</i></div>
+        <span class="navbar-span ">
+            <a class="navbar-brand pc-show" href="../../"><img src="../../static/img/logos.png"/>药品不良反应上报系统</a> 
+            <a class="navbar-brand mobile-show" href="javascrit:void(0)">用户登录</a>
+        </span>
+        <div class="collapse navbar-collapse" id="navbarCollapses">
+            <ul class="navbar-nav">
+                <li class="nav-item login-item">
+                    <a class="nav-link  logout" href="../../auth/login">登录</a>
+                    <a class="nav-link logout" href="../../auth/register">注册</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div class="mobile-show login-header">
+    <div class="login-icon"><a href="../../index.html"><img src="../../static/img/logos.png"/></a></div>
+    <p><a href="../../index.html">药品不良反应上报系统</a></p>
+</div>
+<main role="main" class="container align-items-center justify-content-center d-flex">
+    <div class="login-box">
+        <div class="login-tle pc-show">用户登录</div>
+        <form class="col-12 mt1_r" id="login_form" method="post" action="" onsubmit="return submits(event)">
+            
+            <input type="hidden" name="csrf_token" value="ImUwYjYyNDU0ZTQzNGQ3ODE4NGNjZWZjYWYzNjNmOTE0Yjc5MjIwZjci.Dvokcw.EZApZHQKCx7xNp1NPwisKzl0dVA"/>
+            <div class="form-group required">
+                <label class="sr-only" for="username">用户名/手机/邮箱</label>
+                <i class="myIconfont mobile-show input-icon">&#xe903;</i>
+                <input class="form-control" id="username" name="username" placeholder="用户名/手机/邮箱" required type="text" value="">
+            </div>
+            <div class="form-group required">
+                <label class="sr-only" for="password">密码</label>
+                <i class="myIconfont mobile-show input-icon">&#xe863;</i>
+                <input class="form-control" id="password" name="password" placeholder="密码" required type="password" value="">
+            </div>
+            <div class="form-group">
+                <label class="custom-control custom-checkbox" style="margin-left:.5rem">
+                    <input class="custom-control-input" id="remember" name="remember" type="checkbox" value="y">
+                    <span class="custom-control-label">记住我</span>
+                </label>
+            </div>
+            <input class="btn btn-primary btn-block" id="submit_login" name="submit_login" type="submit" value="登录" >
+            <div class=" mt1-5_r tr register-des">还没注册？ <a href="../../auth/register">立即注册</a></div>
+        </form>
+    </div>
+</main>
+<footer class="footer pc-show">
+    <div class="container text-center">
+        <span class="text-muted">© 2018 Des All Rights Reserved.</span>
+    </div>
+</footer>
+
+<!-- <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script> -->
+<script type="text/javascript" src="../../static/plugins/requirejs-2.3.5/require.min.js"></script>
+<script type="text/javascript" src="../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../static/js/portal.min.js"></script>
+<script>
+     require.config({
+        baseUrl: '../../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap','tool'], function($, main, autosize, layer){
+        // 自适应高度
+        autosize($('textarea'));
+        $(function () {
+            // main.fastClick();
+        });
+
+    });
+    requirejs(['jquery', 'main','autosize', 'portal'], function($, main,autosize, portal) {
+        $(".navbar-toggler").on("click",function(){
+            portal.navbarToggler();
+        })
+    })
+    function submits(event){
+        var e=window.event||event; //消除浏览器差异
+        e.preventDefault();
+
+        var datas=serializeArray("#login_form") //序列化表单;
+        datas. _methods="query"
+       
+        ajaxFns(datas,function(res){
+            if(res.success=="true"){
+                var resData=res.data;  
+                const userInfo={username:resData.username, name:resData.name,dept_id:resData.dept_id, avatar:resData.avatar}
+                localStorage.setItem("token",resData.token);
+                localStorage.setItem("userInfo",JSON.stringify(userInfo));
+                
+                layermsg("登录成功",{ icon: 1},function(){
+                    window.location.href="../../"
+                })
+            }
+        },ipDress+"/des/login")
+    }
+    
+</script>
+
+</body>
+</html>

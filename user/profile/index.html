@@ -1,0 +1,394 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+
+    <title>药品不良反应上报系统 - 个人信息</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/antd-mobile.min.css">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
+
+    <link rel="stylesheet" href="../../static/css/header.min.css" />
+	<link rel="stylesheet" href="./index.css" />
+</head>
+<body ontouchstart>
+   <!--# include file="/include/headers.html" --> 
+    <main role="main" class="container main-pd_r profile-mian">
+        <div class="mb-3 list-tle">
+            <div class="col text-center">
+                <label class="col-form-label col-form-label-sm labelValue" data-name="unit_category"></label>
+                <label class="col-form-label col-form-label-sm labelValue" data-name="dept"></label>
+            </div>
+        </div>
+        <form method="POST" enctype="multipart/form-data" class="input-list" onsubmit="return submits(event)">
+            <div class="unit_categorys col-form-label col-form-label-sm labelValue" hidden="hidden" data-name="unit_categorys"></div>
+            <div class="row">
+                <div class="form-group col-md-6 row">
+                    <div class="input-group ">
+                        <label class="layui-col-sm2 col-md-4 col-form-label col-form-label-sm">用户名</label>
+                        <div class="layui-col-sm10 col-md-8 label-value col-md-8">
+                            <label class="col-form-label col-form-label-sm labelValue" data-name="username"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 row">
+                    <label class="layui-col-sm2 col-md-4 col-form-label col-form-label-sm">余额</label>
+                    <div class="layui-col-sm10 col-md-8 label-value col-md-8">
+                        <label class="col-form-label col-form-label-sm label-value labelValue" data-name="account_balance"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 row">
+                    <label class="layui-col-sm2 col-md-4  col-form-label col-form-label-sm">角色</label>
+                    <div class="layui-col-sm10 col-md-8 label-value col-md-8">
+                        <label class="col-form-label col-form-label-sm label-value labelValue" data-name="roles_name"></label>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 row">
+                    <label class="layui-col-sm2 col-md-4 col-form-label col-form-label-sm">状态</label>
+                    <div class="layui-col-sm10 col-md-8  label-value col-md-8">
+                        <label class="col-form-label col-form-label-sm text-danger label-value labelValue" data-name="activeName">
+                            
+                        </label>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="hr1_r"></div>
+            <div class="form-group row ">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm" for="name">姓名</label>
+                <div class="layui-col-sm10 col-sm-10">
+                    <input class="form-control form-control-sm" id="name" name="name" placeholder="请输入姓名" type="text" value="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm" for="phone">手机</label>
+                <div class="layui-col-sm10 col-sm-10">
+                    <input class="form-control form-control-sm" id="phone" name="phone" placeholder="请输入手机号码" type="text" value="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm" for="email">邮箱</label>
+                <div class="layui-col-sm10 col-sm-10">
+                    <input class="form-control form-control-sm" id="email" name="email" placeholder="请输入邮箱" type="text" value="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm" for="career">职业</label>
+                <div class="layui-col-sm10 col-sm-10">
+                    <select class="form-control form-control-sm select" id="career" name="career" placeholder="请选择职业"></select>
+                </div>
+            </div>
+            <div class="form-group row hidden_box" hidden="hidden">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm" for="career_other">职业（其他）</label>
+                <div class="layui-col-sm10 col-sm-10">
+                    <input class="form-control form-control-sm"  id="career_other" name="career_other" placeholder="请输入职业（其他）" type="text" value="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm" for="timezone">时区</label>
+                <div class="layui-col-sm10 col-sm-10">
+                    <select class="form-control form-control-sm  select" id="timezone" name="timezone" placeholder="请选择时区" required></select>
+                </div>
+            </div>
+            <div class="form-group row ">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm">
+                    头像
+                </label>
+                <div class="avatar_main">
+                    <input class="form-control-file" id="avatar"   name="avatar"  type="file"  data-show-preview="false"    hidden="hidden"> 
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm" for="password">密码</label>
+                <div class="layui-col-sm10 col-sm-10">
+                    <input class="form-control form-control-sm" id="password" name="password" placeholder="请输入密码" type="password" value="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm3 col-md-2 col-form-label col-form-label-sm" for="password2">确认密码</label>
+                <div class="layui-col-sm9 col-sm-10">
+                    <input class="form-control form-control-sm" id="password2" name="password2" placeholder="请输入确认密码" type="password" value="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm">身份证</label>
+                <div class="layui-col-sm10 col-sm-10 identity_card files" name="identity_card">
+                    
+                </div>
+            </div>
+            <div class="form-group row hiddens" hidden="hidden">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm">工作证</label>
+                <div class="layui-col-sm10 col-sm-10 work_permit  files" name="work_permit">
+                       
+                </div>
+            </div>
+            <div class="form-group row hiddens" hidden="hidden">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm">营业执照</label>
+                <div class="layui-col-sm10 col-sm-10 business_license  files" name="business_license">
+                        
+                </div>
+            </div>
+            <div class="form-group row hiddens" hidden="hidden">
+                <label class="layui-col-sm2 col-md-2 col-form-label col-form-label-sm">生产许可证</label>
+                <div class="layui-col-sm10 col-sm-10 production_license  files" name="production_license">
+                        
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm3 col-md-2 col-form-label col-form-label-sm" for="transaction_password">交易密码</label>
+                <div class="layui-col-sm9 col-sm-10">
+                    <input class="form-control form-control-sm" id="transaction_password" name="transaction_password" placeholder="请输入交易密码" type="password" value=""  autocomplete='off'>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm3 col-md-2 col-form-label col-form-label-sm" for="transaction_password2">确认交易密码</label>
+                <div class="layui-col-sm9 col-sm-10">
+                    <input class="form-control form-control-sm" id="transaction_password2" name="transaction_password2" placeholder="请输入确认交易密码" type="password" value="">
+                </div>
+            </div>
+            <input class="btn btn-sm btn-primary btn-block" id="submit" name="submit" type="submit" value="保存">
+        </form>
+    </main>
+    <!--# include file="/include/footers.html" -->
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'upload'], function($, main, autosize, layer){
+        // 自适应高度
+        autosize($('textarea'));
+        $(function () {
+            main.fastClick();
+        });
+    });
+</script>
+<script>
+    var fileObj={} //附件
+    var userData={};
+    var unit_category_data = {
+        select: {
+            field: $(".unit_categorys")
+        },
+        others: [
+            {
+                key: "医疗机构",
+                items: [
+                    {
+                        field: $(".files[name=work_permit]").closest(".hiddens"),
+                        // wrap: $("#work_permit").parent().parent().parent(),
+                    }
+                ]
+            }, {
+                key: ["生产企业", '经营企业'],
+                items: [
+                    {
+                        field: $(".files[name=business_license]").closest(".hiddens"),
+                        // wrap: $("#business_license").parent().parent().parent(),
+                    }
+                ]
+            }, {
+                key: "生产企业",
+                items: [
+                    {
+                        field: $(".files[name=production_license]").closest(".hiddens"),
+                        // wrap: $("#production_license").parent().parent().parent(),
+                    }
+                ]
+            }
+        ]
+    };
+    var career_data = {
+        select: {
+            field: $("select#career")
+        },
+        others: [
+            {
+                key: "其他",
+                items: [
+                    {
+                        field: $("#career_other").closest(".hidden_box"),
+                        
+                    }
+                ]
+            }
+        ]
+    };
+    require(['jquery', 'main', 'portal', 'selectize', 'selectize_ext'], function($, main, portal, selectize){
+        
+
+        $(document).ready(function () {
+            getFormData(function(resultData){
+                //加载职业
+                ajaxFns({prentCode:"career"},function(res){
+                    selectizes($("#career"),{options:res.data,defaultData:resultData.career})
+                },ipDress+"/des/dictyList")
+                 //加载时区
+                ajaxFns({prentCode:"timezone"},function(res){
+                    var timezoneData=resultData.timezone?resultData.timezone:"Asia/Shanghai"
+                    selectizes($("#timezone"),{options:res.data,defaultData:timezoneData})
+                },ipDress+"/des/dictyList")
+                $("#transaction_password").val("")
+                /**上传附件**/
+                $("#avatar").uploadze({
+                    defaultData:!checkNull(resultData.avatar)?resultData.avatar:default_avatar,
+                    // types:"avatar",
+                    ipDress:img_ipDress,
+                    className:"avatar_box",
+                    onChanges:function(photoArry){
+                        fileObj["avatar"]=photoArry
+                    }
+                });
+                if(resultData.identity_card){
+                    var identity_cardArry=stringToArry(resultData.identity_card);
+                    identity_cardArry.map(function(obj){
+                        if(!checkNull(obj)){
+                            $(".identity_card").append(`
+                                <figure><img src="${img_ipDress+obj}" class="img-fluid" /></figure>
+                            `)
+                        }
+                        
+
+                    })
+                }
+                if(resultData.work_permit){
+                    var work_permitArry=stringToArry(resultData.work_permit);
+                    work_permitArry.map(function(obj){
+                        $(".work_permit").append(`
+                            <figure><img src="${img_ipDress+obj}" class="img-fluid" /></figure>
+                        `)
+
+                    })
+                }
+                if(resultData.business_license){
+                    var business_licenseArry=stringToArry(resultData.business_license);
+                    business_licenseArry.map(function(obj){
+                        $(".business_license").append(`
+                            <figure><img src="${img_ipDress+obj}" class="img-fluid" /></figure>
+                        `)
+
+                    })
+                }
+                if(resultData.production_license){
+                    var production_licenseArry=stringToArry(resultData.production_license);
+                    production_licenseArry.map(function(obj){
+                        $(".production_license").append(`
+                            <figure><img src="${img_ipDress+obj}" class="img-fluid" /></figure>
+                        `)
+
+                    })
+                }
+            })
+            
+            main.selectedShow(career_data);
+        });
+
+        $("select#career").change(function () {
+            main.selectedShow(career_data);
+        });
+
+        
+    });
+    /**获取用户数据*/
+    function getFormData(callBack){
+        var userInfo=JSON.parse(localStorage.getItem("userInfo"));
+        ajaxFns({_methods:"queryUser"},function(res){
+            if(res.data && res.data.length>0){
+                var resultData=res.data[0];
+                userData=res.data[0];
+                formSetValue(".input-list",resultData)
+                if(resultData.account){
+                    resultData.account_balance=resultData.account.balance
+                }
+                // resultData.account_balance=resultData.account_balance=="0"?"0.00":resultData.account_balance;
+                resultData.activeName=resultData.active=="1"?"正常":resultData.active=="0"?"审核中":""
+                resultData.unit_categorys=resultData.unit_category;
+                resultData.unit_category=resultData.unit_category?"【<em>"+resultData.unit_category+"</em>】":""
+                
+                $(".labelValue").each(function(){
+                    var name=$(this).attr("data-name");
+
+                    $(this).html(resultData[name])
+                })
+                selectedShow(unit_category_data);
+                callBack(resultData)
+            }
+        },ipDress+"/des/user")
+    }
+    /**获取上传文件**/
+    function setFileData(datas){
+        for(var k in fileObj){
+            var arrys=fileObj[k];
+            if(!checkNull(arrys)){
+                var newArry=[];
+                arrys.map(function(obj){
+                    newArry.push(obj.path)
+                })
+                datas[k]=newArry.join(",")
+            }
+        }
+    }
+    /**提交代码**/
+    function submits(event){
+        var e=window.event||event; //消除浏览器差异
+        e.preventDefault();
+        var datas=serializeArray(".input-list"); //序列化表单
+        if(datas.password!="" || datas.password2!=""){
+            if(datas.password!=datas.password2!=""){
+                layermsg("两次输入的密码不一致",{icon:2})
+                return false;
+            }
+        }
+
+        if(datas.transaction_password!="" || datas.transaction_password2!=""){
+            if(datas.transaction_password!=datas.transaction_password2!=""){
+                layermsg("两次输入的交易密码不一致",{icon:2})
+                return false;
+            }
+        }
+        datas.id=userData.id;
+        datas.username=userData.username;
+        if(datas.career=="其他"){
+            datas.career=datas.career_other
+        }
+        datas._methods="updata";
+        
+
+        datas.account_password=datas.transaction_password;
+        datas.accounts_id=userData.account?userData.account.id:"";
+        setFileData(datas)
+        ajaxFns(datas,function(res){
+            if(res.success=="true"){
+                layermsg("修改成功",{icon: 1});
+                getFormData(function(resultData){
+                    resetUserInfo(resultData)
+                })
+                
+            }
+        },ipDress+"/des/user")
+    }
+</script>
+
+</body>
+</html>

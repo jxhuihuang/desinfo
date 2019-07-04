@@ -1,0 +1,143 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="../../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../../static/favicon.ico" />
+
+    <title>药品不良反应上报系统管理后台 - 用户登录</title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/css/admin.min.css" />
+    <script>
+       
+        if(token && token!=""){
+            var token=localStorage.getItem("token");
+            var userInfo=JSON.parse(localStorage.getItem("userInfo"));
+            var username=userInfo.username;
+            ajaxFns({link:"/admin/dashboard",username:userInfo.username},function(res){ 
+                var result=res.result;
+                if(result["/admin/dashboard"]){
+                    window.location.href="../../../admin/dashboard"
+                }
+            },ipDress+"/des/admin/permissionck")
+        }
+    </script>
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-single">
+        <div class="container">
+            <div class="row">
+                <div class="col col-login mx-auto">
+                    <div class="text-center mb-6">
+                        <img src="../../../system/logo.svg" class="h-6" alt="">
+                        <span class="cms_name"></span>
+                    </div>
+                    <form class="card" action="" method="post" onsubmit="return submits(event)">
+                        <!-- <input type="hidden" name="csrf_token" value="IjJiNmZmYzUwOTU0ZjhlOWRkZjYwOTgzZGY0NDAwZGYyODUyMTRlMzIi.XHCg7w.jxpVPIGoMB2yeN94i4WFj32Y3mA"/> -->
+                        <div class="card-body p-6">
+                            <div class="card-title" >账号登录</div>
+                            <div class="form-group">
+                                <label class="form-label" for="username">用户名/手机号</label>
+                                <input class="form-control" id="login" name="username" placeholder="用户名/手机号" required type="text" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    密码
+                                    <a class="float-right small" data-toggle="tooltip" data-placement="top" title="请联系管理员">忘记密码</a>
+                                </label>
+                                <input class="form-control" id="password" name="password" placeholder="密码" required type="password" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="remember" name="remember" type="checkbox" >
+                                    <span class="custom-control-label" onclick="remember()">记住我</span>
+                                </label>
+                            </div>
+                            <div class="form-footer">
+                                <input class="btn btn-primary btn-block" id="submit" name="submit" type="submit" value="登录">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../../static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="../../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../../static/js/admin.min.js"></script>
+<script type="text/javascript" src="../../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../../static/'
+    })
+    require(['autosize', 'layer', , 'tool', 'layer_ext'], function(autosize, layer){
+        // 自适应高度
+        autosize($('textarea'));
+
+    });
+    requirejs(['jquery', 'main','autosize', 'portal'], function($, main,autosize, portal) {
+        $(function(){
+            getcmsData()
+        })
+    })
+    function getcmsData(){
+        ajaxFns({},function(res){
+            if(res.data && res.data.length>0){
+                var cmsData=res.data[0];
+                $(".cms_name").html(cmsData.name)
+                
+            }
+        },ipDress+"/des/admin/systems")
+    }
+    function submits(event){
+        var e=window.event||event; //消除浏览器差异
+        e.preventDefault();
+        var datas=serializeArray("form.card") //序列化表单;
+        datas. _methods="query"
+        ajaxFns(datas,function(res){
+            if(res.success=="true"){
+                var resData=res.data;  
+                const userInfo={username:resData.username, name:resData.name, dept_id:resData.dept_id, dept:resData.dept, avatar:resData.avatar}
+                localStorage.setItem("token",resData.token);
+                localStorage.setItem("userInfo",JSON.stringify(userInfo));
+                layer.msg("登录成功",{time: 1000, icon: 1},function(){
+                    window.location.href="../../../admin/dashboard"
+                })
+            }else{
+                if(res.resultCode=="14"){
+                    layer.msg("用户权限不足",{icon: 2})
+                }
+            }
+        },ipDress+"/des/admin/login")
+    }
+</script>
+
+</body>
+</html>

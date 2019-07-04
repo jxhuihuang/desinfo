@@ -1,0 +1,14 @@
+.defaultMain figure{
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    width: 120px;
+    height: auto;
+    max-height: 120px;
+    overflow: hidden;
+    padding: 5px;
+    border: 1px solid #EDEDED;
+    margin: 0 5px;
+       
+}

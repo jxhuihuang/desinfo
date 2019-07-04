@@ -1,0 +1,165 @@
+.review-box{
+    margin-top:20px; 
+}
+.review-box button{
+
+    display: inline-block;
+    width: 80px;
+    height: 36px;
+    line-height: 36px;
+    border: 1px solid #DDD;
+    cursor: pointer;
+}
+
+.review-y{
+    background: #107bfd;
+    color: #FFF;
+
+}
+
+.layui-layer-setwin .layui-layer-close2 {
+    position: absolute;
+    right: -10px!important;
+    top: -10px!important;
+    width: 30px;
+    height: 30px;
+}
+
+/******* 报告提交  *************/
+#medication_records{
+    /* display: block!important; */
+}
+.page{
+    display: none;
+}
+.page.active{
+    display: block;
+    /* display: none!important; */
+}
+.country{
+    line-height: 1.8;
+}
+/**大于768**/
+@media screen and (min-width:768px){  
+    .report_tle{
+        height: 40px;
+        border-bottom: 1px solid #DDD;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+    
+    #report_sp4 label{
+        padding:5px 0 10px 0;
+        color:#666;
+        font-size: 15px;
+    } 
+    #report_sp4 .btn-sm{
+        margin:0 8px 20px 8px;
+    }
+    .mr-1_1{
+        margin-right: .25rem!important;
+    }
+
+}
+/**小于768**/
+@media screen and (max-width:768px){  
+
+    .submit-reort .input-group-text {
+        /* white-space: normal;
+        flex: .6; */
+    }
+    .report_tle{
+        text-align: center;
+        height: 44px;
+        line-height: 44px;
+        background: #FFF;
+        border-bottom: 1px solid #DDD;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+    .submit-reort .btn-box button{
+        margin:0 10px;
+    }
+    #report_sp2 .form-group{
+        margin-bottom: 1rem;
+    }
+    #report_sp2 .input-group-append, #report_sp2 .input-group-prepend {
+        display: block;
+        flex: none;
+        width: 100%;
+        border-bottom: 1px solid #EEE;
+        margin-bottom:.5rem;
+    }
+
+    #medication_records .text-danger{
+        margin:1rem 1rem
+    }
+    #medication_records .medication_btn{
+        margin-bottom: 1rem!important;
+   }
+   #medication_records .data_table td:last-child:before, #attachments .data_table td:last-child:before,  #disease_records .data_table td:last-child:before, #laboratory_records .data_table td:last-child:before, #gestation_records .data_table td:last-child:before, #historyMedication_records .data_table td:last-child:before{
+        content: attr(data-title);
+        padding:0;
+        margin:0;
+        border-bottom: 0px solid #EEE;
+        height: 0;
+   }
+    .data_table select{
+        border: none;
+    }
+    #medication_records-0-category{
+        border: none;
+    }
+    #report_sp4{
+        margin-top: 1rem;
+    }
+    #report_sp4 label{
+        padding:.8rem 1rem;
+        border-bottom: 1px solid #EEE;
+        width: 100%;
+        margin:0 ;
+        /* color:#666; */
+    } 
+    #report_sp4 .form-control{
+        padding-left: 1rem
+    }
+    #report_sp4 .form-group {
+     margin-bottom:1rem;
+    }
+    .adr_descriptions{
+        border-bottom: 1px solid #DDD;
+        padding: .6rem 0;
+    }
+    .adr_descriptions button.mb-1{
+        margin:.5rem .2rem!important;
+    }
+
+    #attachments .text-danger{
+        padding: 1rem 1rem .5rem 1rem;
+    }
+    #attachments .d-flexs{
+        margin-left: 0!important;
+        width: 100%!important;
+    }
+    #attachments .mr-1{
+        margin-right: 0!important;
+    }
+    #attachments .d-flexs button{
+        margin-left:auto;
+        margin-right: auto;
+       
+    }
+    .btn-backs{
+        margin-left: 5%!important;
+    }
+}
+
+
+.fieldset_files  {
+    display: inline-block;
+    vertical-align: middle;
+   }
+   
+   .file_input{
+       flex: .9;
+   }

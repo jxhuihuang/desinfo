@@ -1,0 +1,131 @@
+.header {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 40, 100, 0.12);
+    
+}
+
+.contentMain{
+    min-height: calc(100vh - 135px);
+}
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: 0;
+    margin-left: 0;
+}
+.siderMain{
+    padding: 10px;
+    border-right:1px solid #EEE;
+    width: 100%;
+    height: 100%;
+    overflow:scroll;
+    position: relative;
+}
+.siderMain ul{
+    font-size: 14px;
+}
+.side_tle{
+    display: block;
+    height: 36px;
+    line-height: 36px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    margin-bottom:10px;
+}
+.side_tle i{
+ margin-right:8px;
+} 
+.sider-item{
+    transition: .3s color;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    text-align: left;
+}
+.sider-item a{
+    display: block;
+    height: 32px;
+    line-height: 32px;
+
+}
+
+.sider-item a i{
+    margin-right: 5px;
+
+}
+.fa-chevron-down{
+    width: 12px;
+    height: 16px;
+    display: block;
+    line-height: 16px;
+    float: right;
+    margin: 5px 0;
+}
+.sider-item a .drops{
+    font-size: 12px;
+    margin: 0px!important;
+    
+}
+.toggle_up .fa-chevron-down {
+    transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform-origin: 50% 50% 0;
+    transition: transform .2s ease-in 0s;
+}
+.toggle_down .fa-chevron-down {
+    transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform-origin: 50% 50% 0;
+    transition: transform .2s ease-in 0s;
+}
+.sider-item dl{
+    padding-left: 13px;
+    /* transition: .3s all; */
+}
+.sider-item dd{
+    padding: 5px 0;
+
+}
+.ative > a{
+    color: #1f7ed4;
+}
+
+.sider-item >a{
+    color: #666;
+}
+.sider-item.ative >a.toggle_down em{
+    color: #1f7ed4;
+}
+.nodrop.ative >a {
+    color: #1f7ed4;
+}
+
+.slitIcon{
+    position:absolute;
+    width: 16px;
+    height: 40px;
+    line-height: 40px;
+    background: #f0f0f0;
+    left: 220px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    cursor: pointer;
+    transition: .3s all;
+    z-index: 20;
+}
+.slitIcon i{
+    font-size: 9px;
+    color: #666;
+
+}

@@ -1,0 +1,256 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../../static/favicon.ico" />
+
+    <title>药品不良反应上报系统 - 财务记录</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/css/antd-mobile.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/css/portal.min.css" />
+    <link rel="stylesheet" href="../../../static/css/header.min.css" />
+    <script type="text/javascript" src="../../../static/plugins/template/template.js"></script>
+</head>
+<body ontouchstart>
+    <!--# include file="/include/headers.html" -->
+    <main role="main" class="container">
+        <div class="mobile-show mlr1_r mt1_r" id="accountContent"></div>
+        <div class="table-stack table-stack-inline ">
+            <table class="table table-sm table-bordered pc-show" style="width: 100%; font-size: 13px;"></table>
+        </div>
+        
+    </main>
+     <!--# include file="/include/footers.html" -->
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
+        // 自适应高度
+        autosize($('textarea'));
+        $(function () {
+            main.fastClick();
+        });
+    });
+</script>
+    <script>
+        requirejs(['jquery', 'main', 'moment', 'portal'], function($, main, moment, portal) {
+            var columns = [
+                {
+                    title: '类型',
+                    target: 0,
+                    className: "align-middle",
+                    data: function (item) {
+                        var mode = '';
+                        switch (item.mode) {
+                            case 'recharge':
+                                mode = '充值';
+                                break;
+                            case 'transfer':
+                                mode = '<a class="btn btn-sm btn-outline-primary mb-1 mt-1 ml-1 mr-1" href="/report/detail/' + item.id +'">转账</a>';
+                                break;
+                            case 'withdraw':
+                                mode = '提现';
+                                break;
+                        }
+                        return mode;
+                    },
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).attr('data-title', '类型')
+                    }
+                },
+                {
+                    title: '时间',
+                    target: 1,
+                    className: "align-middle",
+                    data: function (item) {
+                        return moment(moment.utc(item.created_at).toDate()).format('YYYY-MM-DD HH:mm:ss');
+                    },
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).attr('data-title', '时间')
+                    }
+                },
+                {
+                    title: '金额',
+                    target: 2,
+                    className: "align-middle",
+                    data: function (item) {
+                        return item.amount;
+                    },
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).attr('data-title', '金额')
+                    }
+                },
+                {
+                    title: '余额（前）',
+                    target: 3,
+                    className: "align-middle",
+                    data: function (item) {
+                        return item.balance_before;
+                    },
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).attr('data-title', '余额（前）')
+                    }
+                },
+                {
+                    title: '余额（后）',
+                    target: 4,
+                    className: "align-middle",
+                    data: function (item) {
+                        return item.balance_after;
+                    },
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).attr('data-title', '余额（后）')
+                    }
+                },
+                {
+                    title: '备注',
+                    target: 5,
+                    className: "align-middle",
+                    data: function (item) {
+                        return item.remark;
+                    },
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).attr('data-title', '备注')
+                    }
+                },
+                {
+                    title: '状态',
+                    target: 6,
+                    className: "align-middle",
+                    data: function (item) {
+                        var state = '';
+                        switch (item.state) {
+                            case 0:
+                                state = '待确认';
+                                break;
+                            case 1:
+                                state = '成功';
+                                break;
+                            case 2:
+                                state = '失败';
+                                break;
+                        }
+                        return state;
+                    },
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).attr('data-title', '状态')
+                    }
+                }
+            ];
+            main.initDataTables(
+                $(".table"),
+                "../../../user/account/log/data",
+                {
+                    "columns": columns,
+                    'dom': 'ftpr',
+                    'initComplete': function (settings, json) {
+                        $(".dataTable").addClass("layui-table")
+                        $(".pagination").addClass("justify-content-center");
+                        var jsonData=json.data?json.data:[];
+                        
+                        jsonData.map(function(obj){
+                            obj.created_at=moment(moment.utc(obj.created_at).toDate()).format('YYYY-MM-DD HH:mm:ss')
+                        })
+                        portal.showtemp(jsonData,"listTmpl", "#accountContent")
+                    }
+                }
+            );
+           
+        });
+    </script>
+    <!--加载已覆盖监测哨点模板-->
+    <script type="text/html" id="listTmpl">
+        {{each list as value i}}
+            <div class="am-card last_noborder">
+                <div class="am-card-body">
+                    <div class="am-list">
+                        <div class="am-list-body">
+                            <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-5">类型:</div>
+                                    <div class="am-list-extra tl">
+                                        {{if value.mode=="recharge"}}
+                                            充值
+                                        {{/if}}
+                                        {{if value.mode=="transfer"}}
+                                            <a class="btn btn-sm btn-outline-primary mb-1 mt-1 ml-1 mr-1" href="/report/detail/{{value.id}}">转账</a>
+                                        {{/if}}
+                                        {{if value.mode=="withdraw"}}
+                                            提现
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-5 tr">金额:</div>
+                                    <div class="am-list-extra tl">{{value.amount}}</div>
+                                </div>  
+                            </div> 
+                            <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-5 tr">余额（前）:</div>
+                                    <div class="am-list-extra tl">
+                                        {{value.balance_before}} 
+                                    </div>
+                                </div>  
+                            </div> 
+                            <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-5 tr">余额（后）:</div>
+                                    <div class="am-list-extra tl">
+                                        {{value.balance_after}} 
+                                    </div>
+                                </div>  
+                            </div> 
+                            <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-5 tr">备注:</div>
+                                    <div class="am-list-extra tl">
+                                        {{value.remark}} 
+                                    </div>
+                                </div>  
+                            </div> 
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="ant-card-actions">
+                    <div class="layui-row" style="height:100%">
+                        <div class="layui-col-xs6 tc" style="height:100%; line-height:40px; color:#888">{{value.created_at}}</div>
+                        <div class="layui-col-xs6 tc" style="height:100%; line-height:40px">
+                            {{if value.state==0}}
+                               <span style="color:#333"> <i class="myIconfont" style="margin-right:.3rem; color:#d8e207;vertical-align: middle;">&#xe910;</i>待确认 </span>
+                            {{/if}}
+                            {{if value.state==1}}
+                                <span style="color:#3f9cd6" > <i class="myIconfont" style="margin-right:.3rem; color:#3f9cd6;vertical-align: middle;">&#xe604;</i>成功</span>
+                            {{/if}}
+                            {{if value.state==2}}
+                                <span style="color:#ff0000" ><i class="myIconfont" style="margin-right:.3rem; vertical-align: top;">&#xe621;</i>失败</span>
+                            {{/if}}
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="am-whitespace am-whitespace-md"></div>
+        {{/each}}
+    </script>
+</body>
+</html>

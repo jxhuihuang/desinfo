@@ -1,0 +1,521 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+    <title>药品不良反应上报系统 - 注册</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/antd-mobile.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/header.min.css" />
+    <link rel="stylesheet" type="text/css" href="../login/index.css" />
+</head>
+<body ontouchstart class="register-main">
+<header class="fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="navbar-left-icon mobile-show" onclick="toback()"><i class="myIconfont">&#xe82b;</i></div>
+        <span class="navbar-span">
+            <a class="navbar-brand pc-show" href="../../index.html"><img src="../../static/img/logos.png"/>药品不良反应上报系统</a>
+            <span class="navbar-brand mobile-show" href="javascrit:void(0)"> <a href="../../index.html">药品不良反应上报系统 </a>- 用户注册</span>
+        </span>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <div class="collapse navbar-collapse" id="navbarCollapses">
+            <ul class="navbar-nav">
+                <li class="nav-item login-item">
+                    <a class="nav-link logout" href="../../auth/login/index.html">登录</a>
+                    <a class="nav-link logout" href="../../auth/register/index.html">注册</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main role="main" class="container align-items-center justify-content-center d-flex " >
+    <div class="register-box">
+        <div class="login-tle pc-show">用户注册</div>
+        <form class="col-12 mt2_r register-form" method="post" enctype="multipart/form-data"  onsubmit="return submits(event)">
+            <input type="hidden" name="csrf_token" value="ImUwYjYyNDU0ZTQzNGQ3ODE4NGNjZWZjYWYzNjNmOTE0Yjc5MjIwZjci.Dvokpg.rtgFBNyxw_1n3spwPgffWhbNDOc"/>
+            <div class="row form-group required">
+                <label class="sr-only" for="username">用户名</label>
+                <label class="pc-show" for="username">用户名</label>
+                <i class="myIconfont mobile-show input-icon">&#xe903;</i>
+                <div class="form-controls">
+                    <input class="form-control" id="username" name="username" placeholder="用户名" required type="text" value="">
+                </div>
+               
+            </div>
+            <div class="row form-group required">
+                <label class="sr-only" for="name">姓名</label>
+                <label class="pc-show" for="name">姓名</label>
+                <i class="myIconfont mobile-show input-icon">&#xe873;</i>
+                <div class="form-controls">
+                    <input class="form-control" id="name" name="name" placeholder="姓名" required type="text" value="">
+                </div>
+                
+            </div>
+            <div class="row form-group required">
+                <label class="sr-only" for="phone">手机</label>
+                <label class="pc-show" for="phone">手机</label>
+                <i class="myIconfont mobile-show input-icon">&#xe615;</i>
+                <div class="form-controls">
+                    <input class="form-control" id="phone" name="phone" placeholder="手机" required type="text" value="">
+                </div>
+            </div>
+            <div class="row form-group required">
+                <label class="sr-only" for="email">邮箱</label>
+                <label class="pc-show" for="email">邮箱</label>
+                <i class="myIconfont mobile-show input-icon">&#xe605;</i>
+                <div class="form-controls">
+                    <input class="form-control" id="email" name="email" placeholder="邮箱" required type="text" value="">
+                </div>
+                
+            </div>
+            <div class="row form-group required">
+                <label class="sr-only" for="password">密码</label>
+                <label class="pc-show" for="password">密码</label>
+                <i class="myIconfont mobile-show input-icon">&#xe863;</i>
+                <div class="form-controls">
+                    <input class="form-control" id="password" name="password" placeholder="密码" required type="password" value=""  autocomplete='new-password'>
+                </div>
+               
+            </div>
+            <div class="row form-group required">
+                <label class="sr-only" for="password2">确认密码</label>
+                <label class="pc-show" for="password2">确认密码</label>
+                <i class="myIconfont mobile-show input-icon">&#xe863;</i>
+                <div class="form-controls">
+                    <input class="form-control" id="password2" name="password2" placeholder="确认密码" required type="password" value="">
+                </div>
+                
+            </div>
+            <div class="row form-group required">
+                <label class="pc-show" for="unit_category">单位类别</label>
+                <i class="myIconfont mobile-show input-icon">&#xe682;</i>
+                <div class="form-controls">
+                    <select class="form-control select  tl" id="unit_category" name="unit_category" placeholder="单位类别" required></select>
+                </div>
+            </div>
+            <div class="row form-group required" hidden="hidden">
+                <label class="pc-show" for="unit_category_other">单位类别（其他）</label>
+                <i class="myIconfont mobile-show input-icon">&#xe682;</i>
+                <div class="form-controls">
+                    <input class="form-control"  id="unit_category_other" name="unit_category_other" placeholder="单位类别（其他）" type="text" value="">
+                </div>
+                
+            </div>
+            <div class="row form-group required" hidden="hidden">
+                <label class="pc-show" for="dept_id">单位名称</label>
+                <i class="myIconfont mobile-show input-icon">&#xe682;</i>
+                <div class="form-controls">
+                    <select class="form-control  select  tl"  id="dept_id" name="dept_id" placeholder="单位名称"></select>
+                </div>
+            
+            </div>
+            <div class="row form-group required" hidden="hidden">
+                <label class="pc-show" for="invitation_dept_id">邀请单位</label>
+                <i class="myIconfont mobile-show input-icon">&#xe682;</i>
+                <div class="form-controls">
+                    <select class="form-control select1" id="invitation_dept_id" name="invitation_dept_id" placeholder="邀请单位"></select>
+                </div>
+                
+            </div>
+            <div class="row form-group required" >
+                <label class="pc-show" for="career">职业</label>
+                <i class="myIconfont mobile-show input-icon">&#xe75a;</i>
+                <div class="form-controls">
+                    <select class="form-control  select   tl" id="career" name="career" placeholder="职业" required></select>
+                </div>
+                
+            </div>
+            <div class="row form-group required" hidden="hidden">
+                <label class="sr-only" for="career_other">职业（其他）</label>
+                <label class="pc-show" for="career_other">职业（其他）</label>
+                <i class="myIconfont mobile-show input-icon">&#xe75a;</i>
+                <div class="form-controls">
+                    <input class="form-control"  id="career_other" name="career_other" placeholder="职业（其他）" type="text" value="">
+                </div>
+                
+            </div>
+            <div class="form-group row upload required file-list mt30 pb1_r mlr0-2_r uploads">
+                <label class="col-form-label col-form-label" for="identity_card">身份证</label>
+                <div class="rel flex1 upload-rt">
+                    <div class="avatar_main">
+                        <input class="form-control-file" id="identity_card"   name="identity_card"  type="file"   data-show-preview="false"    hidden="hidden"> 
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row upload required  pb1_r mlr0-2_r uploads" hidden="hidden">
+                <label class="col-form-label col-form-label" for="work_permit">工作证</label>
+                <div class="rel flex1 upload-rt">
+                    <a class="upload-box">
+                        
+                        <button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button> 
+                        <input class="form-control-file"  id="work_permit" name="work_permit" type="file" onchange="fileChange(event)" accept="image/gif, image/jpeg,image/png">
+                        
+                    </a>
+                    <div class="upload-show"><span class="upload-img"></span></div>
+                </div>
+            </div>
+            <div class="form-group row upload required  pb1_r mlr0-2_r uploads" hidden="hidden">
+                <label class="col-form-label col-form-label"  for="business_license">营业执照</label>
+                <div class="rel flex1 upload-rt">
+                    <a class="upload-box">
+                        <span class="upload-img"></span>
+                        <button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button> 
+                        <input class="form-control-file"  id="business_license" name="business_license" type="file" onchange="fileChange(event)" accept="image/gif, image/jpeg,image/png">
+                    </a>
+                    <san class="upload-show"></span>
+                </div>
+            </div>
+            <div class="form-group row upload required  pb1_r mlr0-2_r uploads" hidden="hidden">
+                <label class="col-form-label col-form-label"  for="production_license">生产许可证</label>
+                <div class="rel flex1 upload-rt">
+                    <a class="upload-box">
+                        <span class="upload-img"></span>
+                        <button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button> 
+                        <input class="form-control-file"  id="production_license" name="production_license" type="file" onchange="fileChange(event)" accept="image/gif, image/jpeg,image/png">
+                    </a>
+                </div>
+            </div>
+            <input class="btn btn-primary btn-block" id="submit_register" name="submit_register" type="submit" value="注册">
+            <div class=" mt1-5_r tr register-des">已经注册？ <a href="../../auth/login/index.html">立即登录</a></div>
+        </form>
+    </div>
+</main>
+<!--# include file="/include/footers.html" -->
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap','tool', 'upload'], function($, main, autosize, layer){
+        // 自适应高度
+        autosize($('textarea'));
+        $(function () {
+            main.fastClick();
+        });
+    });
+</script>
+<script>
+    var deptData=[];
+    var unit_categoryData=[];
+    var roleData=[];
+    var fileObj={};  //上传附件
+    require(['jquery', 'main', 'selectize',  'portal', 'selectize_ext'], function($, main, selectize, portal){
+        var unit_category_data = {
+            select: {
+                field: $("select#unit_category")
+            },
+            others: [
+                {
+                    key: "其他",
+                    items: [
+                        {
+                            field: $("#unit_category_other").closest(".form-group")
+                        }
+                    ]
+                }, {
+                    key: ["医疗机构", "生产企业", '经营企业', '其他'],
+                    items: [
+                        {
+                            field: $("#dept_id"),
+                            wrap: $("#dept_id").closest(".form-group"),
+                        }
+                    ]
+                }, {
+                    key: ["医疗机构", "个人", '经营企业', '其他'],
+                    items: [
+                        {
+                            field: $("#invitation_dept_id"),
+                            wrap: $("#invitation_dept_id").closest(".form-group"),
+                        }
+                    ]
+                }, {
+                    key: "医疗机构",
+                    items: [
+                        {
+                            field: $("#work_permit"),
+                            wrap: $("#work_permit").closest(".form-group"),
+                        }
+                    ]
+                }, {
+                    key: ["生产企业", '经营企业'],
+                    items: [
+                        {
+                            field: $("#business_license"),
+                            wrap: $("#business_license").closest(".form-group"),
+                        }
+                    ]
+                }, {
+                    key: "生产企业",
+                    items: [
+                        {
+                            field: $("#production_license"),
+                            wrap: $("#production_license").closest(".form-group"),
+                        }
+                    ]
+                }
+            ]
+        };
+
+        var career_data = {
+            select: {
+                field: $("select#career")
+            },
+            others: [
+                {
+                    key: "其他",
+                    items: [
+                        {
+                            field: $("#career_other").closest(".form-group")
+                        }
+                    ]
+                }
+            ]
+        };
+
+        $(document).ready(function () {
+            selectedShow(unit_category_data);
+            selectedShow(career_data);
+            //加载职业
+            ajaxFns({prentCode:"career"},function(res){
+                selectizes($("#career"),{options:res.data})
+            },ipDress+"/des/dictyList")
+            //加载单位类别
+            ajaxFns({prentCode:"unit_category"},function(res){
+                unit_categoryData=res.data;
+                selectizes($("#unit_category"),{options:res.data, valueField:"name"})
+            },ipDress+"/des/dictyList")
+            // 加载邀请单位 ">
+            ajaxFns({},function(res){
+                var result=res.data;
+                deptData=result;
+                selectizes($("#invitation_dept_id"),{
+                    valueField:"id",
+                    options:[],
+                    create:false,
+                    createOnBlur:false,
+                    loadData:result
+                })
+                selectizes($("#dept_id"),{
+                    valueField:"id",
+                    options:[],
+                    create:true,
+                    createOnBlur:true,
+                    loadData:result
+                })
+            },ipDress+"/des/dept")
+            $("#identity_card").uploadze({
+                accept:"images",
+                multiple:true,
+                ipDress:img_ipDress,
+                onChanges:function(photoArry){
+                    fileObj["identity_card"]=photoArry
+                }
+            })
+            $("#work_permit").uploadze({
+                accept:"images",
+                onChanges:function(photoArry){
+                    fileObj["work_permit"]=photoArry
+                }
+            })
+            $("#business_license").uploadze({
+                accept:"images",
+                onChanges:function(photoArry){
+                    fileObj["business_license"]=photoArry
+                }
+            })
+            $("#production_license").uploadze({
+                accept:"images",
+                onChanges:function(photoArry){
+                    fileObj["production_license"]=photoArry
+                }
+            })
+            // main.selectedShow(unit_category_data);
+            // main.selectedShow(career_data);
+        });
+        //加载角色
+        ajaxFns({},function(res){
+            roleData=res.data;
+        },ipDress+"/des/role")
+
+
+        $("select#unit_category").change(function () {
+            selectedShow(unit_category_data);
+            // main.selectedShow(unit_category_data);
+        });
+
+        $("select#career").change(function () {
+            selectedShow(career_data);
+            // main.selectedShow(career_data);
+        });
+        
+        
+    });
+     /**获取上传文件**/
+     function setFileData(datas){
+        for(var k in fileObj){
+            var arrys=fileObj[k];
+            if(!checkNull(arrys)){
+                var newArry=[];
+                arrys.map(function(obj){
+                    newArry.push(obj.path)
+                })
+                datas[k]=newArry.join(",")
+            }
+        }
+    }
+    /**提交**/
+    function submits(event){
+        var e=window.event||event; //消除浏览器差异
+        e.preventDefault();
+        var datas=serializeArray("form.register-form") //序列化表单;
+        datas.roles=register_rorle_id;
+        datas._methods="insert";
+        if(datas.password!=datas.password2){
+            layermsg("两次输入的密码不一致",{time: 1000, icon: 2});
+            return false;
+        }
+        /**获取角色名称*/
+        var roles_id=datas.roles;
+        if(!checkNull(roles_id)){
+            var roles_name="";
+            if(roles_id.toString().indexOf(",")==-1){
+                roleData.map(function(obj){
+                    if(obj.id==roles_id){
+                        roles_name=obj.name;
+                    }
+                })
+                datas.roles_name=roles_name;
+            }else{
+                var roles_name=[];
+                for(var i=0; i<roles_id.split(",").length; i++){
+                    var rolesId=roles_id.split(",")[i];
+                    roleData.map(function(obj){
+                        if(obj.id==rolesId){
+                            roles_name.push(obj.name)
+                        }
+                    })
+                }
+                roles_name=roles_name.length>0?roles_name.join(","):"";
+                datas.roles_name=roles_name;
+            }
+        }
+        /**获取单位名称*/
+        if(!checkNull(datas.dept_id)){
+            deptData.map(function(obj){
+                if(obj.id==datas.dept_id){
+                    datas.dept=obj.name
+                }
+            })
+        }
+        /**获取邀请单位名*/
+        if(!checkNull(datas.invitation_dept_id)){
+            deptData.map(function(obj){
+                if(obj.id==datas.invitation_dept_id){
+                    datas.invitation_dept=obj.name
+                }
+            })
+        }
+        /**获取角色名称*/
+        if(!checkNull(roles_id)){
+            roleData.map(function(obj){
+                if(obj.id==roles_id){
+                    roles_name=obj.name;
+                }
+            })
+
+        }
+        setFileData(datas)
+        ajaxFns(datas,function(res){
+            if(res.success=="true"){
+                adddept(function(){
+                    layermsg("注册成功",{icon:1},function(){
+                        window.location.href="../../auth/login"
+                    })
+                });
+                
+            } else{
+                layermsg(res.resultMsg,{icon:2})
+            }
+        },ipDress+"/des/register")
+    }
+    /**新增单位**/
+    function adddept(callBack){
+        var ishas=false;
+        var dept_val=removeNull($("#dept_id").val());
+        var upper=removeNull($("#unit_category").val());
+        var nowseq=0;
+        if(dept_val==""){
+            callBack();
+            return false;
+        }
+        deptData.map(function(obj){
+            var id=obj.id;
+            var seq=obj.seq;
+            seq=parseInt(seq)
+            if(seq>nowseq){
+                nowseq=seq;
+            }
+            if(dept_val==id){
+                ishas=true;
+            }
+        })
+        if(ishas){
+            callBack()
+        }else{
+            var upper_id="";
+            unit_categoryData.map(function(obj){
+                  if(obj.name==upper){
+                    upper_id=obj.value;
+                  }
+            })
+            var params={
+                active: 1,
+                avatar: "group.png",
+                name:dept_val,
+                description: dept_val,
+                seq:nowseq+1,
+                upper_id:upper_id,
+                _methods:"insert",
+            }
+            ajaxFns(params,function(res){
+                if(res.success=="true"){
+                    callBack(res)
+                }
+            },ipDress+"/des/dept")
+        }
+    }
+    function fileChange(event){
+        var e=window.event|| event
+        var $this=$(e.currentTarget);
+        selectImg(event,function(imgArry,event){
+           
+            
+            uploadImg($this,function(imgArrys){
+               
+                uploadShowimg($this,imgArry)
+               
+            })
+        })
+    }
+</script>
+</body>
+</html>

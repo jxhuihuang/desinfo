@@ -1,0 +1,34 @@
+/* Fixed DataTables */
+table.dataTable {
+    clear: both;
+    margin-top: auto  !important;
+    margin-bottom: auto  !important;
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+div.dataTables_wrapper.container-fluid {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
+.dataTables_paginate .pagination {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.dropup,
+.dropright,
+.dropdown,
+.dropleft {
+  position: unset !important;
+}
+
+td.details-control {
+    background: url('../img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.details td.details-control {
+    background: url('../img/details_close.png') no-repeat center center;
+}
+/* Fixed DataTables End */

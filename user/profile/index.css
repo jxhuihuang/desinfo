@@ -1,0 +1,38 @@
+
+/* 屏幕大于等于768 */
+@media Screen  and (min-width:768px){
+    .files figure {
+        vertical-align: middle;
+        text-align: center;
+        display: inline-block;
+        width: 120px;
+        height: auto;
+        max-height: 120px;
+        overflow: hidden;
+        padding: 5px;
+        border: 1px solid #EDEDED;
+        margin: 0 5px;
+    
+    }
+    .files figure img{
+        max-width: 100%;
+    
+    }
+}
+
+/* 屏幕小于等于768 */
+@media Screen  and (max-width:768px){
+    .files figure {
+        width: 6rem;
+        border: 1px solid #EEE;
+        padding:5px;
+        overflow: hidden;
+    
+    }
+    .files figure img{
+        max-width: 100%;
+    
+    }
+}
+
+

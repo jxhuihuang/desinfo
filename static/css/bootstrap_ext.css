@@ -1,0 +1,50 @@
+/* 移动端层叠模式显示表格 */
+@media only screen and (max-width: 800px) {
+    .table-stack table {
+        border: 3px solid grey !important;
+        border-bottom: 0 !important;
+        border-collapse:collapse;
+    }
+
+    /* Force table to not be like tables anymore */
+    .table-stack table,
+    .table-stack thead,
+    .table-stack tbody,
+    .table-stack th,
+    .table-stack td,
+    .table-stack tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .table-stack thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .table-stack tr {
+        border-bottom: 3px solid grey;
+    }
+
+    .table-stack td {
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: left;
+        width: unset !important;
+    }
+
+    .table-stack td:before {
+        content: attr(data-title);
+        font-weight: bold;
+        display: block !important;
+    }
+
+    .table-stack-inline td:before {
+        content: attr(data-title)"：";
+        display: unset !important;
+    }
+    .table-stack-inline td:not([data-title]):before {
+        content: none;
+    }
+}

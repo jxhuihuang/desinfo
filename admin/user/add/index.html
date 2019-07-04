@@ -1,0 +1,488 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="../../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../../static/favicon.ico" />
+
+    <title>    药品不良反应上报系统管理后台 - 用户管理  </title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/css/admin.min.css" />
+
+	
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-main">
+    <!--# include file="/admin/include/header.html" -->  
+    <div class="row contentMain">
+        <div class="sider">
+            <!--# include file="/admin/include/sider.html" -->
+        </div> 
+        <div class="container my-3 my-md-5">
+            <div class="row">
+                <div class="col-12">
+                    <form class="card" method="POST" enctype="multipart/form-data" onsubmit="return submits(event)">
+                        <div class="card-header">
+                            <h3 class="card-title">编辑</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                
+        
+                                <label class="form-label">用户名<span class="form-required">*</span></label>
+        
+
+                                <input class="form-control" id="username" name="username" required type="text" value="" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                
+        
+                                <label class="form-label">密码<span class="form-required">*</span></label>
+                                <input class="form-control" id="password" name="password" required type="password"  value="" autocomplete='new-password' >
+                            </div>
+                            <div class="form-group">
+                                
+        
+                                <label class="form-label" for="name">名称</label>
+        
+
+                                <input class="form-control" id="name" name="name" type="text" value="">
+                            </div>
+                            <div class="form-group">
+                                
+        
+                                <label class="form-label" for="phone">手机</label>
+        
+
+                                <input class="form-control" id="phone" name="phone" type="text" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">邮箱</label>
+                                <input class="form-control" id="email" name="email" type="text" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="unit_category">单位类别</label>
+        
+                                <select class="form-control" id="unit_category" name="unit_category"></select>
+                            </div>
+                            <div class="form-group" hidden="hidden">
+                                <label class="sr-only" for="unit_category_other">单位类别（其他）</label>
+                                <label class="form-label" for="unit_category_other">单位类别（其他）</label>
+                                <input class="form-control"  id="unit_category_other" name="unit_category_other" type="text" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="career">职业</label>
+                                <select class="form-control" id="career" name="career"></select>
+                            </div>
+                            <div class="form-group" hidden="hidden">
+                                <label class="sr-only" for="career_other">职业（其他）</label>
+                                <label class="form-label" for="career_other">职业（其他）</label>
+                                <input class="form-control"  id="career_other" name="career_other" type="text" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">时区<span class="form-required">*</span></label>        
+                                <select class="form-control" id="timezone" name="timezone" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="account_balance">余额</label>
+                                <input class="form-control" id="account_balance" name="account_balance" type="text" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="account_password">交易密码</label>
+                                <input class="form-control" id="account_password" name="account_password" type="password" value="">
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="avatar">头像</label>
+                                        <div class="avatar_main">
+                                            <input class="form-control" id="avatar" name="avatar" type="file"  hidden="hidden">
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="identity_card">身份证</label>
+                                        <div class="avatar_main">
+                                            <input class="form-control-file" id="identity_card"   name="identity_card"  type="file"   data-show-preview="false"    hidden="hidden"> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row hidden_box" hidden="hidden">
+                                
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="work_permit">工作证</label>
+                                        <div class="avatar_main">
+                                            <input class="form-control"  id="work_permit" name="work_permit" type="file"  hidden="hidden">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row hidden_box" hidden="hidden">
+                                
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="business_license">营业执照</label>
+                                        <div class="avatar_main">
+                                               
+                                            <input class="form-control-file" id="business_license"   name="business_license"  type="file"  data-show-preview="false"   hidden="hidden"> 
+                                       
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row hidden_box" hidden="hidden">
+                                
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label" for="production_license">生产许可证</label>
+                                        <div class="avatar_main">
+                                            <input class="form-control" hidden="hidden" id="production_license" name="production_license" type="file" hidden="hidden">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="dept_id">单位名称</label>
+                                <select class="form-control" id="dept_id" name="dept_id"></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="invitation_dept_id">邀请单位</label>
+                                <select class="form-control" id="invitation_dept_id" name="invitation_dept_id"></select>
+                            </div>
+                            <div class="form-group">
+                                
+        
+                                <label class="form-label" for="roles">角色<span class="form-required">*</span></label>
+        
+
+                                <select class="form-control" id="roles" multiple name="roles" required></select>
+                            </div>
+                            <div class="form-group">
+                                
+        
+                                <label class="form-label" for="seq">序号</label>
+        
+
+                                <input class="form-control" id="seq" name="seq" type="text" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="active" name="active" checked type="checkbox" value="1">
+                                    <span class="custom-control-label">是否可用</span>
+                                </label>
+                            </div>
+                            
+                        </div>
+                        <div class="card-footer text-right">
+                            <div class="d-flex">
+                                <button type="reset" class="btn btn-secondary">重置</button>
+                                <input class="btn btn-primary ml-auto" id="submit" name="submit" type="submit" value="保存">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+    <!--# include file="/admin/include/footer.html" -->  
+    
+
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../../static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="../../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../../static/js/admin.min.js"></script>
+<script type="text/javascript" src="../../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../../static/'
+    })
+    require(['autosize', 'layer_ext'], function(autosize){
+        // 自适应高度
+        autosize($('textarea'));
+        $("#active").change(function(){
+            var checked=$(this).prop("checked")
+            if(checked){
+                $(this).val("1")
+            }else{
+                $(this).val("0")
+            }
+        })
+    });
+</script>
+
+    <script>
+        var roleData=[];
+        var deptData=[];
+        var fileObj={} //附件
+        require(['jquery', 'main', 'selectize', 'selectize_ext', 'portal', 'tool', 'upload'], function ($, main, selectize) {
+            var unit_category_data = {
+                select: {
+                    field: $("select#unit_category")
+                },
+                others: [
+                    {
+                        key: "其他",
+                        items: [
+                            {
+                                field: $("#unit_category_other").closest(".form-group")
+                            }
+                        ]
+                    }, {
+                        key: "医疗机构",
+                        items: [
+                            {
+                                field: $("#work_permit").closest(".hidden_box"),
+                                // wrap: $("#work_permit").parent().parent().parent(),
+                            }
+                        ]
+                    }, {
+                        key: ["生产企业", '经营企业'],
+                        items: [
+                            {
+                                field: $("#business_license").closest(".hidden_box"),
+                                // wrap: $("#business_license").parent().parent().parent(),
+                            }
+                        ]
+                    }, {
+                        key: "生产企业",
+                        items: [
+                            {
+                                field: $("#production_license").closest(".hidden_box"),
+                                // wrap: $("#production_license").parent().parent().parent(),
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            var career_data = {
+                select: {
+                    field: $("select#career")
+                },
+                others: [
+                    {
+                        key: "其他",
+                        items: [
+                            {
+                                field: $("#career_other").closest(".form-group")
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            $(document).ready(function () {
+                // 加载字典 
+                ajaxFns({prentCode:"timezone, career, unit_category"},function(res){
+                    var result=res.data;
+                    //加载时区
+                    var timezone=getdict(result,"timezone");
+                    selectizes($("#timezone"),{options:timezone,defaultData:"Asia/Shanghai"})
+
+                    //加载职业
+                    var career=getdict(result,"career");
+                    selectizes($("#career"),{options:career})
+
+                    //加载单位类别
+                    var unit_category=getdict(result,"unit_category");
+                    selectizes($("#unit_category"),{options:unit_category, valueField:"name"})
+
+                },ipDress+"/des/dictyList")  
+                
+                
+                
+                // 加载部门单位 
+                ajaxFns({},function(res){
+                    var result=res.data;
+                    deptData=result;
+                    // 单位名称
+                    selectizes($("#dept_id"),{
+                        valueField:"id",
+                        options:result,
+                        loadData:result
+                    })
+                     // 加载邀请单位
+                    selectizes($("#invitation_dept_id"),{
+                        valueField:"id",
+                        options:result,
+                        loadData:result,
+                        onDropdownOpen: function () {   // 隐藏空选项
+                            $(".option[data-value=0]").attr("disabled", "disabled").attr("hidden", "hidden");
+                        },
+                    })
+                },ipDress+"/des/dept")
+                
+                //加载角色
+                ajaxFns({},function(res){
+                    roleData=res.data;
+                    selectizes($("#roles"),{options:res.data,valueField:"id"})
+                },ipDress+"/des/role")
+
+
+                 /**上传附件**/
+
+                 $("#avatar").uploadze({
+                    // types:"avatar",
+                    defaultData:default_avatar,
+                    ipDress:img_ipDress,
+                    className:"avatar_box",
+                    onChanges:function(photoArry){
+                        fileObj["avatar"]=photoArry
+                    }
+                });
+                $("#identity_card").uploadze({
+                    accept:"images",
+                    multiple:true,
+                    ipDress:img_ipDress,
+                    onChanges:function(photoArry){
+                        fileObj["identity_card"]=photoArry
+                    }
+                })
+
+               
+                $("#work_permit").uploadze({
+                    accept:"images",
+                    onChanges:function(photoArry){
+                        fileObj["work_permit"]=photoArry
+                    }
+                })
+                $("#business_license").uploadze({
+                    accept:"images",
+                    onChanges:function(photoArry){
+                        fileObj["business_license"]=photoArry
+                    }
+                })
+                $("#production_license").uploadze({
+                    accept:"images",
+                    onChanges:function(photoArry){
+                        fileObj["production_license"]=photoArry
+                    }
+                })
+                selectedShow(unit_category_data);
+                selectedShow(career_data);
+            });
+
+            $("select#unit_category").change(function () {
+                main.selectedShow(unit_category_data);
+            });
+
+            $("select#career").change(function () {
+                main.selectedShow(career_data);
+            });
+            
+
+        });
+        /**获取上传文件**/
+        function setFileData(datas){
+            for(var k in fileObj){
+                var arrys=fileObj[k];
+                if(!checkNull(arrys)){
+                    var newArry=[];
+                    arrys.map(function(obj){
+                        newArry.push(obj.path)
+                    })
+                    datas[k]=newArry.join(",")
+                }
+            }
+        }
+        function submits(event){
+            var e=window.event||event; //消除浏览器差异
+            e.preventDefault();
+            var datas=serializeArray("form.card") //序列化表单;
+            var roles_id=datas.roles;
+            setFileData(datas)
+            /**获取角色名称*/
+            if(!checkNull(roles_id)){
+                var roles_name="";
+                if(roles_id.toString().indexOf(",")==-1){
+                    roleData.map(function(obj){
+                        if(obj.id==roles_id){
+                            roles_name=obj.name;
+                        }
+                    })
+                    datas.roles_name=roles_name;
+                }else{
+                    var roles_name=[];
+                    for(var i=0; i<roles_id.split(",").length; i++){
+                        var rolesId=roles_id.split(",")[i];
+                        roleData.map(function(obj){
+                            if(obj.id==rolesId){
+                                roles_name.push(obj.name)
+                            }
+                        })
+                    }
+                    roles_name=roles_name.length>0?roles_name.join(","):"";
+                    datas.roles_name=roles_name;
+                }
+            }
+            /**获取单位名称*/
+            if(!checkNull(datas.dept_id)){
+                deptData.map(function(obj){
+                    if(obj.id==datas.dept_id){
+                        datas.dept=obj.name
+                    }
+                })
+            }
+            /**获取邀请单位名*/
+            if(!checkNull(datas.invitation_dept_id)){
+                deptData.map(function(obj){
+                    if(obj.id==datas.invitation_dept_id){
+                        datas.invitation_dept=obj.name
+                    }
+                })
+            }
+            if(datas.unit_category=="其他"){
+                datas.unit_category=datas.unit_category_other
+            }
+            if(datas.career=="其他"){
+                datas.career=datas.career_other
+            }
+            
+            datas._methods="insert";
+            datas.password=datas.password?datas.password:"123456";
+            ajaxFns(datas,function(res){
+                if(res.success=="true"){
+                    layer.msg("新增成功",{icon:1},function(){
+                        window.location.href="/admin/user/"
+                    })
+                }
+            },ipDress+"/des/admin/user")
+        }
+    </script>
+</body>
+</html>

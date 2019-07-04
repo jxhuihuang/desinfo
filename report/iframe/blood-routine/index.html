@@ -1,0 +1,189 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta charset="UTF-8">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/css/portal.min.css" />
+    <link rel="stylesheet" href="../../../static/css/header.min.css" />
+    <style>
+        body {
+            padding: 15px;
+        }
+        .layui-layer-setwin .layui-layer-close2 {
+            position: absolute;
+            right: -16px!important;
+            top: -16px;
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <form class="small table-stack" data-target="">
+        <table class="table table-sm table-bordered table-sm mb-4 medication_table">
+            <col width="30%"/>
+            <col width="35%"/>
+            <col width="35%"/>
+            <thead>
+            <tr>
+                <th class="align-middle text-center">属性名称</th>
+                <th class="align-middle text-center">数据内容</th>
+                <th class="align-middle text-center">单位</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="align-middle">血红蛋白（Hbg）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="hbg" name="hbg" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="hbg_unit" name="hbg_unit"><option value="g/L">g/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">红细胞（RBC）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="rbc" name="rbc" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="rbc_unit" name="rbc_unit"><option value="10^12/L">10^12/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">白细胞（WBC）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="wbc" name="wbc" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="wbc_unit" name="wbc_unit"><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">中性杆状核粒细胞</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="neutrophilic_stab_granulocyte" name="neutrophilic_stab_granulocyte" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="neutrophilic_stab_granulocyte_unit" name="neutrophilic_stab_granulocyte_unit"><option value="%">%</option><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">中性分叶核粒细胞</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="neutrophilic_segmented_granulocyte" name="neutrophilic_segmented_granulocyte" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="neutrophilic_segmented_granulocyte_unit" name="neutrophilic_segmented_granulocyte_unit"><option value="%">%</option><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">嗜酸性粒细胞</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="eosinophils" name="eosinophils" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="eosinophils_unit" name="eosinophils_unit"><option value="%">%</option><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">嗜碱性粒细胞</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="basophils" name="basophils" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="basophils_unit" name="basophils_unit"><option value="%">%</option><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">淋巴细胞</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="lymphocyte" name="lymphocyte" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="lymphocyte_unit" name="lymphocyte_unit"><option value="%">%</option><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">单核细胞</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="monocyte" name="monocyte" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="monocyte_unit" name="monocyte_unit"><option value="%">%</option><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">网织红细胞（Ret）百分数</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="ret" name="ret" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="ret_unit" name="ret_unit"><option value="%">%</option><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">网织红细胞生成指数（RPI）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="rpi" name="rpi" type="text" value=""></td>
+                <td class="align-middle"></td>
+            </tr>
+            <tr>
+                <td class="align-middle">红细胞沉降率（ESR）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="esr" name="esr" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="esr_unit" name="esr_unit"><option value="mm/h">mm/h</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">血细胞比容（Hct）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="hct" name="hct" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="hct_unit" name="hct_unit"><option value="L/L">L/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">平均红细胞容积（MCV）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="mcv" name="mcv" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="mcv_unit" name="mcv_unit"><option value="fl">fl</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">血小板计数</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="platelet_count" name="platelet_count" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="platelet_count_unit" name="platelet_count_unit"><option value="10^9/L">10^9/L</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">血小板平均容积（MPV）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="mpv" name="mpv" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="mpv_unit" name="mpv_unit"><option value="fl">fl</option></select></td>
+            </tr>
+            <tr>
+                <td class="align-middle">血小板分布宽度（PDW）</td>
+                <td class="align-middle"><input class="form-control form-control-sm" id="pdw" name="pdw" type="text" value=""></td>
+                <td class="align-middle"><select class="form-control form-control-sm select" id="pdw_unit" name="pdw_unit"><option value="%">%</option></select></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <input class="btn btn-sm btn-primary btn-block layer-button" id="submit" name="submit" type="button" value="提交">
+    </form>
+
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/datatables/1.10.19/js/jquery.dataTables.min"></script>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/datatables/1.10.19/js/dataTables.bootstrap4.min.js"></script> -->
+<script type="text/javascript" src="/static/plugins/layer-3.1.1/layer.js"></script>
+<script>
+    function setFormTarget(target) {
+        $('form').data('target', target);
+    }
+</script>
+
+
+    <script>
+        $('#submit').on('click', function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            var target = $('form').data('target');
+            var content = '';
+            var items = [];
+            $('tbody tr').each(function () {
+                var value = $(this).find("td:eq(1)").find(':input').val();
+                if (value) {
+                    var name = $(this).find("td:eq(0)").text();
+                    var unit = $(this).find("td:eq(2)").find(":input").val() || '';
+                    if ($.inArray(unit, ['10^9/L', '10^12/L']) >= 0) {
+                        unit = '*' + unit;
+                    }
+                    var item = name + '：' + value + unit;
+                    items.push(item);
+
+                    if ($(this)[0] === $('tbody tr').last()[0]) {
+                        content += '。';
+                    } else {
+                        content += '，';
+                    }
+                }
+            });
+
+            content = items.join('，');
+
+            if (content) {
+                content = parent.$('.layui-layer-title').text() + '\n' + content + '。';
+                var content_old = parent.$('#' + target).val();
+                if (content_old) {
+                    content = content_old + '\n' + content;
+                }
+            }
+
+            parent.$('#' + target).val(content);
+            parent.layer.close(index);
+        });
+    </script>
+
+</body>
+</html>

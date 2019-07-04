@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>国家选择</title>
+<link href="../../../static/js/country/css/style.css" rel="stylesheet" type="text/css">
+<!-- <link rel="stylesheet" type="text/css" href="../../../static/css/portal.min.css" /> -->
+</head>
+<body>
+<div></div>
+
+<div class="country"></div>
+
+<script src="../../../static/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../../../static/js/country/js/country.js"></script>
+<script>
+    $(".country").country({
+        click:function(data){
+            // console.log(data)
+            var index = parent.layer.getFrameIndex(window.name);
+            var split = data.split('|');
+            parent.$('.country').html(split[0]);
+            parent.$("#country").val(split[0])
+            parent.layer.close(index);
+        }
+    })
+</script>
+</body>
+</html>

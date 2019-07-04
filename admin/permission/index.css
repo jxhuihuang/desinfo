@@ -1,0 +1,43 @@
+
+.permission_ul{
+    margin-top: 20px;
+}
+
+.permission_ul li{
+    margin:10px 10px;
+}
+.custom-control {
+    position: relative;
+    display: inline-block;
+    min-height: 1.5rem;
+    padding-left: 1.5rem;
+    margin-right: 15px;
+}
+
+#permission .tle{
+    line-height: normal;
+    padding-top: 8px;
+}
+
+.permission_main{
+    margin-top: 20px;
+}
+.permission_main h2{
+    display: block;
+}
+
+.permission_main li{
+    margin:10px 0px;
+}
+
+.permission_main h2{
+    padding:8px 0 8px 0px;
+}
+
+.permission_main ul {
+    padding-left: 20px;
+}
+
+.submit_btn{
+    margin: auto;
+}

@@ -1,0 +1,301 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+
+    <title>药品不良反应上报系统管理后台 - 药品管理</title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+	
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-main defaultMain">
+        <!--# include file="/admin/include/header.html" -->
+        <div class="row contentMain">
+            <div class="sider">
+                <!--# include file="/admin/include/sider.html" -->
+            </div>
+            <div class="container my-3 my-md-5">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">用户详情</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <span class="avatar avatar-xl default_avatar" ></span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label class="form-label">用户名</label>
+                                                    <div class="form-control-plaintext" name="username"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">姓名</label>
+                                            <div class="form-control-plaintext" name="name"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">电话</label>
+                                            <div class="form-control-plaintext" name="phone"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">邮箱</label>
+                                            <div class="form-control-plaintext" name="email"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">部门</label>
+                                            <div class="form-control-plaintext" name="dept"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">单位类别</label>
+                                            <div class="form-control-plaintext" name="unit_category"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">职业</label>
+                                            <div class="form-control-plaintext" name="career"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">角色</label>
+                                            <div class="form-control-plaintext" name="roles_name"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">身份证</label>
+                                            <div class="form-control-plaintext" name="identity_card">
+                                                
+                                                    
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                        <div class="col-md-12 hiddens" hidden="hidden">
+                                            <div class="form-group">
+                                                <label class="form-label">营业执照</label>
+                                                <div class="form-control-plaintext" name="business_license">
+                                                    
+                                                       
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-md-12 hiddens" hidden="hidden">
+                                            <div class="form-group">
+                                                <label class="form-label">工作证</label>
+                                                <div class="form-control-plaintext" name="work_permit">
+                                                    
+                                                        
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 hiddens" hidden="hidden">
+                                            <div class="form-group">
+                                                <label class="form-label">生产许可证</label>
+                                                <div class="form-control-plaintext" name="production_license">
+                                                    
+                                                       
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+
+                                    <div class="col-sm-6 col-md-3" >
+                                        <div class="form-group">
+                                            <label class="form-label">邀请单位</label>
+                                            <div class="form-control-plaintext" name="invitation_dept"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">时区</label>
+                                            <div class="form-control-plaintext" name="timezone"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">创建时间</label>
+                                            <div class="form-control-plaintext"  name="createData"><span class="flask-moment" data-timestamp="2018-10-12T08:53:38Z" data-format="format('LLL')" data-refresh="0" style="display: none">2018-10-12T08:53:38Z</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">状态</label>
+                                            <div class="form-control-plaintext" name="active"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--# include file="/admin/include/footer.html" --> 
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script type="text/javascript" src="/static/js/admin.min.js"></script>
+<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '/static/'
+    })
+    require(['autosize', 'layer_ext'], function(autosize){
+        // 自适应高度
+        autosize($('textarea'));
+    });
+</script>
+
+    <script>
+        require(['jquery', 'main', 'selectize', 'selectize_ext','tool'], function ($, main, selectize) {
+            var unit_category_data = {
+                select: {
+                    field: $(".form-control-plaintext[name=unit_category]")
+                },
+                others: [
+                    {
+                        key: "医疗机构",
+                        items: [
+                            {
+                                field: $(".form-control-plaintext[name=work_permit]").closest(".hiddens"),
+                                // wrap: $("#work_permit").parent().parent().parent(),
+                            }
+                        ]
+                    }, {
+                        key: ["生产企业", '经营企业'],
+                        items: [
+                            {
+                                field: $(".form-control-plaintext[name=business_license]").closest(".hiddens"),
+                                // wrap: $("#business_license").parent().parent().parent(),
+                            }
+                        ]
+                    }, {
+                        key: "生产企业",
+                        items: [
+                            {
+                                field: $(".form-control-plaintext[name=production_license]").closest(".hiddens"),
+                                // wrap: $("#production_license").parent().parent().parent(),
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            
+            $(document).ready(function () {
+                getFormData(function(resultData){
+                    var avatar=resultData.avatar?ipDress+resultData.avatar:img_ipDress+default_avatar;
+                    $(".default_avatar").attr("style","background-image: url("+avatar+")")
+                    $(".card").find(".form-control-plaintext").each(function(result){
+                        var name=$(this).attr("name");
+                        switch(name){
+                            case "active":
+                              var actives=resultData[name]=="1"?"正常":"不可用"
+                              $(this).html(actives)
+                            break;
+                            case "createData":
+                                $(this).attr("data-timestamp",resultData[name])
+                                $(this).html(formatDateTime(resultData[name]))
+                            break;
+                            case "identity_card":
+                            case "business_license":
+                            case "production_license":
+                            case "work_permit":
+                                if(!checkNull(resultData[name])){
+                                    var imgs=stringToArry(resultData[name])
+                                    var imgHtml='';
+                                    imgs.map(function(obj){
+                                        var src=ipDress+obj;
+                                        imgHtml+='<figure> <img src="'+src+'"/> </figure>'
+                                    })
+                                    $(this).html(imgHtml)
+                                }
+                                
+                            break;
+                            default:
+                                $(this).html(resultData[name])
+                            break;
+                        }
+                    })
+                    selectedShow(unit_category_data);
+                    
+                })
+                
+            });
+
+        });
+        /**获取用户数据**/
+        function getFormData(callBack){
+            var userId=geturl("id");
+            ajaxFns({id:userId},function(res){
+                if(res.data && res.data.length>0){
+                    resultData=res.data[0];
+                    if(resultData.account){
+                        resultData.account_balance=resultData.account.balance
+                    }
+                    userData=resultData
+                    callBack(resultData)
+                }
+            },ipDress+"/des/admin/user")
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+
+    <title>药品不良反应上报系统管理后台 - 菜单管理</title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+
+	
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-main">
+         <!--# include file="/admin/include/header.html" -->
+        <div class="row contentMain">
+            <div class="sider">
+                <!--# include file="/admin/include/sider.html" -->
+            </div>
+            <div class="container my-3 my-md-5">
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" method="POST"  onsubmit="return submits(event)">
+                            <input type="hidden" name="csrf_token" value="ImUxM2EwMDJjNjIxY2Q2ZjIzYjA3ODNmNjMyNjE2NjQzYWIwOTk0N2Yi.XK7usQ.4WJsMU2bZrxSLqcWqE2jAGuDtR0"/>
+                            <div class="card-header">
+                                <h3 class="card-title">编辑</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label">类别<span class="form-required">*</span></label>
+            
+
+                                    <select class="form-control" id="category" name="category" required></select>
+                                </div>
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label">菜单名称<span class="form-required">*</span></label>
+            
+
+                                    <input class="form-control" id="name" name="name" required type="text" value="">
+                                </div>
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label" for="description">说明</label>
+            
+
+                                    <input class="form-control" id="description" name="description" type="text" value="">
+                                </div>
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label" for="parent_id">父菜单</label>
+            
+
+                                    <select class="form-control" id="parent_id" name="parent_id"></select>
+                                </div>
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label" for="icon">图标</label>
+            
+                                    <select class="form-control" id="icon" name="icon">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label" for="link">链接<span class="form-required">*</span></label>
+            
+
+                                    <input class="form-control" id="link" name="link" type="text" value=""  required>
+                                </div>
+                                <div class="form-group" style="display:none">
+                                    
+            
+                                    <label class="form-label" for="roles">角色</label>
+            
+
+                                    <select class="form-control" id="roles" multiple name="roles"></select>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="form-label">权限菜单</label>
+                                    
+                                    <div class="roles_permission " style="margin-top:10px">
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label" for="seq">序号</label>
+            
+
+                                    <input class="form-control" id="seq" name="seq" type="text" value="">
+                                </div>
+                                <!-- <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input checked class="custom-control-input" id="active" name="nav_active" type="checkbox">
+                                        <span class="custom-control-label">是否在导航栏显示？</span>
+                                    </label>
+                                </div> -->
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input checked class="custom-control-input" id="active" name="active" type="checkbox">
+                                        <span class="custom-control-label">是否启用？</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <div class="d-flex">
+                                    <button type="reset" class="btn btn-secondary">重置</button>
+                                    <input class="btn btn-primary ml-auto" id="submit" name="submit" type="submit" value="保存">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--# include file="/admin/include/footer.html" --> 
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script type="text/javascript" src="/static/js/admin.min.js"></script>
+<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../../static/'
+    })
+    require(['autosize', 'layer_ext', 'tool'], function(autosize){
+        // 自适应高度
+        autosize($('textarea'));
+    });
+</script>
+
+    <script>
+        var rolePurviewData=[];
+        require(['jquery', 'selectize', 'selectize_ext'], function ($, selectize) {
+            $(document).ready(function () {
+                getFormData(function(resultData){
+                    formSetValue(".card",resultData)
+
+                    // 加载字典 
+                    ajaxFns({prentCode:"menu_category, parent_menu, rolePurview, icon"},function(res){
+                        var result=res.data?res.data:[];
+                        //菜单类别
+                        var menu_category=getdict(result,"menu_category");
+                        selectizes($("#category"),{options:menu_category,defaultData:resultData.category})    
+                        //父菜单
+                        parent_menu=getdict(result,"parent_menu");  
+                        selectizes($("#parent_id"),{options:parent_menu,defaultData:(resultData.parent_id).toString()})
+                        //加载图标
+                        var iconData=getdict(result,"icon"); 
+                        selectizes($("#icon"),{options:iconData,defaultData:resultData.icon,render:{
+                            option: function (data, escape) {
+                                return '<div> ' +
+                                    '<span class="image"><i class="fe fe-' + data.name + '"></i></span>' +
+                                    '<span class="title">' + escape(data.name) + '</span>' +
+                                    '</div>';
+                            },
+                            item: function (data, escape) {
+                                return '<div> ' +
+                                    '<span class="image"><i class="fe fe-' + data.name + '"></i></span>' +
+                                    escape(data.name) +
+                                    '</div>';
+                            }
+                        }})
+                        //权限菜单
+                        rolePurviewData=getdict(result,"rolePurview"); 
+                        //处理默认值
+                        if(!checkNull(resultData.purview_menu)){
+                            var purview_menu=resultData.purview_menu
+                            if(purview_menu.indexOf(",")==-1){
+                                resultData.purview_menu=purview_menu.split(":")[1];
+                            }else{
+                                var purviewSplit=purview_menu.split(",")
+                                var purviewArry=[];
+                                for (var i=0; i<purviewSplit.length; i++){
+                                    purviewArry.push(purviewSplit[i].split(":")[1])
+                                }
+                                resultData.purview_menu=purviewArry.length>0?purviewArry.join(","):""
+                            }
+                        }
+                        rolePurviewData.map(function(obj){
+                            var ischecked=checkNull(resultData.purview_menu)?false:resultData.purview_menu.indexOf(obj.value)==-1?false:true;
+                            if(ischecked){
+                                $(".roles_permission").append(
+                                    '<label class="custom-control custom-checkbox checkboxs" style="margin-left:.5rem">'+
+                                        '<input class="custom-control-input" id="purview_menu" name="purview_menu" type="checkbox" value="'+obj.value+'" data-type="multiple" checked="'+ischecked+'">'+
+                                        '<span class="custom-control-label">'+obj.name+'</span>'+
+                                    '</label>'
+                                )
+                            }else{
+                                $(".roles_permission").append(
+                                    '<label class="custom-control custom-checkbox checkboxs" style="margin-left:.5rem">'+
+                                        '<input class="custom-control-input" id="purview_menu" name="purview_menu" type="checkbox" value="'+obj.value+'" data-type="multiple" >'+
+                                        '<span class="custom-control-label">'+obj.name+'</span>'+
+                                    '</label>'
+                                )
+                            }
+
+                        })
+                    },ipDress+"/des/dictyList") 
+                })
+               
+            });
+        });
+        /**获取默认数据**/
+        function getFormData(callBack){
+            var userId=geturl("id");
+            ajaxFns({id:userId},function(res){
+                if(res.data && res.data.length>0){
+                    resultData=res.data[0];
+                    callBack(resultData)
+                }
+            },ipDress+"/des/admin/menu")
+        }
+        /**提交代码**/
+        function submits(event){
+            var e=window.event||event; //消除浏览器差异
+            e.preventDefault();
+            var id=geturl("id");
+            var datas=serializeArray("form.card"); //序列化表单
+            datas._methods="updata";
+            datas.id=id;
+            if(!checkNull(datas.purview_menu)){
+                var purview_menu=[]
+                rolePurviewData.map(function(objs){
+                    if(datas.purview_menu.indexOf(objs.value)!=-1){
+                        purview_menu.push(objs.name+":"+objs.value)
+                    }
+                })
+                purview_menu=purview_menu.length>0?purview_menu.join(","):""
+                datas.purview_menu=purview_menu;
+            }else{
+                datas.purview_menu=""
+            }
+            //根据上级菜单id获取上级菜单名
+            if(!checkNull(datas.parent_id)){
+                parent_menu.map(function(obj){
+                    if(obj.value==datas.parent_id){
+                        datas.parent=obj.name
+                    }
+                })
+                
+            }
+            ajaxFns(datas,function(res){
+                if(res.success=="true"){
+                    layer.msg("修改成功",{icon: 1})
+                }
+            },ipDress+"/des/admin/menu")
+        }
+    </script>
+
+</body>
+</html>

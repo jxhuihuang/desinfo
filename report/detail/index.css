@@ -1,0 +1,156 @@
+/*通用**/
+.card-header{
+    text-align: center;
+    font-size: 18px;
+    border:none;
+}
+.border-top{
+    border-top: 1px solid #DDD; 
+}
+/* 屏幕大于等于768 */
+@media Screen  and (min-width:768px){
+    body{
+        font-size: 14px;
+    }
+    .layui-table td, .layui-table th {
+        /* font-size: 15px; */
+    }
+    .list-group-item .row > div{
+        margin:5px 0;
+    }
+    .list-group-item {
+        padding: 0  0 .75rem 0; 
+    }
+    .list-group-item > div{
+        padding: .75rem 1.25rem 0 1.25rem;
+        margin-bottom: -1px;
+    }
+    .card-title{
+        height: 40px;
+        line-height: 40px;
+        background: #f2f2f2;
+        margin-bottom: 0;
+        padding-left: 20px;
+        /* padding-bottom: .75rem; */
+        border-bottom: 1px solid #DDD; 
+    }
+    .layui-table td, .layui-table th, .layui-table-fixed-r, .layui-table-header, .layui-table-page, .layui-table-tips-main, .layui-table-tool, .layui-table-view, .layui-table[lay-skin=line], .layui-table[lay-skin=row] {
+        border-width: 1px;
+        border-style: solid;
+        border-color: #DDD;
+    }
+    .layui-table td{
+        color:#333;
+    }
+
+    .card-headers {
+        padding: 20px 15px;
+        margin-bottom: 0;
+        background-color: #FFF;text-align: center;
+        font-size: 18px;
+        border: none;
+        /* border-bottom: 1px solid rgba(0,0,0,.125); */
+    }
+   .detailMian b{
+       margin-right: 8px;
+   }
+}
+/* 屏幕小于等于768 */
+@media Screen  and (max-width:768px){
+    .card-headers {
+        padding: 20px 15px;
+        margin-bottom: 0;
+        background-color: #FFF;text-align: center;
+        font-size: 18px;
+        border: none;
+        
+        /* border-bottom: 1px solid rgba(0,0,0,.125); */
+    }
+    .report_header{
+        background: #FFF;
+        margin: 0;
+        padding: .5rem 1rem;
+    }
+    .report_header > div {
+        margin: .5rem 0;
+    }
+    .list-group-item{
+        padding: .5rem .5rem;
+    }
+    .list-group-item .row > div{
+        margin:.5rem 0;
+    }
+    .list-group-item .row > div b{
+        margin-right: .5rem;
+        /* display: block;
+        margin-bottom: .5rem; */
+    }
+    .list-group-item {
+        padding: .5rem 1rem;
+    }
+   
+    .card-title{
+        padding-left: 1rem;
+        border-bottom:1px solid #EEE;
+        padding: .5rem 1rem 1rem 1rem;
+    }
+    .table-stack .data_table{
+        border: none!important;
+    }
+    .data_table tr {
+        border-bottom: 1px solid #EEE;
+    }
+    .data_table tr:last-child {
+        border-bottom: .1rem solid transparent;
+    }
+
+    .data_table td{
+        padding: .5rem 1rem !important;
+        color: #333;
+        border-bottom: 0 solid #EEE;
+    }
+    .data_table td::before{
+        display: inline-block!important;
+        vertical-align: middle;
+        margin-right: 8px;
+        border-bottom: none!important;
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 0;
+        padding: 0;
+    }
+
+    .noData{
+        font-size: .9rem;
+        padding-left: 1rem
+    }
+    .data_table.nodata-table{
+        margin: 0;
+    }
+    .data_table.nodata-table tr {
+        border-bottom: 0rem solid #f4f4f5;
+        margin-bottom: 0;
+    }
+    
+    .medication_table.nodata-table td{
+        height: 40px;
+        line-height: 40px;
+        /* padding: 1rem 0;
+        border-bottom: 0px solid #EEE; */
+    }
+    .data_table.nodata-table td::before{
+        display: none!important;
+        height: 0;
+    }
+    .card-body{
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+    }
+    .card-body .row > div{
+        margin: .5rem 0;
+
+    }
+}
+
+

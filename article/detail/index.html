@@ -1,0 +1,95 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+
+    <title>药品不良反应上报系统 - 通知公告</title>
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/portal.min.css" />
+
+    <link rel="stylesheet" href="/static/css/header.min.css" />
+    <link rel="stylesheet" href="./index.css" />
+</head>
+<body ontouchstart>
+    <!--# include file="/include/headers.html" -->
+
+    <main role="main" class="container acticle_container">
+        <div class="acticle_banner"><span>通知公告</span></div>
+
+        <div class="acticle_main">
+            <h2 class="acticle_title"></h2>
+            <em class="acticle_em">发布时间：<span class="acticle_date"></span></em>
+            <div class="acticle_content"></div>
+           
+        </div>
+    </main>
+
+<!--# include file="/include/footers.html" -->
+<footer class="footer">
+    <div class="container text-center">
+        <span class="text-muted">© 2018 Des All Rights Reserved.</span>
+    </div>
+</footer>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap'], function($, main, autosize, layer){
+        
+            
+        
+
+        // 自适应高度
+        autosize($('textarea'));
+        $(function () {
+            main.fastClick();
+        });
+    });
+</script>
+<script>
+    requirejs(['jquery', 'main'], function($, main) {
+        
+        ajxaData()
+       
+        
+    });
+    //加载数据
+    function ajxaData(){
+        var id=geturl("id")
+        ajaxFns({id:id},function(res){
+
+            if(res.success=="true" && res.data && res.data.length>0){
+                var result=res.data[0];
+                $(".acticle_title").html(result.title)
+                $(".acticle_content").html(result.content);
+                $(".acticle_date").html(moment(result.created_at).format('YYYY-MM-DD HH:mm:ss'))
+            } 
+        },ipDress+"/des/articles",{erro:function(){
+           
+        }})
+    }
+    
+</script>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+
+    <title> 药品不良反应上报系统 - 重新认证</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/antd-mobile.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
+    <link rel="stylesheet" href="../../static/css/header.min.css" />
+</head>
+<body ontouchstart>
+    <!--# include file="/include/headers.html" -->
+    <main role="main" class="container">
+        <form method="POST" enctype="multipart/form-data" class="input-list  "  onsubmit="return submits(event)">
+            
+            <div class="form-group row">
+                <label class="layui-col-sm3 col-sm-2 col-form-label col-form-label" for="unit_category">单位类别</label>
+                <div class="layui-col-sm9 col-sm-10">
+                    <select class="form-control select" id="unit_category" name="unit_category" placeholder="单位类别" required></select>
+                </div>
+            </div>
+            <div class="form-group row hidden_box"  hidden="hidden">
+                <label class="layui-col-sm3 col-sm-2 col-form-label col-form-label" for="unit_category_other">单位类别（其他）</label>
+                <div class="layui-col-sm9 col-sm-10">
+                    <input class="form-control"  id="unit_category_other" name="unit_category_other" placeholder="单位类别（其他）" type="text" value="">
+                </div>
+            </div>
+            <div class="form-group row hidden_box" hidden="hidden">
+                <label class="layui-col-sm3 col-sm-2 col-form-label col-form-label" for="dept_id">单位名称</label>
+                <div class="layui-col-sm9 col-sm-10">
+                    <select class="form-control"  id="dept_id" name="dept_id" placeholder="单位名称"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="layui-col-sm3 col-sm-2 col-form-label col-form-label" for="identity_card">身份证</label>
+                <div class="layui-col-sm9 col-sm-10 upload-rt uploads">
+                    <div class="avatar_main">
+                        <input class="form-control-file" id="identity_card"   name="identity_card"  type="file"   data-show-preview="false"    hidden="hidden"> 
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row hidden_box" hidden="hidden">
+                <label class="layui-col-sm3 col-sm-2 col-form-label col-form-label" for="work_permit">工作证</label>
+                <div class="layui-col-sm9 col-sm-10 upload-rt uploads">
+                    <div class="avatar_main">
+                        <input class="form-control"  id="work_permit" name="work_permit" type="file"  accept="image/gif, image/jpeg,image/png" hidden="hidden">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row hidden_box" hidden="hidden">
+                <label class="layui-col-sm3 col-sm-2 col-form-label col-form-label" for="business_license">营业执照</label>
+                <div class="layui-col-sm9 col-sm-10 upload-rt uploads">
+                    <div class="avatar_main">
+                                            
+                            <input class="form-control-file" id="business_license"   name="business_license"  type="file"  data-show-preview="false"   accept="image/gif, image/jpeg,image/png" hidden="hidden"> <!-- accept="image/gif, image/jpeg,image/png" -->
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row hidden_box" hidden="hidden">
+                <label class="layui-col-sm3 col-sm-2 col-form-label col-form-label" for="production_license">生产许可证</label>
+                <div class="layui-col-sm9 col-sm-10 upload-rt uploads">
+                    <div class="avatar_main">
+                        <input class="form-control" hidden="hidden" id="production_license" name="production_license" type="file">
+                    </div>
+                </div>
+            </div>
+            <input class="btn btn-sm btn-primary btn-block" id="submit" name="submit" type="submit" value="重新认证">
+        </form>
+    </main>
+    <!--# include file="/include/footers.html" -->
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'upload'], function($, main, autosize, layer){
+        // 自适应高度
+        autosize($('textarea'));
+        $(function () {
+            main.fastClick();
+        });
+    });
+</script>
+<script>
+    var fileObj={} //附件
+    var userData=[];
+    var deptData=[];
+    require(['jquery', 'main', 'selectize', 'layer', 'portal', 'selectize_ext'], function($, main, selectize, layer, portal){
+        var unit_category_data = {
+            select: {
+                field: $("select#unit_category")
+            },
+            others: [
+                {
+                    key: "其他",
+                    items: [
+                        {
+                            field: $("#unit_category_other").closest(".hidden_box"),
+                            // wrap: $("#unit_category_other"),
+                        }
+                    ]
+                }, {
+                    key: ["医疗机构", "生产企业", '经营企业', '其他'],
+                    items: [
+                        {
+                            field: $("#dept_id").closest(".hidden_box"),
+                            // wrap: $("#dept_id").closest(".form-group"),
+                        }
+                    ]
+                }, {
+                    key: "医疗机构",
+                    items: [
+                        {
+                            field: $("#work_permit").closest(".hidden_box"),
+                            // wrap: $("#work_permit").closest(".form-group"),
+                        }
+                    ]
+                }, {
+                    key: ["生产企业", '经营企业'],
+                    items: [
+                        {
+                            field: $("#business_license").closest(".hidden_box"),
+                            // wrap: $("#business_license").closest(".form-group"),
+                        }
+                    ]
+                }, {
+                    key: "生产企业",
+                    items: [
+                        {
+                            field: $("#production_license").closest(".hidden_box"),
+                            // wrap: $("#production_license").closest(".form-group"),
+                        }
+                    ]
+                }
+            ]
+        };
+        function checkselectshow(){
+            // $(".form-group").each(function(){
+            //     var name=$(this).find("label").html();
+            //     var isHide=$(this).find("label").prop("hidden")
+            //     if(isHide){
+            //          $(this).prop("hidden",true)
+            //     }
+            //     else{
+            //         $(this).prop("hidden",false)
+            //     }
+            // })
+        }
+        $(document).ready(function () {
+            getFormData(function(resultData){
+                 //加载单位类别
+                ajaxFns({prentCode:"unit_category"},function(res){
+                    selectizes($("#unit_category"),{options:res.data, valueField:"name",defaultData:resultData.unit_category})
+                    selectedShow(unit_category_data);
+                },ipDress+"/des/dictyList")
+                // 加载邀请单位 ">
+                ajaxFns({},function(res){
+                    var result=res.data;
+                    deptData=result;
+                    selectizes($("#dept_id"),{
+                        valueField:"id",
+                        options:result,
+                        create:true,
+                        createOnBlur:true,
+                        loadData:result,
+                        defaultData:resultData.dept_id
+                    })
+                },ipDress+"/des/dept")
+
+                /**上传附件**/
+
+                $("#avatar").uploadze({
+                    defaultData:!checkNull(resultData.avatar)?resultData.avatar:"",
+                    types:"avatar",
+                    
+                    ipDress:img_ipDress,
+                    onChanges:function(photoArry){
+                        fileObj["avatar"]=photoArry
+                    }
+                });
+                
+                $("#identity_card").uploadze({
+                    accept:"images",
+                    multiple:true,
+                    ipDress:img_ipDress,
+                    defaultData:!checkNull(resultData.identity_card)?resultData.identity_card:"",
+                    onChanges:function(photoArry){
+                        fileObj["identity_card"]=photoArry
+                    }
+                })
+                $("#work_permit").uploadze({
+                    accept:"images",
+                    ipDress:img_ipDress,
+                    defaultData:!checkNull(resultData.work_permit)?resultData.work_permit:"",
+                    onChanges:function(photoArry){
+                        fileObj["work_permit"]=photoArry
+                    }
+                })
+                $("#business_license").uploadze({
+                    accept:"images",
+                    ipDress:img_ipDress,
+                    defaultData:!checkNull(resultData.business_license)?resultData.business_license:"",
+                    onChanges:function(photoArry){
+                        fileObj["business_license"]=photoArry
+                    }
+                })
+                $("#production_license").uploadze({
+                    accept:"images",
+                    ipDress:img_ipDress,
+                    defaultData:!checkNull(resultData.production_license)?resultData.production_license:"",
+                    onChanges:function(photoArry){
+                        fileObj["production_license"]=photoArry
+                    }
+                })
+            })
+        });
+
+        $("select#unit_category").change(function () {
+            selectedShow(unit_category_data,function(){
+                checkselectshow()
+            });
+        });
+    });
+    /**获取用户数据*/
+    function getFormData(callBack){
+        var userInfo=JSON.parse(localStorage.getItem("userInfo"));
+        ajaxFns({_methods:"queryUser"},function(res){
+            if(res.data && res.data.length>0){
+                var resultData=res.data[0];
+                userData=res.data[0];
+                formSetValue(".input-list",resultData)
+                resultData.account_balance=resultData.account_balance=="0"?"0.00":resultData.account_balance;
+                resultData.activeName=resultData.active=="1"?"正常":resultData.active=="0"?"审核中":""
+                $(".labelValue").each(function(){
+                    var name=$(this).attr("data-name");
+                    $(this).html(resultData[name])
+                })
+                callBack(resultData)
+            }
+        },ipDress+"/des/user")
+    }
+    /**获取上传文件**/
+    function setFileData(datas){
+        for(var k in fileObj){
+            var arrys=fileObj[k];
+            if(!checkNull(arrys)){
+                var newArry=[];
+                arrys.map(function(obj){
+                    newArry.push(obj.path)
+                })
+                datas[k]=newArry.join(",")
+            }
+        }
+    }
+     /**提交代码**/
+     function submits(event){
+        var e=window.event||event; //消除浏览器差异
+        e.preventDefault();
+        var datas=serializeArray(".input-list"); //序列化表单
+        datas.id=userData.id;
+        datas.username=userData.username;
+        datas.phone=userData.phone;
+        datas.email=userData.email;
+        /**获取单位名称*/
+        if(!checkNull(datas.dept_id)){
+            deptData.map(function(obj){
+                if(obj.id==datas.dept_id){
+                    datas.dept=obj.name
+                }
+            })
+        }
+        if(datas.unit_category=="其他"){
+            datas.unit_category=datas.unit_category_other
+        }
+        datas._methods="updata";
+        setFileData(datas)
+        ajaxFns(datas,function(res){
+            if(res.success=="true"){
+                layermsg("修改成功",{icon: 1})
+            }
+        },ipDress+"/des/user")
+    }
+</script>
+
+</body>
+</html>

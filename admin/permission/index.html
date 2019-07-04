@@ -1,0 +1,429 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+
+    <title>    药品不良反应上报系统管理后台 - 用户管理  </title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/portal.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+	
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-main">
+    <!--# include file="/admin/include/header.html" -->  
+    <div class="row contentMain" style="min-height:500px">
+        <div class="sider">
+            <!--# include file="/admin/include/sider.html" -->
+        </div>
+        <div class="container my-3 my-md-5" id="permission">
+            <h2 class="admin-tle">角色权限编辑</h2>
+            <div class="page-content">
+                <div class="form-row mt20 middle">
+                    <label for="product_name" class="pr10">角色名称：</label>
+                    <div class="col-8">
+                        <input class="form-control " readonly id="product_name" name="product_name" required type="text" value="" style="width:300px">
+                    </div>
+                    
+                </div>
+                <h2 class="tle mt20  " style="background:#EDEDEd">
+                    <label class="custom-control custom-checkbox" style="margin-left:.5rem">
+                            <input class="custom-control-input"  data-lv="all"  type="checkbox" value="">
+                            <span class="custom-control-label">权限管理</span>
+                    </label>
+                </h2>
+                <div class="permission_main" id="permsionmain">
+
+                </div>
+                <div class=" text-center  mt20">
+                    <button class="btn btn-primary  submit_btn" id="submit" onclick="submits()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--# include file="/admin/include/footer.html" -->  
+    
+
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../../static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="../../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../../static/js/admin.min.js"></script>
+<script type="text/javascript" src="../../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../../static/'
+    })
+    require(['autosize', 'layer_ext'], function(autosize){
+        // 自适应高度
+        autosize($('textarea'));
+        $("#active").change(function(){
+            var checked=$(this).prop("checked")
+            if(checked){
+                $(this).val("1")
+            }else{
+                $(this).val("0")
+            }
+        })
+    });
+</script>
+
+    <script>
+        require(['jquery', 'main', 'selectize', 'selectize_ext', 'portal', 'tool'], function ($, main, selectize) {
+           
+            $(document).ready(function () {
+                getroleName(function(){
+                    getMenucData(function(result){
+                        setValue()
+                    })
+                
+                })
+
+            });
+            $("body").delegate("input[type='checkbox']", 'click', function() {
+                var data_lv=$(this).attr("data-lv");
+                var isChecked=$(this).prop("checked");
+                var name=removeNull($(this).attr("name"))
+                isChecked?$(this).prop("checked",true):$(this).prop("checked",false);
+                if(data_lv=="all"){
+                    $(".permission_main").find("input[type='checkbox']").each(function(){
+                        $(this).prop("checked",isChecked)
+                    })
+                }else{
+                    $(this).parents(".permission_box[data-lv='"+data_lv+"']").find("input[type='checkbox']").each(function(){
+                        $(this).prop("checked",isChecked)
+                    })
+                    var permission_box_Length=$(this).parents(".permission_box").length;
+                    for(var i=0; i<permission_box_Length; i++){
+                        
+                        var $this=$($(this).parents(".permission_box")[i])
+                        var box_lv=$this.attr("data-lv")
+                        if(box_lv!=data_lv){
+                            var $checkElem=$this.find("h2 .custom-control-label").parents(".permission_box[data-lv='"+box_lv+"']")
+                            
+                            var ulLength=$checkElem.find(".children").length;
+                            if(ulLength>0){
+                                if(isCheckAll($checkElem.find(".children"))){
+                                    $checkElem.find("h2 input[type='checkbox'][data-lv='"+box_lv+"']").prop("checked",true)
+
+                                }else{
+                                    $checkElem.find("h2 input[type='checkbox'][data-lv='"+box_lv+"']").prop("checked",false)
+
+                                }
+                            }
+                        }
+                        
+                    }
+                    isCheckAll($("#permsionmain"))?$("input[data-lv='all']").prop("checked",true):$("input[data-lv='all']").prop("checked",false)
+                }
+
+            });
+           
+        });
+
+        
+        function getroleName(callBack){
+            callBack=callBack?callBack:function(){};
+            var role_id=geturl("id");
+            ajaxFns({id:role_id},function(res){
+                if(res && res.data && res.data.length>0){
+                    var datas=res.data[0]
+                    var name=removeNull(datas.name);
+                    $("#product_name").val(name)
+                    callBack()
+                }else{
+                    notpermission(".page-content","页面不存在")
+                }
+            },ipDress+"/des/admin/role")
+
+        }
+        /**获取并设置默认值**/
+        function setValue(){
+            var role_id=geturl("id");
+            ajaxFns({role:role_id},function(res){
+                
+                if(res.data && res.data.length>0){
+                    var datas=res.data;
+                    datas.map(function(objs){
+                        var link=objs.link;
+                        var permission_list=objs.permission_list
+                        var id=objs.id;
+                        
+                        $(".check_box[data-link='"+link+"']").attr("data-id",id)
+                       
+                        for(var k=0; k<$(".check_box[data-link='"+link+"']").find("input[type='checkbox']").length; k++){
+                             var $input=$($(".check_box[data-link='"+link+"']").find("input[type='checkbox']")[k])
+                             var value=$input.val();
+                             if(permission_list.indexOf(value)!=-1){
+                                $input.prop("checked",true)
+
+                             }
+                        }
+                    })
+                    checkchecked(".permission_main")
+                }
+
+            },ipDress+"/des/admin/rolePermission")
+        }
+        function getMenucData(callBack){
+            ajaxFns({_methods:"perquery"},function(res){
+                if(res.success=="true" && res.data){
+                    var data=res.data
+                    var permissionData=[]
+                    var categoryArry=[]
+                    var parentArry=[]
+                    data.map(function(result){ 
+                        var purview_menu=result.purview_menu;
+                        var menu_id=result.id;
+                        var purview_Arry=[];
+                        if(purview_menu.indexOf(",")==-1){
+                            purview_Arry.push({
+                                name:purview_menu.split(":")[0],
+                                value:purview_menu.split(":")[1],
+                            })
+                        }else{
+                            var purviewSplit=purview_menu.split(",");
+                            for (var i=0; i<purviewSplit.length; i++){
+                                var purviews=purviewSplit[i]
+                                purview_Arry.push({
+                                    name:purviews.split(":")[0],
+                                    value:purviews.split(":")[1]
+                                })
+                            }
+                        }
+                        result.purview_menu=purview_Arry;
+
+                        if(!categoryArry.includes(result.category)){
+                            categoryArry.push(result.category);
+                            permissionData.push({
+                                name:result.category,
+                                children: []
+                            })
+                        }
+                        permissionData.map(function(objs){
+                            
+                            if(objs.name==result.category){
+                                if(checkNull(result.parent)){
+                                    objs.children.push({
+                                        menu_id:menu_id,
+                                        name:result.name,
+                                        link:result.link,
+                                        purview_menu:result.purview_menu,
+                                        category:result.category,
+                                    })
+                                }else{
+                                    if(!parentArry.includes(result.parent)){
+                                        parentArry.push(result.parent);
+                                        objs.children.push({
+                                            name:result.parent,
+                                            children:[]
+                                        })
+                                    }
+                                    objs.children.map(function(perObjs){
+                                        if(perObjs.name==result.parent){
+                                            perObjs.children.push({
+                                                menu_id:menu_id,
+                                                name:result.name,
+                                                link:result.link,
+                                                purview_menu:result.purview_menu,
+                                                category:result.category,
+                                            })
+                                        }
+                                    })
+                                    
+                                }
+                            }
+                        })
+                    })
+                    showtemp(permissionData,"permsionmainTmpl", "#permsionmain")
+                    callBack(permissionData);
+                } 
+            },ipDress+"/des/admin/menu")
+        }
+
+
+        function submits(){
+            var role_id=geturl("id");
+            var perData=[]
+            $(".check_box").each(function(){
+                var checkData=[];
+                var checkLength=$(this).find("input[name='checks']").length;
+                var name=$(this).attr("data-name");
+                var link=$(this).attr("data-link");
+                var id=$(this).attr("data-id");
+                var category=$(this).attr("data-category");  
+                var menus_id=$(this).attr("data-menus");
+                if(checkLength>0){
+                    for(var k=0; k<checkLength; k++){
+                        var $input=$($(this).find("input[name='checks']")[k]);
+                        
+                        if($input.prop("checked")){
+                            var value=$input.val();
+                            checkData.push(value)
+                        }
+                    }
+                    checkData=checkData.length>0?checkData.join(","):"";
+                    var objs={
+                        name:name,
+                        link:link,
+                        permission_list:checkData,
+                        role:role_id,
+                        // title:name,
+                        category:category,
+                        menus_id:menus_id,
+                    }
+                    !checkNull(id)?objs.id=id:"";
+                    perData.push(objs)
+                }
+            })
+            var datas={_methods:"updata", perData:perData};
+            
+            ajaxFns(datas,function(res){
+                if(res.success=="true"){
+                    
+                    layer.msg("修改成功",{icon:1},function(){
+                        setValue()
+                        // window.location.href="/admin/user/"
+                    })
+                }
+            },ipDress+"/des/admin/rolePermission")
+        }
+        function checkchecked(id){ //checkchecked(".permission_main")
+            $(id).find(".check_box").each(function(){
+                var permission_box_Length=$(this).parents(".permission_box").length;
+                for(var i=0; i<permission_box_Length; i++){
+                    var $this=$($(this).parents(".permission_box")[i])
+                    var box_lv=$this.attr("data-lv")
+                        var $checkElem=$this.find("h2 .custom-control-label").parents(".permission_box[data-lv='"+box_lv+"']")
+                        
+                        var ulLength=$checkElem.find(".children").length;
+                        if(ulLength>0){
+                            if(isCheckAll($checkElem.find(".children"))){
+                                $checkElem.find("h2 input[type='checkbox'][data-lv='"+box_lv+"']").prop("checked",true)
+
+                            }else{
+                                $checkElem.find("h2 input[type='checkbox'][data-lv='"+box_lv+"']").prop("checked",false)
+
+                            }
+                        }
+                }
+                isCheckAll($("#permsionmain"))?$("input[data-lv='all']").prop("checked",true):$("input[data-lv='all']").prop("checked",false)
+            })
+        }
+
+        function isCheckAll(elem){
+            elem=elem?elem:$("#permsionmain");
+            var $this=elem
+            var isCheckAll=true;
+            $this.find("input[type='checkbox']").each(function(){
+                var isChecked=$(this).prop("checked");
+                if(!isChecked){
+                    isCheckAll=false;
+                }
+            })
+            return isCheckAll
+        }
+    </script>
+    
+    <script type="text/html" id="permsionmainTmpl">
+        {{each list as value i}}
+            {{if value.children}}
+                <div class="permission_box" data-lv="lv1" data-type="{{value.name}}">
+                    <h2>
+                        <label class="custom-control custom-checkbox" style="margin-left:.5rem">
+                        <input class="custom-control-input" data-lv="lv1"  type="checkbox" value="y">
+                        <span class="custom-control-label">{{value.name}}</span>
+                    </h2>
+                    <ul class="children">
+                        {{each value.children as values j}}
+                            {{if values.children}}
+                                <div class="permission_box" data-lv="lv2" data-type="{{values.name}}">
+                                    <h2>
+                                        <label class="custom-control custom-checkbox" style="margin-left:.5rem">
+                                        <input class="custom-control-input" data-lv="lv2"  type="checkbox" value="y">
+                                        <span class="custom-control-label">{{values.name}}</span>
+                                    </h2>
+                                    <ul class="children">
+                                            {{each values.children as val k}}
+                                                <li >
+                                                    <div class="row permission_box" data-lv="lv3" data-type="{{val.name}}">
+                                                        <div class="col-4">
+                                                            <h2>
+                                                                <label class="custom-control custom-checkbox" style="margin-left:.5rem">
+                                                                    <input class="custom-control-input" data-lv="lv3"  type="checkbox" value="y">
+                                                                    <span class="custom-control-label">{{val.name}}</span>
+                                                                </label>
+                                                            </h2>
+                                                        </div>
+                                                        <div class="col-8 children check_box" data-menus="{{val.menu_id}}"  data-name="{{val.name}}"  data-link="{{val.link}}" data-category="{{val.category}}" >
+                                                                {{each val.purview_menu as vals k}}
+                                                                    <label class="custom-control custom-checkbox" style="margin-left:.5rem">
+                                                                        <input class="custom-control-input"  name="checks"  type="checkbox" value="{{vals.value}}" data-lv="lv4">
+                                                                        <span class="custom-control-label">{{vals.name}}</span>
+                                                                    </label>
+                                                                {{/each}}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {{/each}}
+                                    </ul>
+                                </div>
+                            {{else}}
+                                <li >
+                                    <div class="row permission_box"  data-lv="lv3" data-type="{{values.name}}">
+                                        <div class="col-4">
+                                            <h2>
+                                                <label class="custom-control custom-checkbox" style="margin-left:.5rem">
+                                                    <input class="custom-control-input" data-lv="lv3"  type="checkbox" value="y">
+                                                    <span class="custom-control-label">{{values.name}}</span>
+                                                </label>
+                                            </h2>    
+                                        </div>
+                                        <div class="col-8 children check_box" data-lv="lv4" data-menus="{{values.menu_id}}" data-name="{{values.name}}"   data-link="{{values.link}}" data-category="{{values.category}}">
+                                            {{each values.purview_menu as vals k}}
+                                                <label class="custom-control custom-checkbox" style="margin-left:.5rem">
+                                                    <input class="custom-control-input"  name="checks"  type="checkbox" data-lv="lv4" value="{{vals.value}}">
+                                                    <span class="custom-control-label">{{vals.name}}</span>
+                                                </label>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            {{/if}}
+                            
+                        {{/each}}
+                    </ul>
+                </div>
+            {{/if}}
+        {{/each}}
+    </script>
+</body>
+</html>

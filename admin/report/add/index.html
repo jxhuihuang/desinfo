@@ -1,0 +1,1569 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+
+    <title>药品不良反应上报系统管理后台 - 报告管理</title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+    <link rel="stylesheet" type="text/css" href="../index.css" />
+
+	
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-main">
+        <!--# include file="/admin/include/header.html" -->
+        <div class="row contentMain">
+            <div class="sider">
+                <!--# include file="/admin/include/sider.html" -->
+            </div>
+            <div class="container my-3 my-md-5">
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" method="post" enctype="multipart/form-data"  onsubmit="return submits(event)">
+                            <input type="hidden" name="csrf_token" value="IjE5Y2U3OWY1ZTc5ZjhjODAwNDEyYjZjYWJjOWMzYjFjM2E2MThiNWUi.XLRE8g.CbhnR4a1RZbS7qVOcjkeba08P6A"/>
+                            <div class="card-header">
+                                <h3 class="card-title">新增</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">编码<span class="form-required">*</span></label>
+                                            <input class="form-control" id="number" name="number" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+                                            <label class="form-label">报告分类<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="report_category" name="report_category" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告类型<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="report_type" name="report_type" required><option value=""></option><option value="新的">新的</option><option value="已知的">已知的</option></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">不良反应类型<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="adr_type" name="adr_type" required><option value=""></option><option value="严重">严重</option><option value="一般">一般</option></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+                                            <label class="form-label" for="adr_type_serious">严重伤害情况</label>
+                                            <select class="form-control" id="adr_type_serious" multiple name="adr_type_serious"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告单位类别<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="reporting_unit_category" name="reporting_unit_category" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+                                            <label class="form-label" for="reporting_unit_category_other">报告单位类别（其他）</label>
+            
+
+                                            <input class="form-control" id="reporting_unit_category_other" name="reporting_unit_category_other" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 hr"></div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">患者姓名<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="patient_name" name="patient_name" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">性别<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="patient_sex" name="patient_sex" required><option value=""></option><option value="男">男</option><option value="女">女</option></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">国籍<span class="form-required">*</span></label>
+                                            <div class="form-control country" onclick="selectCountry()">请选择国籍</div>
+                                            <input type="hidden" class="form-control"  name="country" value="" id="country"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">种族<span class="form-required">*</span></label>
+                                            <select class="form-control " id="race" name="race"  placeholder="请选择种族" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">民族<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="patient_nation" name="patient_nation" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="patient_birth_date">出生日期</label>
+            
+
+                                            <input class="form-control date" id="patient_birth_date" name="patient_birth_date" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="patient_age">年龄</label>
+            
+
+                                            <input class="form-control" id="patient_age" name="patient_age" type="text" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group"> 
+                                            <label class="form-label">身高<span class="form-required">*</span></label>
+                                            <input class="form-control" id="stature" name="stature" required type="text" value="">
+                                        </div>
+                                    </div>
+                                        
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">体重<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="patient_weight" name="patient_weight" required type="text" value="">
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">联系方式<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="patient_phone" name="patient_phone" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-12 col-md-12 hr"></div>
+
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">原患疾病</label>
+            
+
+                                            <select class="form-control" id="patient_original_disease" multiple name="patient_original_disease" ></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">医院名称<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="hospital_name" name="hospital_name" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">病历号/门诊号<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="medical_record_number" name="medical_record_number" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">既往药品不良反应/事件<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="has_past_adr" name="has_past_adr" required><option value=""></option><option value="有">有</option><option value="无">无</option><option value="不详">不详</option></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="has_past_adr_detail">既往药品不良反应/事件（有）</label>
+            
+
+                                            <input class="form-control" id="has_past_adr_detail" name="has_past_adr_detail" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">家族药品不良反应/事件<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="has_family_adr" name="has_family_adr" required><option value=""></option><option value="有">有</option><option value="无">无</option><option value="不详">不详</option></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="has_family_adr_detail">家族药品不良反应/事件（有）</label>
+            
+
+                                            <input class="form-control" id="has_family_adr_detail" name="has_family_adr_detail" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="relevant_info">相关重要信息</label>
+            
+
+                                            <select class="form-control" id="relevant_info" multiple name="relevant_info"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="relevant_info_allergy_history">相关重要信息（过敏史）</label>
+            
+
+                                            <input class="form-control" id="relevant_info_allergy_history" name="relevant_info_allergy_history" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="relevant_info_other">相关重要信息（其他）</label>
+            
+
+                                            <input class="form-control" id="relevant_info_other" name="relevant_info_other" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-label">相关疾病史</div>
+                                            <div data-toggle="fieldset" id="disease_record-fieldset">
+                                                <table class="table mb-0">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="pl-0">疾病名称</th>
+                                                        <th>用药开始时间</th>
+                                                        <th>用药结束时间</th>
+                                                        <th class="w-25">报告当时疾病是否仍存在	</th>
+                                                        <th class="pr-0 text-right w-8">
+                                                            <a class="icon" data-toggle="fieldset-add-row" data-target="#disease_record-fieldset">
+                                                                <i class="fe fe-plus"></i>
+                                                            </a>
+                                                            <!-- <a class="icon" data-toggle="fieldset-clear-all" data-target="#disease_record-fieldset">
+                                                                <i class="fe fe-x"></i>
+                                                            </a> -->
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr data-toggle="fieldset-entry" data-index=0>
+                                                            <td><input class="form-input form-control" id="disease_name" name="disease_name" type="text" value=""></td>    
+                                                            <td><input class="form-input form-control date" id="disease_time_start" name="disease_time_start" data-associate="#disease_time_end" data-associate_type="min" type="text" value="" onchange="associateDate()"></td>
+                                                            <td><input class="form-input form-control date" id="disease_time_end" name="disease_time_end" type="text" value="" data-associate="#disease_time_start" data-associate_type="max" onchange="associateDate()"></td>
+                                                            <td class="pl-0"><select class="form-input custom-select" id="disease_is_exist" name="disease_is_exist"></select></td>
+                                                            <td class="pr-0 text-right align-middle">
+                                                                <a class="icon" data-toggle="fieldset-up-row" id="fieldset-up">
+                                                                    <i class="fe fe-arrow-up"></i>
+                                                                </a>
+                                                                <a class="icon" data-toggle="fieldset-down-row" id="fieldset-down">
+                                                                    <i class="fe fe-arrow-down"></i>
+                                                                </a>
+                                                                <a class="icon" data-toggle="fieldset-remove-row" id="fieldset-remove">
+                                                                    <i class="fe fe-trash"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-12" >
+                                        <div class="form-label">用药信息</div>
+                                        <div data-toggle="fieldset" id="medication_record-fieldset" >
+                                            <div id="medication_record-fieldset_table">
+                                                <table class="table mb-0 layui-table table_nolrborder">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="pl-0 min-width_2">类别</th>
+                                                        <th class="min-width_2">批准文号</th>
+                                                        <th class="min-width_2">药品</th>
+                                                        <th class="min-width_2">通用名称/剂型/规格</th>
+                                                        <th class="w-25">失效日期</th>
+                                                        <th >上市许可持有人</th>
+                                                        <th>生产批号</th>
+                                                        <th>用法用量</th>
+                                                        <th>用药开始时间</th>
+                                                        <th>用药结束时间</th>
+                                                        <th> 给药持续时间</th>
+                                                    
+                                                        <th>用药原因</th>
+                                                        <th>是否存在以下情况</th>
+                                                        <th>对药品采取的措施</th>
+                                                        <th class="pr-0 text-right w-8 operating">
+                                                            <a class="icon" data-toggle="fieldset-add-row" data-target="#medication_record-fieldset">
+                                                                <i class="fe fe-plus"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-clear-all" data-target="#medication_record-fieldset">
+                                                                <i class="fe fe-x"></i>
+                                                            </a>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    
+                                                        <tr data-toggle="fieldset-entry" data-index=0>
+                                                            <td class="pl-0"><select class="custom-select" id="medication_category" name="medication_category"></select></td>
+                                                            <td ><input class="form-control mb-1 mt-1" id="medication_license_number" name="medication_license_number" placeholder="请输入"  type="text" value=""></td>
+                                                            <td class="w-25"><select class="form-control" id="medication_drug_id" name="medication_drug_id" autocomplete="off"></select></td>
+                                                            <td><input class="form-control mb-1 mt-1" id="medication_common_name" name="medication_common_name" placeholder="请输入" type="text" value=""></td>
+                                                            <td><input class="form-control mb-1 mt-1" id="medication_expiry_date" name="medication_expiry_date" placeholder="请选择"  type="date" value=""></td>
+                                                            <td><input class="form-control mb-1 mt-1" id="medication_Licensing" name="medication_Licensing" placeholder="请输入"  type="text" value=""></td>
+                                                            <td><input class="form-control" id="medication_batch_number" name="medication_batch_number" type="text" value=""></td>
+                                                            <td><input class="form-control" id="medication_dosage" name="medication_dosage" type="text" value=""></td>
+                                                            <td><input class="form-control date" id="medication_time_start" name="medication_time_start" type="text" value="" data-associate="#medication_time_end" data-associate_type="min"  onchange="associateDate()"></td>
+                                                            <td><input class="form-control date" id="medication_time_end" name="medication_time_end" type="text" value=""  data-associate="#medication_time_start" data-associate_type="max"  onchange="associateDate()"></td>
+                                                            <td><input class="form-control mb-1 mt-1" id="medication_duration_time" name="medication_duration_time" placeholder="请输入"  type="text" value=""></td>
+                                                            <td class="w-9"><select class="form-control" id="medication_cause" name="medication_cause"></select></td>
+                                                            <td><select class="form-control mb-1 mt-1" style="width:200px" id="medication_situation_reason" name="medication_situation_reason" placeholder="请选择"  multiple  ></select></td>
+                                                            <td><select class="form-control mb-1 mt-1" style="width:200px" id="medication_take_steps" name="medication_take_steps" placeholder="请选择"  multiple  ></select></td>
+                                                            <td class="pr-0 text-right align-middle">
+                                                                <a class="icon" data-toggle="fieldset-up-row" id="medication-up">
+                                                                    <i class="fe fe-arrow-up"></i>
+                                                                </a>
+                                                                <a class="icon" data-toggle="fieldset-down-row" id="medication-down">
+                                                                    <i class="fe fe-arrow-down"></i>
+                                                                </a>
+                                                                <a class="icon" data-toggle="fieldset-remove-row" id="medication-remove">
+                                                                    <i class="fe fe-trash"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">不良反应/事件名称<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="adr_name" name="adr_name" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">不良反应/事件发生时间<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control date" id="adr_time" name="adr_time" required type="text" value="" data-associate="#adr_end_time" data-associate_type="min" onchange="associateDate()">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">不良反应/事件结束时间<span class="form-required">*</span></label>
+            
+                                            <input class="form-control date" id="adr_end_time" name="adr_end_time" placeholder="请选择" required type="date" value=""  data-associate="#adr_time" data-associate_type="max" onchange="associateDate()">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">不良反应/事件持续时间<span class="form-required">*</span></label>
+            
+                                            <input class="form-control" id="adr_continued_time" name="adr_continued_time" type="text" placeholder="请输入" value="">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">不良反应/是否非预期<span class="form-required">*</span></label>
+            
+                                            <select class="form-control " id="adr_isexpect" name="adr_isexpect" placeholder="请选择" required><option value="">请选择</option><option value="是">是</option><option value="否">否</option></select>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">不良反应/事件过程描述（包括症状、体征、临床检验等）及处理情况<span class="form-required">*</span></label>
+            
+
+                                            <textarea class="form-control" id="adr_description" name="adr_description" required></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">不良反应/事件的结果<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="adr_result" name="adr_result" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="adr_result_sequela_manifestation">后遗症表现</label>
+            
+
+                                            <input class="form-control" id="adr_result_sequela_manifestation" name="adr_result_sequela_manifestation" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="adr_result_death_reason">直接死因</label>
+            
+
+                                            <input class="form-control" id="adr_result_death_reason" name="adr_result_death_reason" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="adr_result_death_time">死亡时间</label>
+            
+
+                                            <input class="form-control adr_result_death_time date" id="adr_result_death_time" name="adr_result_death_time" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 select_model" hidden="hidden">
+                                        <div class="form-group">
+                                            <label class="form-label" for="adr_result_isautopsy">是否尸检</label>
+                                            <select class="form-control" id="adr_result_isautopsy" name="adr_result_isautopsy" ><option value=""></option><option value="是">是</option><option value="否">否</option><option value="不明">不明</option></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 select_model">
+                                        <div class="form-group">
+                                            
+                                            <label class="form-label" for="adr_result_autopsy_results">尸检结果</label>
+                                            <input class="form-control" id="adr_result_autopsy_results" name="adr_result_autopsy_results" type="text" value="">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">停药或减量后，反应/事件是否消失或减轻<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="reduce_after_reduction" name="reduce_after_reduction" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">再次使用可疑药品后是否再次出现同样反应/事件<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="repeat_after_using_again" name="repeat_after_using_again" required></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">对原患疾病的影响<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="impact_on_original_disease" name="impact_on_original_disease" required></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告人评价<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="reporter_evaluation" name="reporter_evaluation" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告单位评价<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="report_unit_evaluation" name="report_unit_evaluation" required></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告人联系电话<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="reporter_phone" name="reporter_phone" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告人职业<span class="form-required">*</span></label>
+            
+
+                                            <select class="form-control" id="reporter_career" name="reporter_career" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="reporter_career_other">报告人职业（其他）</label>
+            
+
+                                            <input class="form-control" id="reporter_career_other" name="reporter_career_other" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告人电子邮箱<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="reporter_email" name="reporter_email" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告人签名<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="reporter_signature" name="reporter_signature" required type="text" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告单位名称<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="report_unit_name" name="report_unit_name" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="report_unit_contact">报告单位联系人</label>
+            
+
+                                            <input class="form-control" id="report_unit_contact" name="report_unit_contact" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告单位电话<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="report_unit_phone" name="report_unit_phone" required type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label">报告日期<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control date" id="report_date" name="report_date" required type="text" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="report_from">信息来源</label>
+            
+
+                                            <select class="form-control" id="report_from" name="report_from"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="report_from_other">信息来源（其他）</label>
+            
+
+                                            <input class="form-control" id="report_from_other" name="report_from_other" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="state">状态</label>
+            
+
+                                            <select class="form-control" id="state" name="state"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-label">相关实验室检查信息</div>
+                                        <div data-toggle="fieldset" id="laboratory_record-fieldset">
+                                            <table class="table mb-0">
+                                                <thead>
+                                                <tr>
+                                                    <th class="pl-0">检查项目</th>
+                                                    <th>检查日期</th>
+                                                    <th>结果（单位）</th>
+                                                    <th class="w-25">正常值范围 (低值- 高值）	</th>
+                                                    <th class="pr-0 text-right w-8">
+                                                        <a class="icon" data-toggle="fieldset-add-row" data-target="#laboratory_record-fieldset">
+                                                            <i class="fe fe-plus"></i>
+                                                        </a>
+                                                        <!-- <a class="icon" data-toggle="fieldset-clear-all" data-target="#disease_record-fieldset">
+                                                            <i class="fe fe-x"></i>
+                                                        </a> -->
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr data-toggle="fieldset-entry" data-index=0>
+                                                        <td><input class="form-input form-control" id="laboratory_name" name="laboratory_name" type="text" value=""></td>    
+                                                        <td><input class="form-input form-control date" id="laboratory_check_date" name="laboratory_check_date" type="text" value=""></td>
+                                                        <td><input class="form-input form-control" id="laboratory_result" name="laboratory_result" type="text" value=""></td>
+                                                        <td><input class="form-input form-control" id="laboratory_normal_value" name="laboratory_normal_value" type="text" value=""></td> 
+                                                        <td class="pr-0 text-right align-middle">
+                                                            <a class="icon" data-toggle="fieldset-up-row" id="fieldset-up">
+                                                                <i class="fe fe-arrow-up"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-down-row" id="fieldset-down">
+                                                                <i class="fe fe-arrow-down"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-remove-row" id="fieldset-remove">
+                                                                <i class="fe fe-trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-label">妊娠报告有关信息</div>
+                                        <div data-toggle="fieldset" id="gestation_record-fieldset">
+                                            <table class="table mb-0">
+                                                <thead>
+                                                <tr>
+                                                    <th class="pl-0">父/母姓名</th>
+                                                    <th>性别</th>
+                                                    <th>出生日期</th>
+                                                    <th>年龄</th>
+                                                    <th>身高</th>
+                                                    <th>体重</th>
+                                                    <th>末次月经时间</th>
+                                                    <th class="w-25">妊娠相关描述</th>
+                                                    <th class="pr-0 text-right w-8">
+                                                        <a class="icon" data-toggle="fieldset-add-row" data-target="#gestation_record-fieldset">
+                                                            <i class="fe fe-plus"></i>
+                                                        </a>
+                                                        <!-- <a class="icon" data-toggle="fieldset-clear-all" data-target="#disease_record-fieldset">
+                                                            <i class="fe fe-x"></i>
+                                                        </a> -->
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr data-toggle="fieldset-entry" data-index=0>
+                                                        <td><input class="form-input form-control" id="gestation_name" name="gestation_name" type="text" value=""></td>  
+                                                        <td class="w-9"><select class="form-input form-control" id="gestation_sex" name="gestation_sex"></td>  
+                                                        <td><input class="form-input form-control date" id="gestation_birth_date" name="gestation_birth_date" type="text" value=""></td>
+                                                        <td><input class="form-input form-control" id="gestation_birth_age_date" name="gestation_birth_age_date" type="text" value=""></td>
+                                                        <td><input class="form-input form-control" id="gestation_patient_age" name="gestation_patient_age" type="text" value=""></td>
+                                                        <td><input class="form-input form-control" id="gestation_stature" name="gestation_stature" type="text" value=""></td> 
+                                                        <td><input class="form-input form-control  date" id="gestation_last_date" name="gestation_last_date" type="text" value=""></td>
+                                                        <td><input class="form-input form-control" id="gestation_related_describe" name="gestation_related_describe" type="text" value=""></td>
+                                                        <td class="pr-0 text-right align-middle">
+                                                            <a class="icon" data-toggle="fieldset-up-row" id="fieldset-up">
+                                                                <i class="fe fe-arrow-up"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-down-row" id="fieldset-down">
+                                                                <i class="fe fe-arrow-down"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-remove-row" id="fieldset-remove">
+                                                                <i class="fe fe-trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-label">既往用药史</div>
+                                        <div data-toggle="fieldset" id="historyMedication_record-fieldset">
+                                            <table class="table mb-0">
+                                                <thead>
+                                                <tr>
+                                                    <th class="pl-0">药物名称</th>
+                                                    <th>开始日期</th>
+                                                    <th>结束日期</th>
+                                                    <th>治疗疾病</th>
+                                                    <th class="pr-0 text-right w-8">
+                                                        <a class="icon" data-toggle="fieldset-add-row" data-target="#historyMedication_record-fieldset">
+                                                            <i class="fe fe-plus"></i>
+                                                        </a>
+                                                        <!-- <a class="icon" data-toggle="fieldset-clear-all" data-target="#disease_record-fieldset">
+                                                            <i class="fe fe-x"></i>
+                                                        </a> -->
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr data-toggle="fieldset-entry" data-index=0>
+                                                        <td><input class="form-input form-control" id="historyMedication_name" name="historyMedication_name" type="text" value=""></td>  
+                                                        <td><input class="form-input form-control date" id="historyMedication_time_start" name="historyMedication_time_start" type="text" value="" data-associate="#historyMedication_time_end" data-associate_type="min"    onchange="associateDate()"></td>
+                                                        <td><input class="form-input form-control date" id="historyMedication_time_end" name="historyMedication_time_end" type="text" value=""  data-associate="#historyMedication_time_start" data-associate_type="max"    onchange="associateDate()"></td>
+                                                        <td><input class="form-input form-control" id="historyMedication_treat_disease" name="historyMedication_treat_disease" type="text" value=""></td>
+                                                        <td class="pr-0 text-right align-middle">
+                                                            <a class="icon" data-toggle="fieldset-up-row" id="fieldset-up">
+                                                                <i class="fe fe-arrow-up"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-down-row" id="fieldset-down">
+                                                                <i class="fe fe-arrow-down"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-remove-row" id="fieldset-remove">
+                                                                <i class="fe fe-trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <div class="form-label">附件</div>
+                                        <div class="table-responsive" data-toggle="fieldset" id="attachment-fieldset">
+                                            <table class="table mb-0">
+                                                <thead>
+                                                <tr>
+                                                    <th class="pl-0">类别</th>
+                                                    <th>文件名</th>
+                                                    <th>描述</th>
+                                                    <th class="pr-0 text-right w-9">
+                                                        <a class="icon" data-toggle="fieldset-add-row" data-target="#attachment-fieldset">
+                                                            <i class="fe fe-plus"></i>
+                                                        </a>
+                                                        <!-- <a class="icon" data-toggle="fieldset-clear-all" data-target="#attachment-fieldset">
+                                                            <i class="fe fe-x"></i>
+                                                        </a> -->
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                
+                                                    <tr data-toggle="fieldset-entry" data-index=0>
+                                                        <td class="pl-0"><select class="custom-select" id="attachments_category" name="attachments_category"></td>
+                                                        <td>
+                                                            <div class="row">
+                                                                
+                                                                <div class="file_input mr10">
+                                                                    <input class="form-control" id="attachments_filename" name="attachments_filename" type="text">
+                                                                </div>
+                                                                <div class="fieldset_files">
+                                                                    <input class="form-control-file" id="attachments_filename_file"   name="attachments_filename_file"  type="file"   data-show-preview="false"    hidden="hidden"> 
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><input class="form-control" id="attachments_description" name="attachments_description" type="text" value=""></td>
+                                                        <td class="pr-0 text-right align-middle">
+                                                            
+                                                            <a class="icon" data-toggle="fieldset-up-row" id="attachment-up">
+                                                                <i class="fe fe-arrow-up"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-down-row" id="attachment-down">
+                                                                <i class="fe fe-arrow-down"></i>
+                                                            </a>
+                                                            <a class="icon" data-toggle="fieldset-remove-row" id="attachment-remove">
+                                                                <i class="fe fe-trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="remark">备注</label>
+            
+
+                                            <input class="form-control" id="remark" name="remark" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="reward">奖金</label>
+            
+
+                                            <input class="form-control" id="reward" name="reward" type="text" value="">
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="opinion">审核意见</label>
+                                            <textarea class="form-control" id="opinion" name="opinion"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" id="published" name="published" type="checkbox" value="y">
+                                            <span class="custom-control-label">公开</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <div class="d-flex">
+                                    <button type="reset" class="btn btn-secondary">重置</button>
+                                    <input class="btn btn-primary ml-auto" id="submit" name="submit" type="submit" value="提交">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--# include file="/admin/include/footer.html" --> 
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script type="text/javascript" src="/static/js/admin.min.js"></script>
+<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../../static/'
+    })
+    require(['autosize', 'layer_ext','tool', 'upload'], function(autosize){
+        
+            
+        
+
+        // 自适应高度
+        autosize($('textarea'));
+    });
+</script>
+
+    <script>
+        
+        /**下拉框关联数据***/
+        var select_associate={
+            adr_type_data : {
+                select: {
+                    field: $("select#adr_type"),
+                    wrap: $("select#adr_type").parent().parent(),
+                    wrap_class_selected: "col-sm-6 col-md-4",
+                    wrap_class_original: "col-sm-6 col-md-6"
+                },
+                others: [
+                    {
+                        key: "严重",
+                        items: [
+                            {
+                                field: $("#adr_type_serious"),
+                                label: $("label[for='adr_type_serious-selectized']"),
+                                wrap: $("#adr_type_serious").parent().parent()
+                            }
+                        ]
+                    }
+                ]
+            },
+            reporting_unit_category_data : {
+                select: {
+                    field: $("select#reporting_unit_category"),
+                    wrap: $("select#reporting_unit_category").parent().parent(),
+                    wrap_class_selected: "col-sm-6 col-md-4",
+                    wrap_class_original: "col-sm-6 col-md-6"
+                },
+                others: [
+                    {
+                        key: "其他",
+                        items: [
+                            {
+                                field: $("#reporting_unit_category_other"),
+                                wrap: $("#reporting_unit_category_other").parent().parent()
+                            }
+                        ]
+                    }
+                ]
+            },
+            reporter_career_data : {
+                select: {
+                    field: $("select#reporter_career"),
+                    wrap: $("select#reporter_career").parent().parent(),
+                    wrap_class_selected: "col-sm-6 col-md-2",
+                    wrap_class_original: "col-sm-6 col-md-4"
+                },
+                others: [
+                    {
+                        key: "其他",
+                        items: [
+                            {
+                                field: $("#reporter_career_other"),
+                                wrap: $("#reporter_career_other").parent().parent()
+                            }
+                        ]
+                    }
+                ]
+            },
+            report_from_data : {
+                select: {
+                    field: $("select#report_from"),
+                    wrap: $("select#report_from").parent().parent(),
+                    wrap_class_selected: "col-sm-6 col-md-3",
+                    wrap_class_original: "col-sm-6 col-md-6"
+                },
+                others: [
+                    {
+                        key: "其他",
+                        items: [
+                            {
+                                field: $("#report_from_other"),
+                                wrap: $("#report_from_other").parent().parent()
+                            }
+                        ]
+                    }
+                ]
+            },
+            has_past_adr_data : {
+                select: {
+                    field: $("select#has_past_adr"),
+                    wrap: $("select#has_past_adr").parent().parent(),
+                    wrap_class_selected: "col-sm-6 col-md-3",
+                    wrap_class_original: "col-sm-6 col-md-6"
+                },
+                others: [
+                    {
+                        key: "有",
+                        items: [
+                            {
+                                field: $("#has_past_adr_detail"),
+                                wrap: $("#has_past_adr_detail").parent().parent()
+                            }
+                        ]
+                    }
+                ]
+            },
+            has_family_adr_data : {
+                select: {
+                    field: $("select#has_family_adr"),
+                    wrap: $("select#has_family_adr").parent().parent(),
+                    wrap_class_selected: "col-sm-6 col-md-3",
+                    wrap_class_original: "col-sm-6 col-md-6"
+                },
+                others: [
+                    {
+                        key: "有",
+                        items: [
+                            {
+                                field: $("#has_family_adr_detail"),
+                                wrap: $("#has_family_adr_detail").parent().parent()
+                            }
+                        ]
+                    }
+                ]
+            },
+            relevant_info_data : {
+                select: {
+                    field: $("select#relevant_info"),
+                    wrap: $("select#relevant_info").parent().parent()
+                },
+                others: [
+                    {
+                        key: "过敏史",
+                        items: [
+                            {
+                                field: $("#relevant_info_allergy_history"),
+                                wrap: $("#relevant_info_allergy_history").parent().parent()
+                            }
+                        ]
+                    }, {
+                        key: "其他",
+                        items: [
+                            {
+                                field: $("#relevant_info_other"),
+                                wrap: $("#relevant_info_other").parent().parent()
+                            }
+                        ]
+                    }
+                ]
+            },
+            adr_result_data : {
+                select: {
+                    field: $("select#adr_result"),
+                    wrap: $("select#adr_result").parent().parent(),
+                    wrap_class_selected: "col-sm-6 col-md-6",
+                    wrap_class_original: "col-md-12"
+                },
+                others: [
+                    {
+                        key: "有后遗症",
+                        items: [
+                            {
+                                field: $("#adr_result_sequela_manifestation"),
+                                wrap: $("#adr_result_sequela_manifestation").parent().parent()
+                            }
+                        ]
+                    }, {
+                        key: "死亡",
+                        items: [
+                            {
+                                field: $("#adr_result_death_reason"),
+                                wrap: $("#adr_result_death_reason").parent().parent()
+                            }, {
+                                field: $("#adr_result_death_time"),
+                                wrap: $("#adr_result_death_time").parent().parent()
+                            }, 
+                            {
+                                field: $("#adr_result_isautopsy").closest(".select_model"),  //select_model
+                               
+                                
+                            }
+                        ]
+                    }
+                ]
+            },
+            adr_isautopsy_data:{
+                select: {
+                    field: $("select#adr_result_isautopsy"),
+                    wrap: $("select#adr_result_isautopsy").parent().parent(),
+                },
+                others: [
+                    {
+                        key:"是",
+                        items: [
+                            {
+                                field: $("#adr_result_autopsy_results"),
+                                wrap: $("#adr_result_autopsy_results").parent().parent()
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+        var sexData=[]; //性别数据
+        var medication_record_category=[]; //用药分类
+        var attachment_category=[]; //附件类型
+        var medication_situation_reason_data=[]; //用药是否存在以下情况
+        var medication_take_steps_data=[]; //对药品采取的措施
+        var is_exist=[{name:"是",value:"是"},{name:"否",value:"否"},{name:"不详",value:"不详"}]
+
+        require(['main', 'admin', 'jquery', 'dynamiclines', 'selectize', 'selectize_ext'], function (main, admin, $) {
+            
+            // 加载字典 
+            ajaxFns({prentCode:"report_category, report_type, adr_type_serious, unit_category, sex, race, nation, relevant_info, adr_result, reduce_after_reduction, repeat_after_using_again, impact_on_original_disease, evaluation, career, report_from, medication_record_category, attachment_category, report_state,medication_situation_reason,medication_take_steps"},function(res){
+                var result=res.data;
+                main.initDatetimePicker($(".date"));
+                main.initDatetimePicker($(".datetime"), {enableTime: true});
+                //报告分类   
+                var report_category=getdict(result,"report_category");
+                selectizes($("#report_category"),{options:report_category})
+                
+                //报告类型
+                var report_type=getdict(result,"report_type");
+                selectizes($("#report_type"),{options:report_type})
+
+                //严重伤害情况
+                var adr_type_serious=getdict(result,"adr_type_serious");
+                selectizes($("#adr_type_serious"),{options:adr_type_serious})
+                
+                //加载单位类别
+                var unit_category=getdict(result,"unit_category");
+                selectizes($("#reporting_unit_category"),{options:unit_category, valueField:"name"})
+                main.selectedShow(select_associate.reporting_unit_category_data);
+
+                //性别
+                
+                sexData=getdict(result,"sex");
+                selectizes($("#patient_sex"),{options:sexData, })
+            
+                //加载种族 
+                var race=getdict(result,"race");
+                selectizes($("#race"),{options:race})
+
+                //名族
+                var nation=getdict(result,"nation");
+                selectizes($("#patient_nation"),{options:nation})
+
+                 //出生日期限制
+                initDatetimePicker($("#patient_birth_date"),{
+                    maxDate:new Date()
+                });
+
+                //相关重要信息  
+                var relevant_info=getdict(result,"relevant_info");
+                selectizes($("#relevant_info"),{options:relevant_info})
+                main.selectedShow(select_associate.relevant_info_data);
+
+                //不良反应结果
+                var adr_result=getdict(result,"adr_result");
+                selectizes($("#adr_result"),{options:adr_result})
+
+                //停药或减量后，反应/事件是否消失或减轻
+                var reduce_after_reduction=getdict(result,"reduce_after_reduction");
+                selectizes($("#reduce_after_reduction"),{options:reduce_after_reduction})
+
+                //再次使用可疑药品后是否再次出现同样反应/事件 
+                var repeat_after_using_again=getdict(result,"repeat_after_using_again");
+                selectizes($("#repeat_after_using_again"),{options:reduce_after_reduction})
+                
+                //对原患疾病的影响 
+                var impact_on_original_disease=getdict(result,"impact_on_original_disease");
+                selectizes($("#impact_on_original_disease"),{options:impact_on_original_disease})
+
+                //报告人报告单位评价 
+                var evaluation=getdict(result,"evaluation");
+                selectizes($("#reporter_evaluation"),{options:evaluation})    //报告人评价
+                selectizes($("#report_unit_evaluation"),{options:evaluation}) //报告单位评价
+
+                //报告人职业
+                var career=getdict(result,"career");
+                selectizes($("#reporter_career"),{options:career})
+
+                //信息来源 
+                var report_from=getdict(result,"report_from");
+                selectizes($("#report_from"),{options:report_from})
+
+                //报告状态 
+                var report_stateData=getdict(result,"report_state");
+                selectizes($("#state"),{options:report_stateData})
+
+                //原患疾病
+                
+                selectizes($("#patient_original_disease"),{labelField:"name",valueField:"name",create:true,loadUrl:ipDress+"/des/disease"}) //用药原因
+ 
+                selectizes($("#adr_type"))        //不良反应类型
+                selectizes($("#has_past_adr"))   // 不良反应事件
+                selectizes($("#has_family_adr"))  //家族药品不良反应/事件
+
+                //是否尸检
+                selectizes($("#adr_result_isautopsy"))
+                main.selectedShow(select_associate.adr_isautopsy_data);
+
+                //不良反应/是否非预期
+                selectizes($("#adr_isexpect"))
+                
+
+                //附件类别
+                attachment_category=getdict(result,"attachment_category");
+                
+                //用药类别
+                medication_record_category=getdict(result,"medication_record_category"); 
+
+                //用药是否存在以下情况 
+                medication_situation_reason_data=getdict(result,"medication_situation_reason");
+
+                //对药品采取的措施
+                medication_take_steps_data=getdict(result,"medication_take_steps");
+                
+                /***********表格自动新增一行*****************/
+
+                //相关疾病史表格新增一行
+                addRow($("#disease_record-fieldset"),function(params){
+                    var new_row = params.new_row;
+                    var old_row = params.old_row;
+                    setTimeout(function(){
+                        tableSelect(new_row, old_row, "disease_record-fieldset")
+                    },500)
+                })
+
+                //用药信息表格新增一行
+                addRow($("#medication_record-fieldset"),function(params){
+                    var new_row = params.new_row;
+                    var old_row = params.old_row;
+                    setTimeout(function(){
+                        tableSelect(new_row, old_row, "medication_record-fieldset")
+                    },500)
+                })
+                
+
+                
+               
+                //相关实验室检查信息 表格新增一行
+                addRow($("#laboratory_record-fieldset"),function(params){
+                    var new_row = params.new_row;
+                    var old_row = params.old_row;
+                    setTimeout(function(){
+                        tableSelect(new_row, old_row, "laboratory_record-fieldset")
+                    },500)
+                })
+                //妊娠报告有关信息表格新增一行
+                addRow($("#gestation_record-fieldset"),function(params){
+                    var new_row = params.new_row;
+                    var old_row = params.old_row;
+                    setTimeout(function(){
+                        tableSelect(new_row, old_row, "gestation_record-fieldset")
+                    },500)
+                })
+               
+                
+                //既往用药史表格新增一行
+                addRow($("#historyMedication_record-fieldset"),function(params){
+                    var new_row = params.new_row;
+                    var old_row = params.old_row;
+                    setTimeout(function(){
+                        tableSelect(new_row, old_row, "historyMedication_record-fieldset")
+                    },500)
+                })
+
+                //附件表格新增一行
+                addRow($("#attachment-fieldset"),function(params){
+                    var new_row = params.new_row;
+                    var old_row = params.old_row;
+                    setTimeout(function(){
+                        tableSelect(new_row, old_row, "attachment-fieldset")
+                    },500)
+                })
+                
+               
+               
+                
+            },ipDress+"/des/dictyList")
+
+           
+           
+
+            
+           
+            
+            
+            // main.initDatetimePicker($(".date"));
+            // main.initDatetimePicker($(".datetime"), {enableTime: true});
+
+            main.selectedShow(select_associate.adr_type_data);
+            // main.selectedShow(reporting_unit_category_data);
+            main.selectedShow(select_associate.reporter_career_data);
+            main.selectedShow(select_associate.report_from_data);
+
+            main.selectedShow(select_associate.has_past_adr_data);
+            main.selectedShow(select_associate.has_family_adr_data);
+            main.selectedShow(select_associate.relevant_info_data);
+            main.selectedShow(select_associate.adr_result_data);
+
+            main.selectedShow(select_associate.adr_isautopsy_data);
+
+            dynamicLineInit();
+
+            // $("#relevant_info").selectize({
+            //     plugins: ['remove_button', 'apple_patch']
+            // });
+
+            $("select#adr_type").change(function () {
+                main.selectedShow(select_associate.adr_type_data);
+            });
+
+            $("select#reporting_unit_category").change(function () {
+                main.selectedShow(select_associate.reporting_unit_category_data);
+            });
+
+            $("select#reporter_career").change(function () {
+                main.selectedShow(select_associate.reporter_career_data);
+            });
+
+            $("select#report_from").change(function () {
+                main.selectedShow(select_associate.report_from_data);
+            });
+
+            $("select#has_past_adr").change(function () {
+                main.selectedShow(select_associate.has_past_adr_data);
+            });
+
+            $("select#has_family_adr").change(function () {
+                main.selectedShow(select_associate.has_family_adr_data);
+            });
+
+            $("select#relevant_info").change(function () {
+                main.selectedShow(select_associate.relevant_info_data);
+            });
+
+            $("select#adr_result").change(function () {
+                main.selectedShow(select_associate.adr_result_data);
+                var values=$(this).val();
+                if(values=="死亡"){
+                    
+
+                }
+                if(values!="死亡"){
+                    $("select#adr_result_isautopsy").val("");
+                    selectSetVal($("#adr_result_isautopsy"),"")
+                    $("#adr_result_autopsy_results").val("");
+                    $("#adr_result_autopsy_results").closest(".select_model").attr("hidden","hidden");
+                    $("#adr_result_death_reason").val("");
+                    $("#adr_result_death_time").val("");
+                }
+            });
+
+            $("select#adr_result_isautopsy").change(function () {
+                main.selectedShow(select_associate.adr_isautopsy_data);
+                var values=$(this).val();
+                if(values!="是"){
+                   $("#adr_result_autopsy_results").val("")
+                }
+            });
+
+           
+            
+           
+
+
+            $("div[data-toggle=fieldset]").on("rowadded", function (e, params) {
+                var event=window.e||e; //消除浏览器差异
+                var $this=$(e.target)
+                // var values=e.target.value;
+                var new_row = params.new_row;
+                var old_row = params.old_row;
+                var selectize_elements = params.selectize_elements;
+                var  id=$this.attr("id")
+                tableSelect(new_row,old_row,id)
+            });
+        });
+        /****表格新增行时输入框美化****/
+        function tableSelect(new_row,old_row,id,callBack){
+            callBack=callBack?callBack:function(){}
+            var index=new_row.attr("data-index")
+            new_row.find(".date").attr("data-index",index);
+            initDatetimePicker(new_row.find(".date"));
+            var target_id =id.slice(0, -9)+"-"+index+"-";
+            switch(id){
+                    //相关疾病史
+                    case "disease_record-fieldset":
+                        new_row.find("#"+target_id+"disease_time_start").attr("data-index",index)
+                        new_row.find("#"+target_id+"disease_time_end").attr("data-index",index)
+                        selectizes(new_row.find("#"+target_id+"disease_is_exist"),{options:is_exist});
+                    break;
+                    //用药信息
+                    case "medication_record-fieldset":
+                        selectizes(new_row.find("#"+target_id+"medication_category"),{options:medication_record_category})
+                        selectizes(new_row.find("#"+target_id+"medication_drug_id"),{labelField:"product_name",valueField:"product_name",loadUrl:ipDress+"/des/drug"}) //药品
+                        selectizes(new_row.find("#"+target_id+"medication_cause"),{labelField:"name",valueField:"name",create:true,loadUrl:ipDress+"/des/disease"}) //用药原因
+                        selectizes(new_row.find("#"+target_id+"medication_situation_reason"),{options:medication_situation_reason_data}) //是否存在以下情况
+                        selectizes(new_row.find("#"+target_id+"medication_take_steps"),{options:medication_take_steps_data})  //对药品采取的措施
+                        initDatetimePicker(new_row.find("#"+target_id+"medication_expiry_date"))
+                      
+                        
+                    break;
+                    //相关实验室
+                    case "laboratory_record-fieldset":
+                    
+                        initDatetimePicker(new_row.find("#"+target_id+"laboratory_check_date"))
+                    break
+                    //妊娠报告有关信息
+                    case "gestation_record-fieldset":
+                        selectizes(new_row.find("#"+target_id+"gestation_sex"),{options:sexData})
+                        initDatetimePicker(new_row.find("#"+target_id+"gestation_birth_date"),{
+                            maxDate:new Date()
+                        });
+                    break;
+                    // 既往用药史
+                    case "historyMedication_record-fieldset":
+                    
+                    break;
+                    //附件
+                    case "attachment-fieldset":
+                        selectizes(new_row.find("#"+target_id+"attachments_category"),{options:attachment_category})  
+                        new_row.find("#"+target_id+"attachments_filename_file").uploadze({
+                            ipDress:img_ipDress,
+                            showImg:false,
+                            
+                            onChanges:function(photoArry,elem){
+                                var $this=elem;
+                                $this.closest("td").find("input[type='text']").val(photoArry[0].path)
+                                fileObj["attachments_filename"]=photoArry
+                            }
+                        })    
+                    break;
+
+            }
+
+        }
+        //获取默认数据
+        function getFormData(callBack){
+            var id=geturl("id");
+            ajaxFns({id:id},function(res){
+                if(res.data && res.data.length>0){
+                    resultData=res.data[0];
+                    callBack(resultData)
+                }
+            },ipDress+"/des/admin/report")
+        }
+        function submits(event){
+            var e=window.event||event; //消除浏览器差异
+            e.preventDefault();
+            var datas=serializeArray("form.card") //序列化表单;;
+            datas._methods="insert";
+
+            var medication_record=getTableData("#medication_record-fieldset")  //isEmpty
+            var disease_record=getTableData("#disease_record-fieldset")
+            var laboratory_record=getTableData("#laboratory_record-fieldset")
+            var gestation_record=getTableData("#gestation_record-fieldset")
+            var historyMedication_record=getTableData("#historyMedication_record-fieldset")
+            var attachment=getTableData("#attachment-fieldset")
+
+            datas.disease_record=disease_record.tableData;
+            datas.medication_record=medication_record.tableData;
+            datas.laboratory_record=laboratory_record.tableData;
+            datas.gestation_record=gestation_record.tableData;
+            datas.historyMedication_record=historyMedication_record.tableData;
+            datas.attachment=attachment.tableData;
+            if(medication_record.isEmpty || disease_record.isEmpty || laboratory_record.isEmpty || gestation_record.isEmpty ||historyMedication_record.isEmpty ||attachment.isEmpty){
+               layer.msg("不能全部为空",{icon:2})
+               return false;
+            }
+            //报告单位类别其他
+            if(datas.reporting_unit_category=="其他"){
+                datas.reporting_unit_category=datas.reporting_unit_category_other;
+            }
+            //报告人职业其他
+            if(datas.reporter_career=="其他"){
+                datas.reporter_career=datas.reporter_career_other;
+            }
+            //信息来源其他
+            if(datas.report_from=="其他"){
+                datas.report_from=datas.report_from_other;
+            }
+            
+            ajaxFns(datas,function(res){
+                if(res.success=="true"){
+                    layer.msg("新增成功",{icon:1},function(){
+                        window.location.href="/admin/report/"
+                    })
+                }
+            },ipDress+"/des/admin/report")
+        }
+    </script>
+
+</body>
+</html>

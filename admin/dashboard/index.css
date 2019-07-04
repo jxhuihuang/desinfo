@@ -1,0 +1,13 @@
+.contentMain{
+    width: 100%;
+}
+.contentMain .side{
+    width: 220px;
+    text-align: center;
+}
+
+.contentMain .container{
+    
+    width: calc(100% - 220px);
+
+}

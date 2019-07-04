@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+   
+    <title>药品不良反应上报系统 - 报告详情</title>
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/antd-mobile.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
+    <link rel="stylesheet" href="../../static/css/header.min.css" />
+    <link rel="stylesheet" href="./index.css" />
+</head>
+<body ontouchstart>
+    <!--# include file="/include/headers.html" -->
+    <main role="main" class="container detailMian">
+        <div class="card-headers">药品不良反应/事件报告表</div>
+
+        <div class="row mb20 mt20 ml15 report_header ">
+            <div class="col-sm-6 col-md-3"><b class="mobile-show">报告分类：</b><b class="form-input" name="report_category"></b></div>
+            <div class="col-sm-6 col-md-3"><b>报告单位类别：</b><span class="form-input" name="reporting_unit_category"></span></div>
+            <div class="col-sm-6 col-md-3"><b>报告类型：</b><span class="form-input" name="report_type"></span></div>
+            <div class="col-sm-6 col-md-3"><b>编码：</b><span class="form-input" name="number"></span></div>
+        </div>
+        <div class="card mb-4">
+            
+            <ul class="list-group list-group-flush">
+               
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4"><b>患者姓名：</b><span class="form-input" name="patient_name"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>性别：</b><span class="form-input" name="patient_sex"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>出生日期：</b><span class="form-input" name="patient_birth_date" type="data"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>年龄：</b><span class="form-input" name="patient_age"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>国籍：</b><span class="form-input" name="country"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>种族：</b><span class="form-input" name="race"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>民族：</b><span class="form-input" name="patient_nation"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>身高（cm）：</b><span class="form-input" name="stature"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>体重（kg）：</b><span class="form-input" name="patient_weight"></span></div>
+                        <div class="col-sm-6 col-md-4"><b>联系方式：</b><span class="form-input" name="patient_phone"></span></div>
+                        
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                            
+                            <div class="col-sm-6 col-md-4"><b>医院名称：</b><span class="form-input" name="hospital_name"></span></div>
+                            <div class="col-sm-6 col-md-4"><b>病历号/门诊号：</b><span class="form-input" name="medical_record_number"></span></div>
+                            <div class="col-sm-6 col-md-4"><b>既往药品不良反应/事件：</b><span class="form-input" name="has_past_adr"></span></div>
+                            <div class="col-sm-6 col-md-4"><b>家族药品不良反应/事件：</b><span class="form-input" name="has_family_adr"></span></div>
+                            <div class="col-sm-6 col-md-4"><b>不良反应类型：</b><span class="form-input" name="adr_type"></span></div>
+                            <div class="col-sm-12 col-md-12" hidden="hidden"><b>严重伤害情况：</b><span class="form-input" name="adr_type_serious"></span></div>
+                            <div class="col-md-12"><b>原患疾病：</b><span class="form-input" name="patient_original_disease"></span></div>
+                            <div class="col-md-12"><b>相关重要信息：</b><span class="form-input" name="relevant_info"></span></div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">相关疾病信息</h5>
+                    <div class="table-stack">
+                        <table class="table table-sm table-bordered layui-table data_table normal-table pc-show" id="disease_record">
+                        </table>
+                        <div class="mobile-show" id="disease_record_mobile"></div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">怀疑用药</h5>
+                    <div class="table-stack">
+                        <table class="table table-sm table-bordered layui-table data_table  pc-show" id="medication_record">
+                        </table>
+                        <div class="mobile-show" id="medication_record_mobile"></div>
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6"><b>不良反应/事件名称：</b><span class="form-input" name="adr_name"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>不良反应/事件持续时间：</b><span class="form-input" name="adr_continued_time"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>不良反应/事件发生时间：</b><span class="form-input" name="adr_time"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>不良反应/事件结束时间：</b><span class="form-input" name="adr_end_time"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>不良反应/是否非预期：</b><span class="form-input" name="adr_isexpect"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>不良反应/事件的结果：</b><span class="form-input" name="adr_result"></span></div>
+                        <div class="col-sm-6 col-md-6" hidden="hidden"><b>直接死因：</b><span class="form-input" name="adr_result_death_reason"></span></div>
+                        <div class="col-sm-6 col-md-6" hidden="hidden"><b>死亡时间：</b><span class="form-input" name="adr_result_death_time"></span></div>   
+                        <div class="col-sm-6 col-md-6" hidden="hidden"><b>是否验尸：</b><span class="form-input" name="adr_result_isautopsy"></span></div>
+                        <div class="col-sm-6 col-md-6" hidden="hidden"><b>验尸结果：</b><span class="form-input" name="adr_result_autopsy_results"></span></div>
+                        <div class="col-sm-6 col-md-6" hidden="hidden"><b>后遗症表现：</b><span class="form-input" name="adr_result_sequela_manifestation"></span></div>
+                         
+                        <div class="col-sm-6 col-md-6"><b>停药或减量后，反应/事件是否消失或减轻：</b><span class="form-input" name="reduce_after_reduction"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>再次使用可疑药品后是否再次出现同样反应/事件：</b><span class="form-input" name="repeat_after_using_again"></span></div>
+                        <div class="col-md-12"><b>对原患疾病的影响：</b><span class="form-input" name="impact_on_original_disease"></span></div>
+                        <div class="col-md-12">
+                            <b>不良反应/事件过程描述（包括症状、体征、临床检验等）及处理情况（可附页）：</b>
+                            <div class="form-input mt10" name="adr_description"></div>
+                        </div>
+
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">相关实验室检查信息</h5>
+                    <div class="table-stack">
+                        <table class="table table-sm table-bordered layui-table data_table pc-show" id="laboratory_record">
+                            
+                        </table>
+                        <div class="mobile-show" id="laboratory_record_mobile"></div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">妊娠报告有关信息</h5>
+                    <div class="table-stack">
+                        <table class="table table-sm table-bordered layui-table data_table pc-show" id="gestation_record">
+                        </table>
+                        <div class="mobile-show" id="gestation_record_mobile"></div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">既往用药史</h5>
+                    <div class="table-stack">
+                        <table class="table table-sm table-bordered layui-table data_table pc-show" id="historyMedication_record">
+                            
+                        </table>
+                        <div class="mobile-show" id="historyMedication_record_mobile"></div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">关联性评价</h5>
+                    <div class="row mb-4">
+                        <div class="col-sm-6 col-md-6"><b>报告人评价：</b><span class="form-input" name="reporter_evaluation"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>报告单位评价：</b><span class="form-input" name="report_unit_evaluation"></span></div>
+                    </div>
+
+                    <h5 class="card-title border-top">报告人信息</h5>
+                    <div class="row mb-4">
+                        <div class="col-sm-6 col-md-6"><b>联系电话：</b><span class="form-input" name="reporter_phone"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>职业：</b><span class="form-input" name="reporter_career"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>电子邮箱：</b><span class="form-input" name="reporter_email"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>签名：</b><span class="form-input" name="reporter_signature"></span></div>
+                    </div>
+
+                    <h5 class="card-title border-top">报告单位信息</h5>
+                    <div class="row mb-1">
+                        <div class="col-sm-6 col-md-6"><b>单位名称：</b><span class="form-input" name="report_unit_name"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>联系人：</b><span class="form-input" name="report_unit_contact"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>电话：</b><span class="form-input" name="report_unit_phone"></span></div>
+                        <div class="col-sm-6 col-md-6"><b>报告日期：</b><span class="form-input" name="report_date"></span></div>
+                        <div class="col-md-12"><b>生产企业信息来源：</b><span class="form-input" name="report_from"></span></div>
+                        <div class="col-md-12"><b>备注：</b><span class="form-input" name="remark"></span></div>
+                    </div>
+                    
+                </li>
+
+                <li class="list-group-item">
+                    <h5 class="card-title">附件</h5>
+                    <div class="table-stack">
+                        <table class="table table-sm table-bordered layui-table data_table pc-show" id="attachment_record">
+                           
+                        </table>
+                        <div class="mobile-show" id="attachment_record_mobile"></div>
+                    </div>
+                </li>
+            </ul>
+            <div class="list-group-item" style="border:none">
+                <h5 class="card-title ">审核意见</h5>
+                <div class="row">
+                    <div class="col-md-6"><b>奖金：</b><span class="form-input" name="reward"></span></div>
+                    <div class="col-md-6"><b>状态：</b><span class="form-input" name="state"></span></div>
+                    <div class="col-md-12">
+                        <b>审核意见：</b>
+                        <div class="form-input" name="opinion"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!--# include file="/include/footers.html" -->
+
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
+        // 自适应高度
+        autosize($('textarea'));
+        $(function () {
+           
+            main.fastClick();
+        });
+    });
+</script>
+<script>
+    /**相关疾病信息**/
+    var disease_record_columns = [
+        {
+            title: '疾病名称',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.disease_name);
+            }
+        },
+        {
+            title: '用药开始时间',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.disease_time_start);
+            }
+        },
+        {
+            title: '用药结束时间',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.disease_time_end);
+            }
+        },
+        {
+            title: '报告当时疾病是否仍存在',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.disease_is_exist);
+            }
+        }
+    ];
+    /***用药信息***/
+    var medication_record_columns = [
+        {
+            title: '类别',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_category);
+            }
+        },
+        {
+            title: '批准文号',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_license_number);
+            }
+        },
+        {
+            title: '药品',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_drug_id);
+            }
+        },
+        {
+            title: '通用名称/剂型/规格',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_common_name);
+            }
+        },
+        {
+            title: '失效日期',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_expiry_date);
+            }
+        },
+        {
+            title: '上市许可持有人',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_Licensing);
+            }
+        },
+        {
+            title: '生产批号',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_batch_number);
+            }
+        },
+        {
+            title: '用法用量',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_dosage);
+            }
+        },
+        {
+            title: '用药开始时间',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_time_start);
+            }
+        },
+        {
+            title: '用药结束时间',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_time_end);
+            }
+        },
+        {
+            title: '给药持续时间',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_duration_time);
+            }
+        },
+        {
+            title: '用药原因',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_cause);
+            }
+        },
+        {
+            title: '是否存在以下情况',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_situation_reason);
+            }
+        },
+        {
+            title: '对药品采取的措施',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.medication_take_steps);
+            }
+        }
+    ]
+    //相关实验室检查信息
+    var laboratory_record_columns=[
+        {
+            title: '检查项目',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.laboratory_name);
+            }
+        },
+        {
+            title: '检查日期',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.laboratory_check_date);
+            }
+        },
+        {
+            title: '结果（单位）',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.laboratory_result);
+            }
+        },
+        {
+            title: '正常值范围 (低值- 高值）',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.laboratory_normal_value);
+            }
+        }
+    ]
+    //妊娠报告有关信息
+    var gestation_record_columns=[
+        {
+            title: '父/母姓名',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.gestation_name);
+            }
+        },
+        {
+            title: '性别',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.gestation_sex);
+            }
+        },
+        {
+            title: '出生日期',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.gestation_birth_date);
+            }
+        },
+        {
+            title: '年龄',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.gestation_birth_age_date);
+            }
+        },
+        {
+            title: '身高',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.gestation_patient_age);
+            }
+        },
+        {
+            title: '体重',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.gestation_stature);
+            }
+        },
+        {
+            title: '末次月经时间',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.gestation_last_date);
+            }
+        },
+        {
+            title: '妊娠相关描述',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.gestation_related_describe);
+            }
+        }
+    ]
+    //既往用药史
+    var historyMedication_record_columns=[
+        {
+            title: '药物名称',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.historyMedication_name);
+            }
+        },
+        {
+            title: '开始日期',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.historyMedication_time_start);
+            }
+        },
+        {
+            title: '结束日期',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.historyMedication_time_end);
+            }
+        },
+        {
+            title: '治疗疾病',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.historyMedication_treat_disease);
+            }
+        }
+    ]
+    //附件
+    var attachment_record_columns=[
+        {
+            title: '类别',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                return removeNull(item.attachments_category);
+            }
+        },
+        {
+            title: '描述',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+
+                return removeNull(item.attachments_description);
+            }
+        },
+        {
+            title: '操作',
+            target: 0,
+            className: "align-middle",
+            data: function (item) {
+                var imgType=[".jpg",".jpeg",".png",".gif"]
+                // toLowerCase()
+                var see=''
+
+                
+                if(!checkNull(item.attachments_filename)){
+                    var filename=item.attachments_filename;
+                    var fileUrl=img_ipDress+filename
+                    var spit=filename.substr(filename.lastIndexOf("."),filename.length)
+                    
+                    
+                    if(!checkNull(spit) && indexof(imgType,spit.toLowerCase())){
+                       //图片
+                       see=`<a href="javascript:void(0)" onclick='showImg("${fileUrl}")'>查看</a>`
+                       
+                    }else{
+                        see='<a href="'+fileUrl+'" download="'+filename+'">查看</a>'
+                    }
+                   
+
+                }
+                
+
+                
+                return see;
+            }
+        }
+    ]
+    require(['jquery', 'main', 'layer', 'autosize', 'portal', 'dynamicline', 'selectize', 'selectize_ext'], function ($, main, layer, autosize, portal) {
+        getFormData(function(resultData){
+            $(".detailMian").find(".form-input").each(function(){
+                var $this=$(this)
+                var name=$this.attr("name")
+                var type=$this.attr("type")
+                if(!checkNull(name) && resultData[name]){
+                    var value=resultData[name]
+                    switch(name){
+                        case "reporting_unit_category":
+                            if(value=="其他"){
+                                $this.html(resultData["reporting_unit_category_other"])
+                            }else{
+                                $this.html(resultData[name])
+                            }
+                        break;
+                        case "has_past_adr":
+                            if(value=="有"){
+                                $this.html(resultData["has_past_adr_detail"])
+                            }else{
+                                $this.html(resultData[name])
+                            }
+
+                        break;
+                        case "has_family_adr":
+                            if(value=="有"){
+                                $this.html(resultData["has_family_adr_detail"])
+                            }else{
+                                $this.html(resultData[name])
+                            }
+
+                        break;
+                        case "adr_type":
+                            $this.html(resultData[name])
+                            if(value!="严重"){
+                                $(".form-input[name=adr_type_serious]").parent().attr("hidden",true)
+                            }else{
+                                $(".form-input[name=adr_type_serious]").parent().attr("hidden",false)
+                            }
+
+                        break;
+                        case "adr_result": 
+                            $this.html(resultData[name])
+                            if(value!="有后遗症"){
+                                $(".form-input[name=adr_result_sequela_manifestation]").parent().attr("hidden",true)
+                            }
+                            if(value=="有后遗症"){
+                                $(".form-input[name=adr_result_sequela_manifestation]").parent().attr("hidden",false)
+                            }
+                            if(value=="死亡"){
+                                $(".form-input[name=adr_result_death_reason]").parent().attr("hidden",false)
+                                $(".form-input[name=adr_result_death_time]").parent().attr("hidden",false)
+                                $(".form-input[name=adr_result_isautopsy]").parent().attr("hidden",false)
+                                if(resultData["adr_result_isautopsy"]=="是"){
+                                    $(".form-input[name=adr_result_autopsy_results]").parent().attr("hidden",false)
+                                }else{
+                                    $(".form-input[name=adr_result_autopsy_results]").parent().attr("hidden",true)
+                                }
+
+                            }
+                            if(value!="死亡"){
+                                $(".form-input[name=adr_result_death_reason]").parent().attr("hidden",true)
+                                $(".form-input[name=adr_result_death_time]").parent().attr("hidden",true)
+                                $(".form-input[name=adr_result_isautopsy]").parent().attr("hidden",true)
+                                $(".form-input[name=adr_result_autopsy_results]").parent().attr("hidden",true)
+                            }
+                        
+                        break;
+                        default:
+                            $this.html(resultData[name])
+                        break;
+
+                    }
+                    
+                }
+            })
+            var disease_record=resultData.disease_record?JSON.parse(resultData.disease_record):[] 
+            
+            //相关疾病信息
+            initDataTables($("#disease_record"), disease_record, {"columns": disease_record_columns, "dom": "lftip",'initComplete': function (settings, json) {
+                // $("#disease_record").addClass("layui-table ")
+            }});
+            showtemp(disease_record,"disease_record_Tmpl", "#disease_record_mobile")
+            
+            /**用药情况*/
+            var medication_record=resultData.medication_record?JSON.parse(resultData.medication_record):[] 
+            initDataTables($("#medication_record"), medication_record, {"columns": medication_record_columns, "dom": "lftip",'initComplete': function (settings, json) {
+                // $("#medication_record").addClass("layui-table ")
+            }});
+            showtemp(medication_record,"medication_record_Tmpl", "#medication_record_mobile")
+            //相关实验室检查信息
+            var laboratory_record=resultData.laboratory_record?JSON.parse(resultData.laboratory_record):[] 
+            initDataTables($("#laboratory_record"), laboratory_record, {"columns": laboratory_record_columns, "dom": "lftip",'initComplete': function (settings, json) {
+                $("#laboratory_record").addClass("layui-table ")
+            }});
+            showtemp(laboratory_record,"laboratory_record_Tmpl", "#laboratory_record_mobile")
+            //妊娠报告有关信息
+            var gestation_record=resultData.gestation_record?JSON.parse(resultData.gestation_record):[] 
+            initDataTables($("#gestation_record"), gestation_record, {"columns": gestation_record_columns, "dom": "lftip",'initComplete': function (settings, json) {
+                $("#gestation_record").addClass("layui-table ")
+            }});
+            showtemp(gestation_record,"gestation_record_Tmpl", "#gestation_record_mobile")
+            
+            //既往用药史
+            var historyMedication_record=resultData.historyMedication_record?JSON.parse(resultData.historyMedication_record):[] 
+            
+            initDataTables($("#historyMedication_record"), historyMedication_record, {"columns": historyMedication_record_columns, "dom": "lftip",'initComplete': function (settings, json) {
+                $("#historyMedication_record").addClass("layui-table ")
+            }});
+            showtemp(historyMedication_record,"historyMedication_record_Tmpl", "#historyMedication_record_mobile")
+            //附件
+            var attachment_record=resultData.attachment?JSON.parse(resultData.attachment):[] 
+            initDataTables($("#attachment_record"), attachment_record, {"columns": attachment_record_columns, "dom": "lftip",'initComplete': function (settings, json) {
+                $("#attachment_record").addClass("layui-table ")
+            }});
+            attachment_record.map(function(item){
+                var imgType=[".jpg",".jpeg",".png",".gif"]
+                var see=''
+                if(!checkNull(item.attachments_filename)){
+                    var filename=item.attachments_filename;
+                    var fileUrl=img_ipDress+filename
+                    var spit=filename.substr(filename.lastIndexOf("."),filename.length)
+                    
+                    if(!checkNull(spit) && indexof(imgType,spit.toLowerCase())){
+                       //图片
+                       see=`<a href="javascript:void(0)" onclick='showImg("${fileUrl}")'>查看</a>`
+                       
+                    }else{
+                        see='<a href="'+fileUrl+'" download="'+filename+'">查看</a>'
+                    }
+                    item.see=see
+                }
+            })
+            showtemp(attachment_record,"attachment_record_Tmpl", "#attachment_record_mobile")
+        })
+        $(".table-stack").each(function(){
+            var values=$(this).find(".data_table tbody").html()?$(this).find(".data_table tbody").html().replace(/(^\s*)|(\s*$)/g, ""):"";
+            var thLength=$(this).find(".data_table th").length;
+            if(values==""){
+                $(this).find(".data_table").addClass("nodata-table")
+                $(this).find("tbody").html('<tr><td colspan="'+thLength+'"><div class="noData ">没有数据</div></td></tr> ')
+            }
+        })
+    })
+     //获取默认数据
+    function getFormData(callBack){
+        var id=geturl("id");
+        ajaxFns({id:id},function(res){
+            if(res.data && res.data.length>0){
+                resultData=res.data[0];
+                callBack(resultData)
+            }
+        },ipDress+"/des/report")
+    }
+    function showImg(src){
+        var srcjson={
+            "title": "", //相册标题
+            "id": 1, //相册id
+            "start": 0, //初始显示的图片序号，默认0
+            "data": [   //相册包含的图片，数组格式
+                {
+                "alt": "",
+                "pid": 0, //图片id
+                "src": src, //原图地址
+                "thumb": src //缩略图地址
+                }
+            ]
+        }
+        layer.photos({
+            photos: srcjson
+        });
+    }
+</script>
+<!--加载相关疾病信息模板-->
+<script type="text/html" id="disease_record_Tmpl">
+    {{each list as value i}}
+        <div class="am-card last_noborder">
+            <!-- <div class="am-card-header">{{value.disease_name}}</div>      -->
+            <div class="am-card-body">
+                <div class="am-list">
+                    <div class="am-list-body">
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">疾病名称:</div>
+                                <div class="am-list-extra tl">{{value.disease_name}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">用药开始时间:</div>
+                                <div class="am-list-extra tl">{{value.disease_time_start}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-6">用药结束时间:</div>
+                                    <div class="am-list-extra tl">{{value.disease_time_end}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-12">报告当时疾病是否仍存在:</div>
+                                    <div class="am-list-extra tl">{{value.disease_is_exist}}</div>
+                                </div>
+                        </div> 
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="am-whitespace am-whitespace-md"></div>
+    {{/each}}
+</script>
+<!--加载用药信息模板-->
+<script type="text/html" id="medication_record_Tmpl">
+    {{each list as value i}}
+        <div class="am-card last_noborder">
+            <!-- <div class="am-card-header">{{value.medication_drug_id}}</div>      -->
+            <div class="am-card-body">
+                <div class="am-list">
+                    <div class="am-list-body">
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">药品:</div>
+                                <div class="am-list-extra tl">{{value.medication_drug_id}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">类别:</div>
+                                <div class="am-list-extra tl">{{value.medication_category}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">批准文号:</div>
+                                <div class="am-list-extra tl">{{value.medication_license_number}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label ">通用名称/剂型/规格:</div>
+                                    <div class="am-list-extra tl">{{value.medication_common_name}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-12">失效日期:</div>
+                                    <div class="am-list-extra tl">{{value.disease_medication_expiry_date}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-12">上市许可持有人:</div>
+                                    <div class="am-list-extra tl">{{value.medication_Licensing}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-12">生产批号:</div>
+                                    <div class="am-list-extra tl">{{value.medication_batch_number}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-12">用法用量:</div>
+                                <div class="am-list-extra tl">{{value.medication_dosage}}</div>
+                            </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-12">用药开始时间:</div>
+                                <div class="am-list-extra tl">{{value.medication_time_start}}</div>
+                            </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-12">用药结束时间:</div>
+                                <div class="am-list-extra tl">{{value.medication_time_end}}</div>
+                            </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-12">给药持续时间:</div>
+                                <div class="am-list-extra tl">{{value.medication_duration_time}}</div>
+                            </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-12">用药原因:</div>
+                                    <div class="am-list-extra tl">{{value.medication_cause}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-12">是否存在以下情况:</div>
+                                    <div class="am-list-extra tl">{{value.medication_situation_reason}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label am-input-label-12">对药品采取的措施:</div>
+                                    <div class="am-list-extra tl">{{value.medication_take_steps}}</div>
+                                </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="am-whitespace am-whitespace-md"></div>
+    {{/each}}
+</script>
+<!-- 相关实验室模板 -->
+<script type="text/html" id="laboratory_record_Tmpl">
+    {{each list as value i}}
+        <div class="am-card last_noborder">
+            <!-- <div class="am-card-header">{{value.medication_drug_id}}</div>      -->
+            <div class="am-card-body">
+                <div class="am-list">
+                    <div class="am-list-body">
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">检查项目:</div>
+                                <div class="am-list-extra tl">{{value.laboratory_name}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">检查日期:</div>
+                                <div class="am-list-extra tl">{{value.laboratory_check_date}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">结果（单位）:</div>
+                                <div class="am-list-extra tl">{{value.laboratory_result}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label ">正常值范围 (低值- 高值）:</div>
+                                    <div class="am-list-extra tl">{{value.laboratory_normal_value}}</div>
+                                </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="am-whitespace am-whitespace-md"></div>
+    {{/each}}
+</script>
+<!-- 妊娠报告有关信息 -->
+<script type="text/html" id="gestation_record_Tmpl">
+    {{each list as value i}}
+        <div class="am-card last_noborder">
+            <!-- <div class="am-card-header">{{value.medication_drug_id}}</div>      -->
+            <div class="am-card-body">
+                <div class="am-list">
+                    <div class="am-list-body">
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">父/母姓名:</div>
+                                <div class="am-list-extra tl">{{value.gestation_name}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">性别:</div>
+                                <div class="am-list-extra tl">{{value.gestation_sex}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">出生日期:</div>
+                                <div class="am-list-extra tl">{{value.gestation_birth_date}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label ">年龄:</div>
+                                    <div class="am-list-extra tl">{{value.gestation_birth_age_date}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label ">身高:</div>
+                                    <div class="am-list-extra tl">{{value.gestation_patient_age}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label ">体重:</div>
+                                    <div class="am-list-extra tl">{{value.gestation_stature}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label ">末次月经时间:</div>
+                                    <div class="am-list-extra tl">{{value.gestation_last_date}}</div>
+                                </div>
+                        </div> 
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label ">妊娠相关描述:</div>
+                                    <div class="am-list-extra tl">{{value.gestation_related_describe}}</div>
+                                </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="am-whitespace am-whitespace-md"></div>
+    {{/each}}
+</script>
+<!-- 既往用药史 -->
+<script type="text/html" id="historyMedication_record_Tmpl">
+    {{each list as value i}}
+        <div class="am-card last_noborder">
+            <!-- <div class="am-card-header">{{value.medication_drug_id}}</div>      -->
+            <div class="am-card-body">
+                <div class="am-list">
+                    <div class="am-list-body">
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">药物名称':</div>
+                                <div class="am-list-extra tl">{{value.historyMedication_name}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">开始日期:</div>
+                                <div class="am-list-extra tl">{{value.historyMedication_time_start}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">结束日期:</div>
+                                <div class="am-list-extra tl">{{value.historyMedication_time_end}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                                <div class="am-list-line">
+                                    <div class="am-input-label ">治疗疾病:</div>
+                                    <div class="am-list-extra tl">{{value.historyMedication_treat_disease}}</div>
+                                </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="am-whitespace am-whitespace-md"></div>
+    {{/each}}
+</script>
+<!-- 附件 -->
+<script type="text/html" id="attachment_record_Tmpl">
+    {{each list as value i}}
+        <div class="am-card last_noborder">
+            <!-- <div class="am-card-header">{{value.medication_drug_id}}</div>      -->
+            <div class="am-card-body">
+                <div class="am-list">
+                    <div class="am-list-body">
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">类别:</div>
+                                <div class="am-list-extra tl">{{value.attachments_category}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-6">描述:</div>
+                                <div class="am-list-extra tl">{{value.attachments_description}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ant-card-actions">
+                    <div style="height:100%; line-height:40px; color:#888; text-align:right; padding-right:2rem">
+                       {{#value.see}}
+                    </div>
+            </div>
+        </div>
+        <div class="am-whitespace am-whitespace-md"></div>
+    {{/each}}
+</script>
+</body>
+</html>

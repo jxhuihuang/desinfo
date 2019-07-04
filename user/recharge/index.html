@@ -1,0 +1,91 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+
+    <title>药品不良反应上报系统 - 在线充值</title>
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/antd-mobile.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
+    <link rel="stylesheet" href="../../static/css/header.min.css" />
+	
+</head>
+<body ontouchstart>
+    <!--# include file="/include/headers.html" -->
+
+    <main role="main" class="container align-items-center justify-content-center d-flex ">
+        <form class="input-list" method="post" action="./wechat"  style="overflow: hidden;width:100%;">
+            <input type="hidden" name="csrf_token" value="ImNlOTA0M2QyNmUxM2JiNWVmZWY4YjUzOWRhZTcwZjM0NzZhNjRjZjQi.Dv4i5w.-Vqb0P0z5Y22Nszn587IepdWY6I"/>
+            <div class="form-group row amount-form">
+                <label class="layui-col-sm4  col-md-2   col-form-label amount-label">当前余额</label>
+                <div class="layui-col-sm8 col-md-10   amount-val">
+                    <label class="col-form-labe" ><em ></em> 元</label>
+                </div>
+            </div>
+            <div class="hr1_r"></div>
+            <div class="form-group  row  required plr0_r">
+                <label class="col-md-2 col-form-label amount-label  amount-values">充值金额</label>
+                <div class="col-md-10 amount-input plr1_r">
+                    <input class="form-control" id="amount" name="amount" placeholder="请输入充值金额" required type="text" value="" oninput="checkNaN(event)">
+                </div>
+            </div>
+            <input class="btn btn-primary btn-block" id="submit" name="submit" type="submit" value="提交">
+        </form>
+    </main>
+    <!--# include file="/include/footers.html" -->
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
+        // 自适应高度
+        autosize($('textarea'));
+        $(function () {
+            main.fastClick();
+        });
+    });
+</script>
+<script>
+    require(['jquery', 'main', 'selectize', 'layer', 'portal', 'selectize_ext'], function($, main, selectize, layer, portal){
+        getFormData()
+    })
+    /**获取用户数据*/
+    function getFormData(callBack){
+        callBack=callBack?callBack:function(){};
+        var userInfo=JSON.parse(localStorage.getItem("userInfo"));
+        ajaxFns({username:userInfo.username},function(res){
+            if(res.data && res.data.length>0){
+                var resultData=res.data[0];
+                userData=res.data[0];
+                
+                if(resultData.account){
+                    $(".amount-val em").html(resultData.account.balance)
+                    resultData.account_balance=resultData.account.balance
+                }
+                // resultData.account_balance=resultData.account_balance=="0"?"0.00":resultData.account_balance;
+                callBack(resultData)
+            }
+        },ipDress+"/des/user")
+    }
+</script>
+</body>
+</html>

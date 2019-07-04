@@ -1,0 +1,93 @@
+<link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+<div class="header ">
+    <div class="container">
+        <div class="d-flex">
+            <a class="header-brand" href="/admin/">
+                <img src="" class="header-brand-img"><span class="cms_name"></span>
+            </a>
+            <div class="d-flex order-lg-2 ml-auto">
+                <div class="nav-item d-none d-md-flex">
+                    <a href="/admin/" class="btn btn-sm btn-outline-primary" target="_blank">管理首页</a>
+                </div>
+                <div class="dropdown">
+                    <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+                        <span class="avatar" ></span>
+                        <span class="ml-2 d-none d-lg-block">
+                    <span class="text-default"></span>
+                    <small class="text-muted d-block mt-1 user_department"></small>
+                    </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" href="/admin/user/profile">
+                            <i class="dropdown-icon fe fe-settings"></i> 设置
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item log-out" href="/admin/auth/logout">  <!--   /admin/auth/logout  -->
+                            <i class="dropdown-icon fe fe-log-out"></i> 登出
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+                <span class="header-toggler-icon"></span>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="slitIcon"><i class="myIconfont">&#xe82a;</i></div>
+<script type="text/javascript" src="/static/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/static/plugins/template/template.js"></script>
+<script type="text/javascript" src="/static/plugins/layer-3.1.1/layer.js"></script>
+<script type="text/javascript" src="/static/js/tool.js"></script>
+<script>
+    
+    $(function(){
+        getcmsData()
+        
+        if(localStorage.getItem("userInfo")){
+            var userInfo=JSON.parse(localStorage.getItem("userInfo"));
+            $(".text-default").html(userInfo.name?userInfo.name:"");
+            var avatar=userInfo.avatar?ipDress+userInfo.avatar:img_ipDress+default_avatar;
+            
+            $(".header .avatar").css("background-image","url("+avatar+")")
+            
+        }
+
+        $(".log-out").on("click",function(){
+            var e=window.event||event; //消除浏览器差异 
+            e.preventDefault();
+            ajaxFns({},function(res){
+                if(res.resultCode=="0"){
+                    layer.msg("用户登出成功",{time: 1000, icon: 1},function(){
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("userInfo")
+                        window.location.href="../../../admin/auth/login"
+                    })
+                }
+            },ipDress+"/des/logout")
+        })
+    })
+    
+
+    
+    function getcmsData(){
+        ajaxFns({},function(res){
+            if(res.data && res.data.length>0){
+                var cmsData=res.data[0];
+                var logovag=cmsData.logo?img_ipDress+cmsData.logo:"/uploads/default/logo.svg"
+                $(".cms_name").html(cmsData.name)
+                $(".header-brand img").attr("src",logovag).attr("alt","logo")
+            }
+        },ipDress+"/des/admin/systems")
+    }
+    function getCurrentUrl(){
+        var url=currentUrl.replace(ipDress,"");
+        if(url.indexOf("?")){
+            url=url.split("?")[0]
+        }
+        if(url.lastIndexOf("/")==url.length-1){
+            url=url.substring(0,url.lastIndexOf("/"))
+        }
+        return url
+    }
+</script>

@@ -1,0 +1,53 @@
+.acticle_banner{
+   
+    border-bottom: 1px solid #DDD;
+    
+
+}
+.acticle_main{
+    background: #FFF;
+    padding: 0 10px;
+}
+.acticle_banner span{
+    position: relative;
+    display: inline-block;
+    height: inherit;
+    padding: 15px 15px;
+}
+
+.acticle_banner span::after{
+    content: '';
+    height: 1px;
+    background: #107bfd;
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+
+}
+
+.acticle_title {
+    text-align: center;
+    font-size: 18px;
+    font-family: "Microsoft YaHei";
+    padding: 30px 0 10px 0;
+}
+.acticle_em {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+.acticle_content{
+    line-height: 1.5;
+    font-size: 14px;
+    padding: 10px;
+    min-height: 300px;
+}
+.acticle_footer{
+    text-align: left;
+    padding: 10px;
+}
+.acticle_date{
+
+}

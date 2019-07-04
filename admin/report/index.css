@@ -1,0 +1,34 @@
+#medication_record-fieldset_table{
+    overflow-x: scroll!important;
+}
+#medication_record-fieldset{
+    
+    overflow-y: visible!important;
+   
+    min-height: 120px;
+    padding: 10px;
+}
+#medication_record-fieldset table{
+    white-space: nowrap;
+}
+
+#medication_record-fieldset th{
+    min-width: 200px;
+}
+
+tr th:first-child{
+    padding-left: 10px!important;
+}
+
+.operating{
+    min-width: 100px!important;
+}
+
+.fieldset_files  {
+ display: inline-block;
+ vertical-align: middle;
+}
+
+.file_input{
+    flex: .9;
+}

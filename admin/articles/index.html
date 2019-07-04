@@ -1,0 +1,214 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+
+    <title>药品不良反应上报系统管理后台 - 通知公告</title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+
+	
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-main">
+        <!--# include file="/admin/include/header.html" -->
+        <div class="row contentMain">
+            <div class="sider">
+                <!--# include file="/admin/include/sider.html" -->
+            </div>
+            <div class="container my-3 my-md-5">
+                <div class="page-header">
+                    <h1 class="page-title">通知公告</h1>
+                </div>
+                <div class="row mb10">
+                    <div class="col-10">
+                        <div class="searchBox">
+                            <input type="search" class="form-search" id="searchVal" data-key="content" placeholder="请输入搜索的通知公告标题"  tabindex="1">
+                            <button class="search-btn" onclick="toSearch()">搜索</button>
+                        </div>
+                    </div>
+                    <div class="col-2 btn-container">
+                        <span class="addbtn_container"></span>
+                    </div>
+                </div>
+                <div class="row row-cards row-dect">
+                    <div class="col-12">
+                        <div class="card">
+                            <!-- <div class="card-header"></div> -->
+                            <div class="table-responsive">
+                                <table class="table table-hover table-outline table-vcenter text-nowrap card-table"></table>
+                            </div>
+                            <!-- <div class="card-footer">
+                                <div class="d-flex align-items-center justify-content-center"></div>
+                            </div> -->
+                        </div>
+                        <div id="pages"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--# include file="/admin/include/footer.html" --> 
+
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script type="text/javascript" src="/static/js/admin.min.js"></script>
+<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../static/'
+    })
+    require(['autosize', 'layer_ext', 'tool', 'pages'], function(autosize){
+        
+            
+        
+
+        // 自适应高度
+        autosize($('textarea'));
+    });
+</script>
+
+<script>
+    var currentpage=1
+    var linePages=10;
+    var prmissions=[]; //权限列表
+    var columns = [
+        
+        {
+            title: '标题',
+            target: 1,
+            data: function (item) {
+                return item.title;
+            }
+        },
+        {
+            title: '分类',
+            target: 3,
+            data: function (item) {
+              
+                return item.diclist.name;
+            }
+        },
+        
+        {
+            title: '状态',
+            target: 6,
+            className: "text-center",
+            data: function (item) {
+                return item.active ? '<span class="status-icon bg-success"></span>' : '<span class="status-icon bg-danger"></span>';
+            }
+        },
+        {
+            title: '',
+            target: 7,
+            className: "text-right",
+            data: function (item) {
+                var operations ='';
+                if(indexof(prmissions, "edit") || indexof(prmissions, "delete")){
+                    operations += `
+                    <div class="item-action dropdown">
+                        <a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            ${indexof(prmissions, "edit")?`<a href="/admin/articles/edit?id=` + item.id + `" class="dropdown-item" target="_blank"><i class="dropdown-icon fe fe-edit-2"></i> 编辑</a>`:''}
+                            ${indexof(prmissions, "edit") && indexof(prmissions, "delete")? `<div class="dropdown-divider"></div>`:''}
+                            ${indexof(prmissions, "delete")? `<a href="javascript:void(0)" class="dropdown-item" onClick="removes(` +item.id+ `)"><i class="dropdown-icon fe fe-trash"></i> 删除</a>`:''}
+                        </div>
+                    </div>`
+
+                }
+                return operations;
+            }
+        }
+    ];
+    requirejs(['jquery', 'main', 'admin'], function($, main, admin) {
+        ajxaData(1)
+        $("#pages").pageclick(function(page){
+            currentpage=page;
+            ajxaData(page)
+        })
+    });
+    function ajxaData(page){
+        page=page?page:currentpage;
+        var searchval=$("#searchVal").val();
+        var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+        var objs={page:page,size:linePages}
+        searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+        ajaxFns(objs,function(res){
+            if(res.success=="true"){
+                var datas=res.data;
+                const counts=res.recordsFiltered;
+                prmissions=res.prmissions;
+                indexof(prmissions,"add")? $(".btn-container .addbtn_container").html('<a class="addBtn icon" href="/admin/articles/add"><i class="fe fe-plus"></i>新增</a>'):"";
+                var newcolumns=setTablepers(columns, prmissions, "edit,delete") /***设置表格操作栏，根据权限判断是否显示 */
+                initDataTables($(".table"), datas, {"columns": newcolumns, "dom": "lftip"});
+                pagination(page,counts)
+               
+            } 
+        },ipDress+"/des/admin/articles",{erro:function(){
+            initDataTables($(".table"), "数据加载失败", {"columns": columns, "dom": "lftip"});
+        }})
+    }
+    function pagination(page,counts){
+        counts=counts?counts:0;
+        $("#pages").pages({
+            counts:counts,
+            currentPage:page,
+            linePages:linePages,
+            showCounts:true,
+        });
+    }
+    function removes(id){
+        layerConfirm('是否确认删除?',function(index){
+        var datas={_methods:"delete",id:id};
+        ajaxFns(datas,function(res){
+                if(res.success=="true"){
+                    layer.close(index);
+                    layer.msg("删除成功",{icon:1},function(){
+                        ajxaData()
+                    })
+                    
+                } else{
+                    layer.close(index);
+                    layer.msg(res.resultMsg,{icon:2})
+                }
+            },ipDress+"/des/admin/articles")
+        })
+
+    }
+    function toSearch(){
+        currentpage=1
+        ajxaData(1,linePages)
+    }
+</script>
+
+</body>
+</html>

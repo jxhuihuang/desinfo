@@ -1,0 +1,45 @@
+body, html{
+    width: 100%;
+    height: 100%;
+}
+.erro_containers{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: table;
+    vertical-align: middle;
+}
+.erro_main{
+    display: table-cell;
+    vertical-align: middle;
+}
+.erro_icon .myIconfont{
+   
+   
+    line-height: 15rem;
+    font-size: 15rem;
+    color: #666;
+}
+.erro_icon1 .myIconfont{
+   line-height: 10rem;
+   font-size: 10rem;
+   color: #666;
+}
+.lead{
+    font-size: 18px;
+    font-weight: 300;
+    color: #999;
+    margin-top:20px; 
+}
+/* 屏幕小于等于768 */
+@media Screen  and (max-width:768px){
+    .erro_icon .myIconfont{
+        font-size: 12rem;
+        color: #666;
+    }
+    .lead{
+        font-size: 1rem;
+        font-weight: 300;
+        color: #999;
+    }
+}

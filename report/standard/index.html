@@ -1,0 +1,93 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+
+    <title>药品不良反应上报系统 - 填写规范</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/antd-mobile.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
+    <link rel="stylesheet" href="../../static/css/header.min.css" />
+    <link rel="stylesheet" href="./index.css" />
+</head>
+<body ontouchstart>
+     <!--# include file="/include/headers.html" -->
+    <main role="main" class="container ">
+        <h4 class=" mb-3 text-center list-tle">不良反应/事件过程描述填写要求</h4>
+        <div class=" table-stack">
+            <table class="table table-sm table-bordered table-vcenter layui-table layui-table normal-table" id="stanTable">
+                <col width="15%"/>
+                <col width="20%"/>
+                <col width="65%"/>
+                <tr>
+                    <td class="align-middle text-center td-label">套用格式</td>
+                    <td class="align-middle" colspan="2">何时出现何不良反应，何时停药，采取何措施，何时不良反应治愈或好转。</td>
+                </tr>
+                <tr>
+                    <td class="align-middle text-center td-label" rowspan="4">要求</td>
+                    <td class="align-middle" colspan="2">以时间为线索，记录不良反应的发生、发展及处理过程，为关联性评价提供充分的信息。做到“三个时间、三个项目、两个尽可能”。</td>
+                </tr>
+                <tr>
+                    <td class="align-middle text-center td-label">三个时间</td>
+                    <td class="align-middle">
+                        不良反应发生的时间。<br />
+                        采取措施干预不良反应的时间。<br />
+                        不良反应终结的时间。
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle text-center td-label">三个项目</td>
+                    <td class="align-middle">
+                        事件初始发生时的相关症状、体征和相关检查。<br />
+                        动态变化的相关症状、体征和相关检查。<br />
+                        采取的干预措施后的症状、体征和相关检查。
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle text-center td-label">两个尽可能</td>
+                    <td class="align-middle">不良反应/事件的表现填写时要尽可能明确、具体，有关的辅助检查结果要尽可能明确填写。</td>
+                </tr>
+            </table>
+        </div>    
+        <p class="lead mlr1_r " >点击 <a href="../../report/add/index.html"><strong>这里</strong></a> 上报。</p>
+    </main>
+    <!--# include file="/include/footers.html" -->
+    <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+    <script type="text/javascript" src="../../static/js/main.min.js"></script>
+    <script type="text/javascript" src="../../static/js/portal.min.js"></script>
+    <script>
+        require.config({
+            baseUrl: '../../static/'
+        })
+        require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
+            // 自适应高度
+            autosize($('textarea'));
+            $(function () {
+                main.fastClick();
+            });
+        });
+
+    </script>
+    <script>
+        require(['jquery', 'main', 'selectize', 'layer', 'portal', 'selectize_ext'], function($, main, selectize, layer, portal){
+            // $(".navbar-toggler").on("click",function(){
+            //     portal.navbarToggler()
+            // })
+        })
+    </script>
+</body>
+</html>

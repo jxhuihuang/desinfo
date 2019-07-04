@@ -1,0 +1,317 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+
+    <title>药品不良反应上报系统管理后台 - 药品管理 </title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+
+	
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-main">
+        <!--# include file="/admin/include/header.html" -->
+        <div class="row contentMain">
+            <div class="sider">
+                <!--# include file="/admin/include/sider.html" -->
+            </div>
+            <div class="container my-3 my-md-5">
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" method="POST" enctype="multipart/form-data" onsubmit="return submits(event)">
+                            <input type="hidden" name="csrf_token" value="IjE5Y2U3OWY1ZTc5ZjhjODAwNDEyYjZjYWJjOWMzYjFjM2E2MThiNWUi.XLRCAw.W1792vowX06G0DY0DAiD6TOlQU4"/>
+                            <div class="card-header">
+                                <h3 class="card-title">编辑</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="product_name">产品名称<span class="form-required">*</span></label>
+            
+
+                                            <input class="form-control" id="product_name" name="product_name" type="text" value="" required >
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="english_name">英文名称</label>
+            
+
+                                            <input class="form-control" id="english_name" name="english_name" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="trade_name">商品名</label>
+            
+
+                                            <input class="form-control" id="trade_name" name="trade_name" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="approval_number">批准文号</label>
+            
+
+                                            <input class="form-control" id="approval_number" name="approval_number" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="dosage_form">剂型</label>
+            
+
+                                            <input class="form-control" id="dosage_form" name="dosage_form" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="specification">规格</label>
+            
+
+                                            <input class="form-control" id="specification" name="specification" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="original_approval_number">原批准文号</label>
+            
+
+                                            <input class="form-control" id="original_approval_number" name="original_approval_number" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="product_category">产品类别</label>
+            
+
+                                            <input class="form-control" id="product_category" name="product_category" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="approval_date">批准日期</label>
+            
+
+                                            <input class="form-control date" id="approval_date" name="approval_date" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="production_unit">生产单位</label>
+            
+
+                                            <input class="form-control" id="production_unit" name="production_unit" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="manufacturer_id">生产厂家</label>
+            
+                                            <select class="form-control" id="manufacturer_id" name="manufacturer_id"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="production_address">生产地址</label>
+            
+
+                                            <textarea class="form-control" id="production_address" name="production_address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="drug_standard_code">药品本位码</label>
+            
+
+                                            <input class="form-control" id="drug_standard_code" name="drug_standard_code" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="drug_standard_code_remark">药品本位码备注</label>
+            
+
+                                            <textarea class="form-control" id="drug_standard_code_remark" name="drug_standard_code_remark"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="instruction_manual">说明书</label>
+            
+
+                                            <textarea class="form-control" id="instruction_manual" name="instruction_manual"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="reward">每份奖金</label>
+            
+
+                                            <input class="form-control" id="reward" name="reward" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            
+            
+                                            <label class="form-label" for="quantity">奖励数量</label>
+            
+
+                                            <input class="form-control" id="quantity" name="quantity" type="text" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <div class="d-flex">
+                                    <button type="reset" class="btn btn-secondary">重置</button>
+                                    <input class="btn btn-primary ml-auto" id="submit" name="submit" type="submit" value="保存">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--# include file="/admin/include/footer.html" --> 
+
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="/static/js/main.min.js"></script>
+<script type="text/javascript" src="/static/js/admin.min.js"></script>
+<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../../static/'
+    })
+    require(['autosize', 'layer_ext', 'tool'], function(autosize){
+        
+            
+        
+
+        // 自适应高度
+        autosize($('textarea'));
+    });
+</script>
+
+    <script>
+        var companyData=[];
+        require(['jquery', 'main', 'selectize', 'selectize_ext'], function ($, main) {
+            
+             /**获取厂家数据**/
+            
+            $(function(){
+                main.initDatetimePicker($(".date"));
+                selectizes($("#manufacturer_id"),{options:[], valueField:"id", labelField:"company_name", loadUrl:ipDress+"/des/admin/manufacturer"}) 
+            })
+             
+            
+            $("#manufacturer_ids").change(function () {
+                var value=$(this).val();
+                if(checkNull(value)){
+                    $("#production_address").val("")
+                }else{
+                    companyData.map(function(obj){
+                        if(obj.id==value){
+                            $("#production_address").val(obj.production_address)
+                        }
+                    })
+                }
+            })
+        });
+        function getmanufacturerData(query,callback){
+            callback=callback?callback:function(){}
+            var obj={}
+            if(!checkNull(query)){
+                obj.company_name="%"+query+"%"
+            }
+            ajaxFns(obj,function(res){
+                if(res.success=="true"){
+                    var datas=res.data;
+                    companyData=datas;
+                    callback(datas)
+                } 
+            },ipDress+"/des/admin/manufacturer")
+        }
+
+        function submits(event){
+            var e=window.event||event; //消除浏览器差异
+            e.preventDefault();
+            var datas=serializeArray("form.card") //序列化表单;;
+            datas._methods="insert";
+            ajaxFns(datas,function(res){
+                if(res.success=="true"){
+                    layer.msg("新增成功",{icon:1},function(){
+                        window.location.href="/admin/drug/"
+                    })
+                }
+            },ipDress+"/des/admin/drug")
+        }
+    </script>
+
+</body>
+</html>

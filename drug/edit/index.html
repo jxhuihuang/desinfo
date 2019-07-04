@@ -1,0 +1,181 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+
+    <title>药品不良反应上报系统 - 编辑药品</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/selectize.js-0.12.6/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/antd-mobile.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
+    <link rel="stylesheet" href="../../static/css/header.min.css" />
+    <link rel="stylesheet" href="../index.css" />
+    <style>
+        /* 屏幕大于等于768 */
+        @media Screen  and (min-width:768px){
+            .form-group label{
+                margin-bottom: 5px;
+            }
+        }
+        /* 屏幕小于等于768 */
+        @media Screen  and (max-width:768px){
+            .textarea-tle{
+                display: block;
+                width: 100%;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+<body ontouchstart  class="add-drug">
+    <!--# include file="/include/headers.html" -->
+    <main role="main" class="container">
+        <form method="post" enctype="multipart/form-data" class="cards"  onsubmit="return submits(event)">
+            <input type="hidden" name="csrf_token" value="IjY3MjU3M2NiMWU2YzliMWQ3ZjdmMjIyOGNkOWZhYTE1ZGY3OTBhZTYi.Dx27vA.QFNzIDisxglPWrMyVmhN5K5SkCo"/>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-3">
+                    <label for="product_name">产品名称</label>
+                    <input class="form-control" id="product_name" name="product_name" required type="text" value="">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label for="english_name">英文名称</label>
+                    <input class="form-control" id="english_name" name="english_name" type="text" value="">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label for="trade_name">商品名</label>
+                    <input class="form-control" id="trade_name" name="trade_name" type="text" value="">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-3">
+                    <label for="dosage_form">剂型</label>
+                    <input class="form-control" id="dosage_form" name="dosage_form" type="text" value="">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label for="specification">规格</label>
+                    <input class="form-control" id="specification" name="specification" type="text" value="">
+                </div>
+                <div class="form-group col-md-4 mb-3">
+                    <label for="product_category">产品类别</label>
+                    <input class="form-control" id="product_category" name="product_category" type="text" value="">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="approval_number">批准文号</label>
+                    <input class="form-control" id="approval_number" name="approval_number" required type="text" value="">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="original_approval_number">原批准文号</label>
+                    <input class="form-control" id="original_approval_number" name="original_approval_number" type="text" value="">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="approval_date">批准日期</label>
+                    <input class="form-control" id="approval_date" name="approval_date" type="date" value="">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="drug_standard_code">药品本位码</label>
+                    <input class="form-control" id="drug_standard_code" name="drug_standard_code" type="text" value="">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-3 ">
+                    <label for="instruction_manual" class="textarea-tle" >说明书</label>
+                    <textarea class="form-control" id="instruction_manual" name="instruction_manual">
+                       
+                    </textarea>
+                </div>
+                <div class="form-group col-md-12 mb-3">
+                    <label for="drug_standard_code_remark" class="textarea-tle" >药品本位码备注</label>
+                    <textarea class="form-control" id="drug_standard_code_remark" name="drug_standard_code_remark"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="reward">每份奖金</label>
+                    <input class="form-control" id="reward" name="reward" type="text" value="">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="quantity">奖励数量</label>
+                    <input class="form-control" id="quantity" name="quantity" type="text" value="">
+                </div>
+            </div>
+            <input class="btn btn-primary" id="submit" name="submit" type="submit" value="保存">
+        </form>
+    </main>
+    <!--# include file="/include/footers.html" -->
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="../../static/js/main.min.js"></script>
+<script type="text/javascript" src="../../static/js/portal.min.js"></script>
+<script>
+    require.config({
+        baseUrl: '../../static/'
+    })
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
+        $(function () {
+            main.fastClick();
+        });
+    });
+</script>
+<script>
+    require(['jquery', 'main', 'layer', 'autosize', 'portal', 'dynamicline', 'selectize', 'selectize_ext'], function ($, main, layer, autosize, portal) {
+        getData(function(){
+            formSetValue(".cards",resultData)
+            // 自适应高度
+            autosize($('textarea'));
+            initDatetimePicker($("#approval_date"),{
+                defaultDate:resultData.approval_date,
+                maxDate:new Date(),
+            });
+        })
+            
+        
+    });
+    
+    /***获取默认数据**/
+    function getData(callBack){
+        callBack=callBack?callBack:function(){};
+        var id=geturl("id");
+        ajaxFns({id:id},function(res){
+            if(res.data && res.data.length>0){
+                resultData=res.data[0];
+                callBack(resultData)
+            }
+        },ipDress+"/des/drug")
+
+    }
+    /**提交代码**/
+    function submits(event){
+        var e=window.event||event; //消除浏览器差异
+        e.preventDefault();
+        var id=geturl("id");
+        var datas=serializeArray("form.cards") //序列化表单;
+        datas.id=id;
+        datas._methods="updata";
+        ajaxFns(datas,function(res){
+            if(res.success=="true"){
+                layer.msg("修改成功",{icon:1})
+            }
+        },ipDress+"/des/drug")
+    }
+</script>
+</body>
+</html>
