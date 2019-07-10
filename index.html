@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="./static/css/portal.min.css" />
     <link rel="stylesheet" href="./static/css/header.min.css" />
     <link rel="stylesheet" href="./static/css/index.css" />
+    <script type="text/javascript" src="/static/plugins/template/template.js"></script>
 </head>
 <body ontouchstart> 
     <!--# include file="/include/headers.html" -->
@@ -56,20 +57,10 @@
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <!-- <script type="text/javascript" src="./static/plugins/requirejs-2.3.5/require.min.js"></script> -->
 <script type="text/javascript" src="./static/js/main.min.js"></script>
-<script type="text/javascript" src="./static/js/portal.min.js"></script>
+
 
 <script>
-    require.config({
-        baseUrl: 'static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'pages'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
-        $(function () {
-            main.fastClick();
-            // mobile_web()
-        });
-    });
+   
 </script>
 
 <script>
@@ -122,27 +113,11 @@
             }
         }
     ];
-    requirejs(['jquery', 'main','autosize', 'portal'], function($, main,autosize, portal) {
-        
-
-        // main.initDataTables(
-        //     $("#drug"),
-        //     "/des/drug",
-        //     {
-        //         "columns": drug_columns,
-        //         'dom': 'ftpr',
-        //         'initComplete': function (settings, json) {
-        //             $(".dataTable").addClass("layui-table ")
-        //             $(".pagination").addClass("justify-content-center");
-        //             /*手机端加载drug数据*/
-        //             var jsonData=json.data?json.data:[];
-        //             if(jsonData.length==0){
-        //                 $(".pagination").hide();
-        //             }
-        //             portal.showtemp(jsonData,"druglistTmpl", "#mobile-drug")  //加载模板
-        //         }
-        //     }
-        // );
+   
+    requirejs(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'pages', 'webheader'], function($, main,autosize, layer) {
+        $(function () {
+            main.fastClick();
+        });
         getdrupData()
         getHospitalData()
         ismobile()
@@ -158,25 +133,6 @@
         $(window).resize(function() {
             ismobile()
         });
-        // main.initDataTables(
-        //     $("#hospital"),
-        //     "./data/hospital",
-        //     {
-        //         "columns": hospital_columns,
-        //         "dom": "ftpr",
-        //         "initComplete": function (settings, json) {
-        //             $(".pagination").addClass("justify-content-center");
-        //             /*手机端加载hospital数据*/
-        //             var list="";
-        //             var jsonData=json.data?json.data:[];
-        //             if(jsonData.length==0){
-        //                 $(".pagination").hide();
-        //             }
-        //             portal.showtemp(jsonData,"hospitallistTmpl", "#mobile-hospital")
-                    
-        //         }
-        //     }
-        // );
     });
     
     function getdrupData(page){
@@ -188,7 +144,7 @@
         ajaxFns(objs,function(res){
             if(res.success=="true"){
                 var datas=res.data;
-                const counts=res.recordsFiltered;
+                var counts=res.recordsFiltered;
                 initDataTables($("#drug"), datas, {"columns": drug_columns, "dom": "lftip",'initComplete': function (settings, json) {
                     $("#drug").addClass("layui-table ")
                 }});
@@ -219,7 +175,7 @@
         ajaxFns(objs,function(res){
             if(res.success=="true"){
                 var datas=res.data;
-                const counts=res.recordsFiltered;
+                var counts=res.recordsFiltered;
                 initDataTables($("#hospital"), datas, {"columns": hospital_columns, "dom": "lftip",'initComplete': function (settings, json) {
                     $("#hospital").addClass("layui-table ")
                 }});

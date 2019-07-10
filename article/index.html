@@ -55,86 +55,62 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'pages'], function($, main, autosize, layer){
-        
-            
-        
-
-        // 自适应高度
-        autosize($('textarea'));
-        $(function () {
-            main.fastClick();
-        });
-    });
-</script>
 <script>
     var currentpage=1
     var linePages=10;
-    var columns = [
-        {
-            title: '标题',
-            target: 0,
-            className: "align-middle",
-            data: function (item) {
-                var title = '【' + item.diclist.name + '】' + item.title + '（' + eval('moment("' + item.created_at + '").' + 'format("YYYY-MM-DD HH:mm:ss")' + ';') + '）';
-                return '<a href="/article/detail?id=' + item.id + '">' + title + '</a>';
-            },
-        }
-    ];
-    requirejs(['jquery', 'main'], function($, main) {
-        
+    
+    requirejs(['jquery', 'main', 'layer', 'moment', 'layer_ext', 'bootstrap', 'pages', 'webheader'], function($, main, layer, moment) {
+        var columns = [
+            {
+                title: '标题',
+                target: 0,
+                className: "align-middle",
+                data: function (item) {
+                    var title = '【' + item.diclist.name + '】' + item.title + '（' + eval('moment("' + item.created_at + '").' + 'format("YYYY-MM-DD HH:mm:ss")' + ';') + '）';
+                    return '<a href="/article/detail?id=' + item.id + '">' + title + '</a>';
+                },
+            }
+        ];
+        $(function () {
+            main.fastClick();
+        });
         ajxaData(1)
         $("#pages").pageclick(function(page){
             currentpage=page;
             ajxaData(page)
         })
-        // main.initDataTables(
-        //     $(".table"),
-        //     "/article/data",
-        //     {
-        //         "columns": columns,
-        //         'dom': 'ftpr',
-        //         'initComplete': function (settings, json) {
-        //             $(".pagination").addClass("justify-content-center");
-        //         }
-        //     }
-        // );
-    });
-    //加载数据
-    function ajxaData(page){
-        page=page?page:currentpage;
-        var searchval=$("#searchVal").val();
-        var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
-        var objs={page:page,size:linePages}
-        searchval!=""?objs[searchkey]="%"+searchval+"%":"";
-        ajaxFns(objs,function(res){
-            if(res.success=="true"){
-                var datas=res.data;
-                const counts=res.recordsFiltered;
-                initDataTables($(".table"), datas, {"columns": columns, "dom": "lftip",'initComplete': function (settings, json) {
-                    // $(".table").addClass("layui-table ")
-                }});
+        //加载数据
+        function ajxaData(page){
+            page=page?page:currentpage;
+            var searchval=$("#searchVal").val();
+            var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+            var objs={page:page,size:linePages}
+            searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+            ajaxFns(objs,function(res){
+                if(res.success=="true"){
+                    var datas=res.data;
+                    var counts=res.recordsFiltered;
+                    initDataTables($(".table"), datas, {"columns": columns, "dom": "lftip",'initComplete': function (settings, json) {
+                        // $(".table").addClass("layui-table ")
+                    }});
 
-                pagination(page,counts)
-            } 
-        },ipDress+"/des/articles",{erro:function(){
-            initDataTables($(".table"), "数据加载失败", {"columns": columns, "dom": "lftip"});
-        }})
-    }
-    function pagination(page,counts){
-        counts=counts?counts:0;
-        $("#pages").pages({
-            counts:counts,
-            currentPage:page,
-            linePages:linePages,
-            showCounts:true,
-        });
-    }
+                    pagination(page,counts)
+                } 
+            },ipDress+"/des/articles",{erro:function(){
+                initDataTables($(".table"), "数据加载失败", {"columns": columns, "dom": "lftip"});
+            }})
+        }
+        function pagination(page,counts){
+            counts=counts?counts:0;
+            $("#pages").pages({
+                counts:counts,
+                currentPage:page,
+                linePages:linePages,
+                showCounts:true,
+            });
+        }
+    });
+    
 </script>
 
 </body>

@@ -80,9 +80,7 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
 <script>
     require.config({
         baseUrl: '../../static/'
@@ -179,7 +177,8 @@
             }
         }
     ];
-    requirejs(['jquery', 'main', 'admin'], function($, main, admin) {
+    
+    requirejs(['jquery', 'admin',  'datatables.bootstrap4', 'layer_ext', 'tool', 'pages', 'headerjs'], function($, admin) {
         
         ajxaData(1)
         $("#pages").pageclick(function(page){
@@ -196,7 +195,7 @@
             ajaxFns(objs,function(res){
                 if(res.success=="true"){
                     var datas=res.data;
-                    const counts=res.recordsFiltered;
+                    var counts=res.recordsFiltered;
                     prmissions=res.prmissions;
                     indexof(prmissions,"add")? $(".btn-container .addbtn_container").html('<a class="addBtn icon" href="/admin/dept/add"><i class="fe fe-plus"></i>新增</a>'):"";
                     var newcolumns=setTablepers(columns, prmissions, "edit,delete") /***设置表格操作栏，根据权限判断是否显示 */

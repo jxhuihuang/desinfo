@@ -57,17 +57,6 @@
                                     <div class="avatar_main">
                                         <input class="form-control-file" id="logo"   name="logo"  type="file"   data-show-preview="false"     hidden="hidden"> 
                                     </div>
-                                    <!-- <div class="col-auto">
-                                        <span class="avatar avatar-xl" style="background-image: url(/system/logo)"></span>
-                                    </div>
-                                    
-                                    <div class="col">
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="logo">Logo</label>
-                                            <input class="form-control" id="logo" name="logo" type="file">
-                                        </div>
-                                    </div> -->
                                 </div>
                             </div>
                             <div class="card-footer text-right">
@@ -89,17 +78,11 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
 <script>
     var systemData={};
     var fileObj={} //附件
-    require.config({
-        baseUrl: '../../static/'
-    })
-    require(['autosize', 'layer_ext', 'tool', 'upload'], function(autosize){
-
+    require(['autosize', 'layer_ext', 'tool', 'upload', 'headerjs'], function(autosize){
         // 自适应高度
         autosize($('textarea'));
         getSystemData(function(systemData){

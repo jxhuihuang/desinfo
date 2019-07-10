@@ -45,7 +45,7 @@
                 <div class="col-12">
                     <form class="card" method="POST" enctype="multipart/form-data" onsubmit="return submits(event)">
                         <div class="card-header">
-                            <h3 class="card-title">编辑</h3>
+                            <h3 class="card-title">新增</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
@@ -224,32 +224,21 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../../static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="../../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../../static/js/admin.min.js"></script>
-<script type="text/javascript" src="../../../static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../../static/'
-    })
-    require(['autosize', 'layer_ext'], function(autosize){
-        // 自适应高度
-        autosize($('textarea'));
-        $("#active").change(function(){
-            var checked=$(this).prop("checked")
-            if(checked){
-                $(this).val("1")
-            }else{
-                $(this).val("0")
-            }
-        })
-    });
-</script>
+<script type="text/javascript" src="../../../static/js/admin.js"></script>
 
     <script>
         var roleData=[];
         var deptData=[];
         var fileObj={} //附件
-        require(['jquery', 'main', 'selectize', 'selectize_ext', 'portal', 'tool', 'upload'], function ($, main, selectize) {
+        require(['jquery', 'admin', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'upload', 'headerjs'], function ($, admin, selectize) {
+            $("#active").change(function(){
+                var checked=$(this).prop("checked")
+                if(checked){
+                    $(this).val("1")
+                }else{
+                    $(this).val("0")
+                }
+            })
             var unit_category_data = {
                 select: {
                     field: $("select#unit_category")
@@ -398,11 +387,11 @@
             });
 
             $("select#unit_category").change(function () {
-                main.selectedShow(unit_category_data);
+                admin.selectedShow(unit_category_data);
             });
 
             $("select#career").change(function () {
-                main.selectedShow(career_data);
+                admin.selectedShow(career_data);
             });
             
 

@@ -241,31 +241,15 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../../static/'
-    })
-    require(['autosize', 'layer_ext', 'tool'], function(autosize){
-        
-            
-        
-
-        // 自适应高度
-        autosize($('textarea'));
-    });
-</script>
-
+<script type="text/javascript" src="/static/js/admin.js"></script>
     <script>
         var companyData=[];
-        require(['jquery', 'main', 'selectize', 'selectize_ext'], function ($, main) {
+        require(['jquery', 'admin', 'autosize', 'selectize', 'layer_ext', 'selectize_ext', 'headerjs'], function ($, admin, autosize) {
             
              /**获取厂家数据**/
             
             $(function(){
-                main.initDatetimePicker($(".date"));
+                admin.initDatetimePicker($(".date"));
                 selectizes($("#manufacturer_id"),{options:[], valueField:"id", labelField:"company_name", loadUrl:ipDress+"/des/admin/manufacturer"}) 
             })
              

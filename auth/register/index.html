@@ -200,25 +200,16 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap','tool', 'upload'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
-        $(function () {
-            main.fastClick();
-        });
-    });
-</script>
+
 <script>
     var deptData=[];
     var unit_categoryData=[];
     var roleData=[];
     var fileObj={};  //上传附件
-    require(['jquery', 'main', 'selectize',  'portal', 'selectize_ext'], function($, main, selectize, portal){
+    require(['jquery', 'main', 'selectize',  'layer', 'selectize_ext', 'layer_ext', 'bootstrap','tool', 'upload'], function($, main, selectize, portal, layer){
+        $(function () {
+            main.fastClick();
+        });
         var unit_category_data = {
             select: {
                 field: $("select#unit_category")

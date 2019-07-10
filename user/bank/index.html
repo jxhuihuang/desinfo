@@ -59,23 +59,13 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
-        $(function () {
-            main.fastClick();
-        });
-    });
-</script>
 
 <script>
     var blankData={}
-    require(['jquery', 'main', 'selectize', 'layer', 'portal', 'selectize_ext'], function($, main, selectize, layer, portal){
+    require(['jquery', 'main', 'selectize', 'layer', 'layer_ext', 'selectize_ext', 'bootstrap', 'tool', 'webheader'], function($, main, selectize, layer, ){
+        $(function () {
+            main.fastClick();
+        });
         getFormData(function(){
 
         })

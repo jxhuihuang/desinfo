@@ -23,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href="../../static/css/portal.min.css" />
     <link rel="stylesheet" href="../../static/css/header.min.css" />
     <link rel="stylesheet" href="./index.css" />
+    <script type="text/javascript" src="/static/plugins/template/template.js"></script>
 </head>
 <body ontouchstart>
     <!--# include file="/include/headers.html" -->
@@ -192,20 +193,7 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
-        $(function () {
-           
-            main.fastClick();
-        });
-    });
-</script>
+
 <script>
     /**相关疾病信息**/
     var disease_record_columns = [
@@ -546,7 +534,12 @@
             }
         }
     ]
-    require(['jquery', 'main', 'layer', 'autosize', 'portal', 'dynamicline', 'selectize', 'selectize_ext'], function ($, main, layer, autosize, portal) {
+    require(['jquery', 'main', 'layer', 'layer_ext', 'bootstrap', 'tool', 'dynamicline', 'selectize', 'selectize_ext', 'webheader'], function ($, main, layer) {
+    
+        $(function () {
+           
+            main.fastClick();
+        });
         getFormData(function(resultData){
             $(".detailMian").find(".form-input").each(function(){
                 var $this=$(this)

@@ -1,14 +1,15 @@
+//用户账户记录
 var express = require('express');
 var DBSQLS = require('../../model/DBSQLS');
 var router = express.Router();
 var Sequelize = require('sequelize');
 var qs = require('qs')
-var jwt=require("jsonwebtoken")
 // var URL = require('url');
-let {ArticlesModel, tableKeys}=require('../../model/articles')
-let {DicValueModel, tableKeys:DicTableKeys}=require('../../model/dictionaryData')  
-let {filter,  jwtVerify, dealparams}=require('../../common/untils');
-var mysql = new DBSQLS(ArticlesModel, tableKeys);
+let {AccountsLogModel, tableKeys}=require('../../model/accountsLog')
+let {AccountsModel, tableKeys:AccountsTablekeys}=require('../../model/accounts')
+let {UserModel, tableKeys:UserTableKeys}=require('../../model/user')
+let {filter}=require('../../common/untils');
+var mysql = new DBSQLS(AccountsLogModel, tableKeys);
 const Op = Sequelize.Op;
 router.post('/', function(req, res, next) {
     let params =qs.parse(req.body);
@@ -19,20 +20,28 @@ router.post('/', function(req, res, next) {
             let {page=0, size=0}=params;
             params=filter(tableKeys, params); //过滤
             let prmissions=req.session.permission;
+            AccountsLogModel.belongsTo(AccountsModel, {foreignKey: 'account_id', targetKey:'id'});
+            AccountsModel.belongsTo(UserModel, {foreignKey: 'user_id', targetKey:'id'});
             if(page!=0 && size!=0){
                 let limit=parseInt(size);
                 let offset=(page-1)*limit;
-                ArticlesModel.belongsTo(DicValueModel, {foreignKey: 'category_id', targetKey:'value'});
                 mysql.findAndCountAll({
                     limit: limit,
                     offset: offset,
+                    attributes: ['id','account_id','mode','balance_before','balance_after','report_id','created_at','amount','state'],
                     include: [{
-                        model: DicValueModel,
-                        attributes: ['name'],
+                        model: AccountsModel,
+                        attributes: ['user_id'],
+                        include: [{
+                            model: UserModel,
+                           
+                            attributes: ['name'],
+                        }]
                     }],
                     order:[['created_at', 'ASC']],
                     where:params
                 },(result,count)=>{
+                    
                     res.json({
                         code: '200',
                         resultCode:"0",
@@ -45,6 +54,7 @@ router.post('/', function(req, res, next) {
                     })
                 },{res})
             }else{
+                // params.id={[Op.not]:"7"};
                 mysql.findAll({
                     order:[['created_at', 'ASC']],
                     where:params
@@ -57,51 +67,10 @@ router.post('/', function(req, res, next) {
                     })
                 },{res})
             }
-        break;
-        case "insert":
-            jwtVerify(req, jwt,function(decode){
-                var userId=decode.id;
-                // params=filter(tableKeys, params); //过滤
-                
-                params.author_id=userId;
-                params.content=params.content?params.content:"";
-                var content=params.content;
-                if(typeof(content)=="object"){
-                    var contents="";
-                    var SymbolsKey=Object.getOwnPropertySymbols(content) //数据过长转化成了Symbols
-                    for(var k of SymbolsKey){
-                        contents=content[k]
-                    }
-                    params.content=contents
-
-                }
             
-                mysql.create(params,result=>{
-                    res.json({
-                        code: '200',
-                        resultCode:"0",
-                        success:"true",
-                        resultMsg:"新增成功"
-                    })
-                },{res})
-            })
         break;
-        case "updata":
+        case "review":
             params=filter(tableKeys, params); //过滤
-            params.content=params.content?params.content:"";
-            var content=params.content;
-            if(typeof(content)=="object"){
-                var contents="";
-                var SymbolsKey=Object.getOwnPropertySymbols(content)
-                for(var k of SymbolsKey){
-                    contents=content[k]
-                }
-                params.content=contents
-
-            }
-            
-            
-            
             mysql.update(params,{
                 where :{id:params.id}
             },result=>{
@@ -109,23 +78,26 @@ router.post('/', function(req, res, next) {
                     code: '200',
                     resultCode:"0",
                     success:"true",
-                    resultMsg:"修改成功"
+                    resultMsg:"审核成功"
                 })
             },{res})
         break;
-
         case "delete":
             params=filter(tableKeys, params); //过滤
-
             mysql.delete({
                 where:params,
             },function(result){
-                res.json({
-                    code: '200',
-                    resultCode:"0",
-                    success:"true",
-                    resultMsg:"删除成功"
-                })
+                permysql.delete({
+                    where:{role:params.id}
+                },(result)=>{
+                    result=JSON.parse(JSON.stringify(result))
+                    res.json({
+                        code: '200',
+                        resultCode:"0",
+                        success:"true",
+                        resultMsg:"删除成功"
+                    })
+                },{res})
             },{res:res})
         break
     }

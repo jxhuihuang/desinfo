@@ -43,7 +43,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">不良反应类型</span>
                         </div>
-                        <select class="form-control select" id="adr_type" name="adr_type" placeholder="请选择不良反应类型"  onchange="associateChange()"><option value="">请选择不良反应类型</option><option  value="严重">严重</option><option value="一般">一般</option></select>
+                        <select class="form-control select" id="adr_type" name="adr_type" placeholder="请选择不良反应类型"  ><option value="">请选择不良反应类型</option><option  value="严重">严重</option><option value="一般">一般</option></select>
                     </div>
                 </div>
                 <div class="mb-2 col-md-12 col-xs-12">
@@ -726,154 +726,10 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../static/js/portal.min.js"></script>
-<script>
-     require.config({
-        baseUrl: '../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'upload'], function($, main, autosize, layer){
-        // 自适应高度
-        // autosize($('textarea'));
-        $(function () {
-            fastTo()
-            main.fastClick();
-          
-        });
-    });
-</script>
+
 
     <script>
-         /**下拉框关联数据***/
-        var select_associate={
-            adr_type_data:{  //不良反应类型
-                select: {
-                    field: $("select#adr_type"),
-                },
-                others: [
-                    {
-                        key: "严重",
-                        items: [
-                            {
-                                field: $("#adr_type_serious"),
-                                wrap: $("#adr_type_serious").parent(),
-                            }
-                        ]
-                    }
-                ]
-            },
-            report_from_data :{
-                select: {
-                    field: $("select#report_from")
-                },
-                others: [
-                    {
-                        key: "其他",
-                        items: [
-                            {
-                                field: $("#report_from_other")
-                            }
-                        ]
-                    }
-                ]
-            },
-            has_past_adr_data : {
-                select: {
-                    field: $("select#has_past_adr")
-                },
-                others: [
-                    {
-                        key: "有",
-                        items: [
-                            {
-                                field: $("#has_past_adr_detail")
-                            }
-                        ]
-                    }
-                ]
-            },
-            has_family_adr_data : {
-                select: {
-                    field: $("select#has_family_adr")
-                },
-                others: [
-                    {
-                        key: "有",
-                        items: [
-                            {
-                                field: $("#has_family_adr_detail")
-                            }
-                        ]
-                    }
-                ]
-            },
-            relevant_info_data : {
-                select: {
-                    field: $("select#relevant_info")
-                },
-                others: [
-                    {
-                        key: "过敏史",
-                        items: [
-                            {
-                                field: $("#relevant_info_allergy_history")
-                            }
-                        ]
-                    }, {
-                        key: "其他",
-                        items: [
-                            {
-                                field: $("#relevant_info_other")
-                            }
-                        ]
-                    }
-                ]
-            },
-            adr_result_data : {
-                select: {
-                    field: $("select#adr_result")
-                },
-                others: [
-                    {
-                        key: "有后遗症",
-                        items: [
-                            {
-                                field: $("#adr_result_sequela_manifestation")
-                            }
-                        ]
-                    }, {
-                        key: "死亡",
-                        items: [
-                            {
-                                field: $("#adr_result_death_reason")
-                            }, {
-                                field: $("#adr_result_death_time")
-                            }
-                            ,{
-                                field:  $("#adr_result_isautopsy").closest(".select_model")
-                            }
-                            ,{
-                                field:  $("#adr_result_autopsy_results")
-                            }
-                        ]
-                    }
-                ]
-            },
-            adr_isautopsy_data:{
-                select: {
-                    field: $("select#adr_result_isautopsy")
-                },
-                others: [
-                    {
-                        key:"是",
-                        items: [
-                            {
-                                field: $("#adr_result_autopsy_results")
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
+     
         var reportData={}; //要保存的报告的数据
         var sexData=[]; //性别数据
         var medication_record_category=[]; //用药分类
@@ -883,7 +739,143 @@
         var is_exist=[{name:"是",value:"是"},{name:"否",value:"否"},{name:"不详",value:"不详"}]
         var ishas_option=[{name:"有",value:"有"},{name:"无",value:"无"},{name:"不详",value:"不详"}]
         var current_fieldset="" //当前表单
-        require(['jquery', 'main', 'layer', 'autosize', 'portal', 'dynamiclines', 'selectize', 'selectize_ext'], function ($, main, layer, autosize, portal) {
+        require(['jquery', 'main', 'layer', 'autosize', 'layer_ext', 'dynamiclines', 'selectize', 'selectize_ext', 'bootstrap', 'tool', 'upload', 'webheader'], function ($, main, layer, autosize) {
+            /**下拉框关联数据***/
+            var select_associate={
+                adr_type_data:{  //不良反应类型
+                    select: {
+                        field: $("select#adr_type"),
+                    },
+                    others: [
+                        {
+                            key: "严重",
+                            items: [
+                                {
+                                    field: $("#adr_type_serious"),
+                                    wrap: $("#adr_type_serious").parent(),
+                                }
+                            ]
+                        }
+                    ]
+                },
+                report_from_data :{
+                    select: {
+                        field: $("select#report_from")
+                    },
+                    others: [
+                        {
+                            key: "其他",
+                            items: [
+                                {
+                                    field: $("#report_from_other")
+                                }
+                            ]
+                        }
+                    ]
+                },
+                has_past_adr_data : {
+                    select: {
+                        field: $("select#has_past_adr")
+                    },
+                    others: [
+                        {
+                            key: "有",
+                            items: [
+                                {
+                                    field: $("#has_past_adr_detail")
+                                }
+                            ]
+                        }
+                    ]
+                },
+                has_family_adr_data : {
+                    select: {
+                        field: $("select#has_family_adr")
+                    },
+                    others: [
+                        {
+                            key: "有",
+                            items: [
+                                {
+                                    field: $("#has_family_adr_detail")
+                                }
+                            ]
+                        }
+                    ]
+                },
+                relevant_info_data : {
+                    select: {
+                        field: $("select#relevant_info")
+                    },
+                    others: [
+                        {
+                            key: "过敏史",
+                            items: [
+                                {
+                                    field: $("#relevant_info_allergy_history")
+                                }
+                            ]
+                        }, {
+                            key: "其他",
+                            items: [
+                                {
+                                    field: $("#relevant_info_other")
+                                }
+                            ]
+                        }
+                    ]
+                },
+                adr_result_data : {
+                    select: {
+                        field: $("select#adr_result")
+                    },
+                    others: [
+                        {
+                            key: "有后遗症",
+                            items: [
+                                {
+                                    field: $("#adr_result_sequela_manifestation")
+                                }
+                            ]
+                        }, {
+                            key: "死亡",
+                            items: [
+                                {
+                                    field: $("#adr_result_death_reason")
+                                }, {
+                                    field: $("#adr_result_death_time")
+                                }
+                                ,{
+                                    field:  $("#adr_result_isautopsy").closest(".select_model")
+                                }
+                                ,{
+                                    field:  $("#adr_result_autopsy_results")
+                                }
+                            ]
+                        }
+                    ]
+                },
+                adr_isautopsy_data:{
+                    select: {
+                        field: $("select#adr_result_isautopsy")
+                    },
+                    others: [
+                        {
+                            key:"是",
+                            items: [
+                                {
+                                    field: $("#adr_result_autopsy_results")
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+            $(function () {
+                fastTo()
+                main.fastClick();
+            
+            });
             getFormData(function(resultData){
                 
                 resultData.disease_record?JSON.parse(resultData.disease_record):[]  //相关疾病史
@@ -1270,6 +1262,7 @@
                 var fieldset_id=current_page.attr("id");
                 current_fieldset=fieldset_id; //当前表单
                 getformData(fieldset_id, function(){ //获取表单数据
+                    autosize($('textarea'));
                     //验证表单
                     checkForm(fieldset_id,function(flag,erroText){
                         if (flag) {
@@ -1298,7 +1291,19 @@
                 }
                 */
             });
-          
+            function associateChange(){
+                var e=window.event||event; //消除浏览器差异
+                var $this=$(e.target);
+                var id=''
+                if(!$this.attr("id")){
+                    id=$this.closest(".selectize-control").prev().attr("id")
+                    
+                }else{
+                    id=$this.attr("id")
+                }
+                var datas=select_associate[id+"_data"]
+                selectedShow(datas);
+            }
            
         });
         //获取默认数据
@@ -1312,19 +1317,7 @@
             },ipDress+"/des/report")
         }
 
-        function associateChange(){
-            var e=window.event||event; //消除浏览器差异
-            var $this=$(e.target);
-            var id=''
-            if(!$this.attr("id")){
-                id=$this.closest(".selectize-control").prev().attr("id")
-                
-            }else{
-                id=$this.attr("id")
-            }
-            var datas=select_associate[id+"_data"]
-            selectedShow(datas);
-        }
+        
 
          /****表格新增行时输入框美化****/
         function tableSelect(new_row,old_row,id,objs,callBack){
@@ -1348,7 +1341,7 @@
                     //用药信息
                     case "medication_record-fieldset":
                         selectizes(new_row.find("#"+target_id+"medication_category"),{options:medication_record_category,defaultData:objs.medication_category})
-                        selectizes(new_row.find("#"+target_id+"medication_drug_id"),{labelField:"product_name",valueField:"product_name",defaultData:objs.medication_drug_id,loadUrl:ipDress+"/des/drug"}) //药品
+                        selectizes(new_row.find("#"+target_id+"medication_drug_id"),{labelField:"product_name",valueField:"product_name",defaultData:objs.medication_drug_id,loadUrl:ipDress+"/des/drug",create:true}) //药品
                         selectizes(new_row.find("#"+target_id+"medication_cause"),{labelField:"name",valueField:"name",create:true,defaultData:objs.medication_cause,loadUrl:ipDress+"/des/disease"}) //用药原因
                        
                         initDatetimePicker(new_row.find("#"+target_id+"medication_time_start"),{defaultDate:objs.medication_time_start,maxDate:objs.medication_time_end});

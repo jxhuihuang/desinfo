@@ -81,20 +81,11 @@
 <!-- <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script> -->
 <script type="text/javascript" src="../../static/plugins/requirejs-2.3.5/require.min.js"></script>
 <script type="text/javascript" src="../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../static/js/portal.min.js"></script>
 <script>
-     require.config({
-        baseUrl: '../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap','tool'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
+    requirejs(['jquery', 'main','autosize', 'layer', 'layer_ext', 'bootstrap','tool'], function($, main,autosize, layer) {
         $(function () {
             // main.fastClick();
         });
-
-    });
-    requirejs(['jquery', 'main','autosize', 'portal'], function($, main,autosize, portal) {
         $(".navbar-toggler").on("click",function(){
             portal.navbarToggler();
         })
@@ -109,7 +100,7 @@
         ajaxFns(datas,function(res){
             if(res.success=="true"){
                 var resData=res.data;  
-                const userInfo={username:resData.username, name:resData.name,dept_id:resData.dept_id, avatar:resData.avatar}
+                var userInfo={username:resData.username, name:resData.name,dept_id:resData.dept_id, avatar:resData.avatar}
                 localStorage.setItem("token",resData.token);
                 localStorage.setItem("userInfo",JSON.stringify(userInfo));
                 

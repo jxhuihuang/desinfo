@@ -35,6 +35,7 @@
 <div class="page">
 	
     <div class="page-main">
+        
         <!--# include file="/admin/include/header.html" -->
         <div class="row contentMain">
             <div class="sider">
@@ -46,10 +47,6 @@
                 </div>
                 <div class="row mb10">
                     <div class="col-10">
-                        <div class="searchBox">
-                            <input type="search" class="form-search" id="searchVal" data-key="username" placeholder="请输入搜索的用户名"  tabindex="1">
-                            <button class="search-btn" onclick="toSearch()">搜索</button>
-                        </div>
                     </div>
                     <div class="col-2 btn-container">
                         <span class="addbtn_container"></span>
@@ -59,13 +56,9 @@
                 <div class="row row-cards row-dect">
                     <div class="col-12">
                         <div class="card">
-                            <!-- <div class="card-header"></div> -->
                             <div class="table-responsive">
                                 <table class="table table-hover table-outline table-vcenter text-nowrap card-table"></table>
                             </div>
-                            <!-- <div class="card-footer">
-                                <div class="d-flex align-items-center justify-content-center"></div>
-                            </div> -->
                         </div>
                         <div id="pages"></div>
                     </div>
@@ -75,35 +68,21 @@
         </div>
     </div>
     <!--# include file="/admin/include/footer.html" --> 
-   
 </div>
 
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../../../static/'
-    })
-    require(['autosize', 'layer_ext', 'tool', 'pages'], function(autosize){
-        
-            
-        
-
-        // 自适应高度
-        autosize($('textarea'));
-    });
-</script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
 
 <script>
     var currentpage=1
     var linePages=10;
     var defaultData=[];
     var prmissions=[]; //权限列表
-    var columns = [
+    var dt ='';
+    require(['jquery', 'admin', 'moment',  'datatables.bootstrap4', 'tool', 'pages', 'headerjs'], function($, admin, moment) {
+        var columns = [
             {
                 title: '',
                 class: "details-control",
@@ -111,93 +90,99 @@
                 data: null,
                 defaultContent: ""
             },
-        {
-            title: '用户名',
-            target: 0,
-            data: function (item) {
-                return item.username;
-            }
-        },
-        {
-            title: '类型',
-            target: 1,
-            data: function (item) {
-                var mode = '';
-                switch (item.mode) {
-                    case 'recharge':
-                        mode = '充值';
-                        break;
-                    case 'transfer':
-                        mode = '转账';
-                        break;
-                    case 'withdraw':
-                        mode = '提现';
-                        break;
+            {
+                title: '用户名',
+                target: 0,
+                data: function (item) {
+                    var username=item.account.des_user.name?item.account.des_user.name:"";
+                    return username;
                 }
-                return mode;
-            }
-        },
-        {
-            title: '时间',
-            target: 2,
-            className: "text-center",
-            data: function (item) {
-                return moment(moment.utc(item.created_at).toDate()).format('YYYY-MM-DD HH:mm:ss');
-            }
-        },
-        {
-            title: '金额',
-            target: 3,
-            data: function (item) {
-                return item.amount;
-            }
-        },
-        {
-            title: '状态',
-            target: 4,
-            data: function (item) {
-                var state = '';
-                switch (item.state) {
-                    case 0:
-                        state = '待确认';
-                        break;
-                    case 1:
-                        state = '成功';
-                        break;
-                    case 2:
-                        state = '失败';
-                        break;
+            },
+            {
+                title: '类型',
+                target: 1,
+                data: function (item) {
+                    var mode = '';
+                    switch (item.mode) {
+                        case 'recharge':
+                            mode = '充值';
+                            break;
+                        case 'transfer':
+                            mode = '转账';
+                            break;
+                        case 'withdraw':
+                            mode = '提现';
+                            break;
+                    }
+                    return mode;
                 }
-                return state;
-            }
-        },
-        {
-            title: '',
-            target: 5,
-            className: "text-center",
-            data: function (item) {
-                var operations = `<div class="item-action dropdown">
-                    <a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right">`;
-                if (item.mode == 'transfer') {
-                    operations += `<a href="/report/detail/` + item.report_id + `" class="dropdown-item"><i class="dropdown-icon fe fe-file-text"></i> 报告</a>`;
-                } else if (item.mode == 'withdraw' && item.state == 0) {
-                    operations += `<a href="/admin/user/account/log/approve/` + item.id + `?state=1" class="dropdown-item"><i class="dropdown-icon fe fe-check-circle"></i> 通过</a>
-                        <a href="/admin/user/account/log/approve/` + item.id + `?state=2" class="dropdown-item"><i class="dropdown-icon fe fe-x"></i> 作废</a>`;
+            },
+            {
+                title: '时间',
+                target: 2,
+                className: "text-center",
+                data: function (item) {
+                    var times=item.created_at?moment(moment.utc(item.created_at).toDate()).format('YYYY-MM-DD HH:mm:ss'):"";
+                    return times;
                 }
-                operations += `</div></div>`;
-                return operations;
+            },
+            {
+                title: '金额',
+                target: 3,
+                data: function (item) {
+                    return item.amount;
+                }
+            },
+            {
+                title: '状态',
+                target: 4,
+                data: function (item) {
+                    var state = '';
+                    switch (item.state) {
+                        case 0:
+                            state = '待确认';
+                            break;
+                        case 1:
+                            state = '成功';
+                            break;
+                        case 2:
+                            state = '失败';
+                            break;
+                    }
+                    return state;
+                }
+            },
+            {
+                title: '',
+                target: 5,
+                className: "text-center",
+                data: function (item) {
+                    var report=item.mode == 'transfer' && !checkNull(item.report_id)?'<a href="/report/detail/?id=' + item.report_id + '" class="dropdown-item"><i class="dropdown-icon fe fe-file-text"></i> 报告</a>':"";
+                    var through=item.mode == 'withdraw' && item.state == 0 && indexof(prmissions, "review")?'<a href="jacascript:void(0)" class="dropdown-item reviewbtn" data-type="1" ><i class="dropdown-icon fe fe-check-circle"></i>通过</a>':"";
+                    var Obsolete=item.mode == 'withdraw' && item.state == 0 && indexof(prmissions, "review")?'<a href="jacascript:void(0)" class="dropdown-item reviewbtn" data-type="2" ><i class="dropdown-icon fe fe-x"></i>作废</a>':"";
+                    var operations ='';
+                    if(report!="" || through!="" || Obsolete!=""){
+                        operations +=
+                            '<div class="item-action dropdown">'+
+                                '<a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>'+
+                                '<div class="dropdown-menu dropdown-menu-right">'+
+                                   report+
+                                   through+
+                                   Obsolete+
+                                '</div>'+
+                            '</div>'
+                        ;
+                    }
+                    return operations;
+                }
             }
-        }
-    ];
-    requirejs(['jquery', 'main', 'admin', 'moment'], function($, main, admin, moment) {
-        
+        ];
         ajxaData(1)
         $("#pages").pageclick(function(page){
             currentpage=page;
             ajxaData(page)
         })
-        var dt =initDataTables($(".table"), defaultData, {"columns": columns, "dom": "lftip"});   // main.initDataTables($(".table"), "/admin/user/account/log/data", {"columns": columns, "dom": "lftip"});
+        
         // admin.initDataTablesControls($(".card"));
 
         // 显示行详情（额外信息）
@@ -209,11 +194,10 @@
 
         var detailRows = [];
 
-        $('table tbody').on('click', 'tr td.details-control', function () {
+        $('table').delegate('tr td.details-control','click',  function () {
             var tr = $(this).closest('tr');
             var row = dt.row(tr);
             var idx = $.inArray(tr.attr('id'), detailRows);
-
             if (row.child.isShown()) {
                 tr.removeClass('details');
                 row.child.hide();
@@ -226,51 +210,65 @@
 
                 if (idx === -1) {
                     detailRows.push(tr.attr('id'));
+                    
                 }
             }
         });
-
-        dt.on('draw', function () {
-            $.each(detailRows, function (i, id) {
-                $('#' + id + ' td.details-control').trigger('click');
+        /**点击审核**/
+        $("table").delegate('.reviewbtn','click',  function () {
+            var tr = $(this).closest('tr');
+            var type=$(this).attr("data-type");
+            var row = dt.row(tr);
+            var datas=row.data();
+            var id=datas.id;
+            var datas={_methods:"review",id:id,state:type};
+            ajaxFns(datas,function(res){
+                layermsg("审核成功",{icon:1},function(){
+                    ajxaData(currentpage)
+                })
+            },ipDress+"/des/admin/accountsLog")
+        })
+        function ajxaData(page,callBack){
+            callBack=callBack?callBack:function(){};
+            page=page?page:currentpage;
+            var searchval=removeNull($("#searchVal").val());
+            var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+            var objs={page:page,size:linePages}
+            searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+            ajaxFns(objs,function(res){
+                if(res.success=="true"){
+                    var datas=res.data;
+                    defaultData=datas;
+                    var counts=res.recordsFiltered;
+                    prmissions=res.prmissions;
+                    indexof(prmissions,"add")? $(".btn-container .addbtn_container").html('<a class="addBtn icon" href="/admin/user/account/log/add"><i class="fe fe-plus"></i>新增</a>'):"";
+                    var newcolumns=setTablepers(columns, prmissions, "edit,delete")/***设置表格操作栏，根据权限判断是否显示 */
+                    initDataTables($(".table"), datas, {"columns": newcolumns, "dom": "lftip"});
+                    dt =initDataTables($(".table"), datas, {"columns": columns, "dom": "lftip"});  
+                    pagination(page,counts)
+                    callBack(datas)
+                    // initDataTablesControls($(".card"));
+                } 
+            },ipDress+"/des/admin/accountsLog",{erro:function(){
+                initDataTables($(".table"), "数据加载失败", {"columns": columns, "dom": "lftip"});
+            }})
+        }
+        
+        function pagination(page,counts){
+            counts=counts?counts:0;
+            $("#pages").pages({
+                counts:counts,
+                currentPage:page,
+                linePages:linePages,
+                showCounts:true,
             });
-        });
+        }
+        function toSearch(){
+            currentpage=1
+            ajxaData(1)
+        }
     });
-    function ajxaData(page){
-        page=page?page:currentpage;
-        var searchval=removeNull($("#searchVal").val());
-        var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
-        var objs={page:page,size:linePages}
-        searchval!=""?objs[searchkey]="%"+searchval+"%":"";
-        ajaxFns(objs,function(res){
-            if(res.success=="true"){
-                var datas=res.data;
-                defaultData=datas;
-                const counts=res.recordsFiltered;
-                prmissions=res.prmissions;
-                indexof(prmissions,"add")? $(".btn-container .addbtn_container").html('<a class="addBtn icon" href="/admin/user/account/log/add"><i class="fe fe-plus"></i>新增</a>'):"";
-                var newcolumns=setTablepers(columns, prmissions, "edit,delete")/***设置表格操作栏，根据权限判断是否显示 */
-                initDataTables($(".table"), datas, {"columns": newcolumns, "dom": "lftip"});
-                pagination(page,counts)
-                // initDataTablesControls($(".card"));
-            } 
-        },ipDress+"/des/admin/user/account/log/data",{erro:function(){
-            initDataTables($(".table"), "数据加载失败", {"columns": columns, "dom": "lftip"});
-        }})
-    }
-    function pagination(page,counts){
-        counts=counts?counts:0;
-        $("#pages").pages({
-            counts:counts,
-            currentPage:page,
-            linePages:linePages,
-            showCounts:true,
-        });
-    }
-    function toSearch(){
-        currentpage=1
-        ajxaData(1,linePages)
-    }
+    
 </script>
 
 </body>

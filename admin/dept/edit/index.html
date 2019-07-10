@@ -136,25 +136,13 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../../static/'
-    })
-    require(['autosize', 'layer_ext', 'tool', 'upload'], function(autosize){
-        
-            
-        // 自适应高度
-        autosize($('textarea'));
-    });
-</script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
+
 
 <script>
     var cityData=[];
     var fileObj={} //附件
-    require(['jquery', 'selectize', 'selectize_ext'], function ($, selectize) {
+    require(['jquery', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'upload', 'headerjs'], function ($, selectize) {
         $(document).ready(function () {
            
             getData(function(resultData){

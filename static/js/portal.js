@@ -1,45 +1,110 @@
+require.config({
+    baseUrl: '/static/',
+   
+    paths: {
+        'jquery': '/static/plugins/jquery-3.3.1/jquery.min',
+        'layer': '/static/plugins/layer-3.1.1/layer',
+        'layer_ext': '/static/js/layer_ext',
+        'tool' : 'js/tool',
+    },
+    shim: {
+        // 'jquery':{
+        //     exports:"$"
+        // },
+        'layer': ['jquery'],
+        'layer_ext': ['layer', 'jquery'],
+        'tool':{
+            deps:['jquery'],
+        },
+    },
+});
 define('portal', ['jquery','layer'], function($,layer) {
-    function getWeChatPayResult(out_trade_no, callback) {
-        $.ajax({
-            url: "/pay/wechat/order",
-            type: "GET",
-            data: {'out_trade_no': out_trade_no},
-            dataType: "json",
-            contentType: "application/json; charset=UTF-8",
-            success: function (result) {
-                callback(result);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert(XMLHttpRequest.status + ' ' + XMLHttpRequest.readyState + ' ' + textStatus, 'error');
-            }
-        });
+    
+    
+    /*去除""或undefind null*/
+    function checkNull(obj) {
+        if (obj === null || typeof (obj) === "undefined") {
+            return "";
+        }
+        var type = (typeof (obj)).toLowerCase();
+        if (type === "string" && (obj.toString()).replace(/(^\s*)|(\s*$)/g, "") === "") {
+            return "";
+        }
+        return obj;
     }
-    /* 手机端顶部导航收缩*/
-    function navbarToggler(){
-        var isShow=!$(".navbar-collapse").hasClass("shows");
-        var width=document.body.clientWidth;
-        $(".navbar-collapse").removeClass("addAnimation")
-        $(".navbar-collapse").removeClass("removeAnimation")
-        
-        if(width<=768){
-            if(isShow){
-                $("html,body").addClass("html")
-                var document_heights=document.body.clientHeight;
-                var navbarSpanHt=$(".navbar-span").get(0).offsetHeight;
-                $(".navbar-collapse").css({display:"block",height:(document_heights-navbarSpanHt+10)+"px",top:navbarSpanHt+"px"});
-                $(".navbar-collapse").addClass("shows addAnimation")
-                layer.msg('12',{scrollbar:false,time:0,shadeClose:true,skin:"navbarlay"});
-            }
-            else{
-                $("html,body").removeClass("html")
-                $(".navbar-collapse").removeClass("shows")
-                $(".navbar-collapse").addClass("removeAnimation")
-                layer.closeAll();
-            }
+    //生成时间戳
+    function Timestamp() {
+        var datetime = Date.parse(new Date());
+        return datetime / 1000;
+    }
+    
+    /*
+    页面div中显示信息
+    *
+    显示方式
+    showmsg({
+    msg:"",  //显示的信息,
+    isbtn:"",   //是否显示按钮,
+    url:"",//点击按钮时的跳转链接 为空时为刷新,
+    icon:"",//错误图片,
+    btntext:"",//按钮文字,
+    classname:"",//样式名
+    })
+    */
+
+    /**显示template模板 */
+    function showtemp(data,listTmpl, id, callback){
+        var datas=data?data:[];
+        var callback=callback?callback:function(){};
+        if(datas.length==0){
+            $(id).html(showmsg({msg:"没有检索到数据"}))
+        }else{
+            var templates=template(listTmpl, {list:data});
+            $(id).html(templates)
         }
     }
+    function layermsg(text,option,callBack){
+        callBack=callBack?callBack:function(){};
+        var default_params = {
+            time:1000,
+            icon: 1,
+            skin:'',
+            tips:2, //tips层的私有参数。支持上右下左四个方向，通过1-4进行方向设定。如tips: 3则表示在元素的下面出现。有时你还可能会定义一些颜色，可以设定tips: [1, '#c00']
+        }
+        var params = $.extend(true, {}, default_params, option);
+        
+        if(isMobile){
+    
+            params.skin='mobile_layer '+params.skin
+            params.icon=-1
+            layer.msg(text,params,function(){
+                callBack()
+            })
+        }else{
+            layer.msg(text,params,function(){
+                callBack()
+            })
+        }
+        
+    }
 
+   //判断移动端还是电脑端
+    var isMobile = (function () {
+        if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+            return true //手机端";
+        }
+        else {
+            return false//pc端
+        }
+    })();
+    
     return {
-        getWeChatPayResult: getWeChatPayResult,  // 获取微信支付结果
+        checkNull:checkNull,
+        showtemp:showtemp,
+        Timestamp:Timestamp,
+        layermsg:layermsg,
+        
+        // imgChange:imgChange,
     };
 });
+

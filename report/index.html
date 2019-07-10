@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/portal.min.css" />
     <link rel="stylesheet" href="../static/css/header.min.css" />
     <link rel="stylesheet" href="./index.css" />
-
+    <script type="text/javascript" src="/static/plugins/template/template.js"></script>
 </head>
 <body ontouchstart>
     <!--# include file="/include/headers.html" -->
@@ -41,7 +41,7 @@
     require.config({
         baseUrl: '../static/'
     })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'pages'], function($, main, autosize, layer){
+    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'pages', 'webheader'], function($, main, autosize, layer){
         // 自适应高度
         autosize($('textarea'));
         $(function () {
@@ -148,7 +148,7 @@
         ajaxFns(objs,function(res){
             if(res.success=="true"){
                 var datas=res.data;
-                const counts=res.recordsFiltered;
+                var counts=res.recordsFiltered;
                 var jsonData=datas?datas:[];
                 prmissions=res.prmissions;
                 initDataTables($(".table"), jsonData, {"columns": columns, "dom": "lftip",'initComplete': function (settings, json) {

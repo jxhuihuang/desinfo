@@ -38,19 +38,6 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../static/js/main.min.js"></script>
-<script type="text/javascript" src="../static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'pages'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
-        $(function () {
-            main.fastClick();
-        });
-    });
-</script>
 
 <script>
     var currentpage=1;
@@ -81,7 +68,10 @@
             }
         },
     ];
-    requirejs(['jquery', 'main', 'portal'], function($, main, portal) {
+    requirejs(['jquery', 'main', 'layer', 'layer_ext', 'bootstrap', 'tool', 'pages', 'webheader'], function($, main, layer) {
+        $(function () {
+            main.fastClick();
+        });
         getUser(1)
 
         function resetPaginationStyle(x) {
@@ -126,7 +116,7 @@
                     showtemp([],"listTmpl", "#usercontent")
                 }else{
                     var results=res.data;
-                    const counts=res.recordsFiltered;
+                    var counts=res.recordsFiltered;
                     initDataTables($(".table"), results, {"columns": columns, "dom": "lftip",'initComplete': function (settings, json) {
                         $(".table").addClass("layui-table ")
                     }});

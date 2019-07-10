@@ -49,46 +49,29 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap'], function($, main, autosize, layer){
-        
-            
-        
 
-        // 自适应高度
-        autosize($('textarea'));
+<script>
+    requirejs(['jquery', 'main', 'layer', 'moment', 'layer_ext', 'bootstrap', 'webheader'], function($, main, layer,moment) {
         $(function () {
             main.fastClick();
         });
-    });
-</script>
-<script>
-    requirejs(['jquery', 'main'], function($, main) {
-        
         ajxaData()
-       
+        //加载数据
+        function ajxaData(){
+            var id=geturl("id")
+            ajaxFns({id:id},function(res){
+                if(res.success=="true" && res.data && res.data.length>0){
+                    var result=res.data[0];
+                    $(".acticle_title").html(result.title)
+                    $(".acticle_content").html(result.content);
+                    $(".acticle_date").html(moment(result.created_at).format('YYYY-MM-DD HH:mm:ss'))
+                } 
+            },ipDress+"/des/articles",{erro:function(){
+            
+            }})
+        }
         
     });
-    //加载数据
-    function ajxaData(){
-        var id=geturl("id")
-        ajaxFns({id:id},function(res){
-
-            if(res.success=="true" && res.data && res.data.length>0){
-                var result=res.data[0];
-                $(".acticle_title").html(result.title)
-                $(".acticle_content").html(result.content);
-                $(".acticle_date").html(moment(result.created_at).format('YYYY-MM-DD HH:mm:ss'))
-            } 
-        },ipDress+"/des/articles",{erro:function(){
-           
-        }})
-    }
-    
 </script>
 
 </body>

@@ -19,7 +19,7 @@ router.post('/', function(req, res, next) {
             case "query":
                 let {page=0, size=0}=params;
                 params=filter(tableKeys, params); //过滤
-                let prmissions=req.session.permission;
+                let prmissions=req.session.permission;  
                 if(page!=0 && size!=0){
                     let limit=parseInt(size);
                     let offset=(page-1)*limit;

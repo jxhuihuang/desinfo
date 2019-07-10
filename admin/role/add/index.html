@@ -70,7 +70,7 @@
                                     <label class="form-label" for="parents">父角色</label>
             
 
-                                    <select class="form-control" id="parents" multiple name="parents"><option value="1">管理员</option><option value="2">审核员</option><option value="3">上报员</option></select>
+                                    <select class="form-control" id="parents" multiple name="parents"></select>
                                 </div>
                                 <div class="form-group">
                                     
@@ -106,25 +106,16 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../../static/'
-    })
-
-    require(['autosize', 'layer_ext', 'tool'], function(autosize){
-        // 自适应高度
-        autosize($('textarea'));
-    });
-</script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
 
 <script>
-    require(['jquery', 'selectize', 'selectize_ext'], function ($, selectize) {
+    require(['jquery', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize) {
         $(document).ready(function () {
-            selectizes($("#parents"))
-
+            //加载角色
+            ajaxFns({},function(res){
+                roleData=res.data;
+                selectizes($("#parents"),{options:res.data,valueField:"id"})
+            },ipDress+"/des/role")
         });
     });
     function submits(event){

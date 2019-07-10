@@ -963,9 +963,7 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
 <script>
     require.config({
         baseUrl: '/static/'
@@ -975,207 +973,12 @@
             
         
 
-        // 自适应高度
-        autosize($('textarea'));
+        
     });
 </script>
 
     <script>
-        /**下拉框关联数据***/
-        var select_associate={
-            adr_type_data : {
-                select: {
-                    field: $("select#adr_type"),
-                    wrap: $("select#adr_type").parent().parent(),
-                    wrap_class_selected: "col-sm-6 col-md-4",
-                    wrap_class_original: "col-sm-6 col-md-6"
-                },
-                others: [
-                    {
-                        key: "严重",
-                        items: [
-                            {
-                                field: $("#adr_type_serious"),
-                                label: $("label[for='adr_type_serious-selectized']"),
-                                wrap: $("#adr_type_serious").parent().parent()
-                            }
-                        ]
-                    }
-                ]
-            },
-            reporting_unit_category_data : {
-                select: {
-                    field: $("select#reporting_unit_category"),
-                    wrap: $("select#reporting_unit_category").parent().parent(),
-                    wrap_class_selected: "col-sm-6 col-md-4",
-                    wrap_class_original: "col-sm-6 col-md-6"
-                },
-                others: [
-                    {
-                        key: "其他",
-                        items: [
-                            {
-                                field: $("#reporting_unit_category_other"),
-                                wrap: $("#reporting_unit_category_other").parent().parent()
-                            }
-                        ]
-                    }
-                ]
-            },
-            reporter_career_data : {
-                select: {
-                    field: $("select#reporter_career"),
-                    wrap: $("select#reporter_career").parent().parent(),
-                    wrap_class_selected: "col-sm-6 col-md-2",
-                    wrap_class_original: "col-sm-6 col-md-4"
-                },
-                others: [
-                    {
-                        key: "其他",
-                        items: [
-                            {
-                                field: $("#reporter_career_other"),
-                                wrap: $("#reporter_career_other").parent().parent()
-                            }
-                        ]
-                    }
-                ]
-            },
-            report_from_data : {
-                select: {
-                    field: $("select#report_from"),
-                    wrap: $("select#report_from").parent().parent(),
-                    wrap_class_selected: "col-sm-6 col-md-3",
-                    wrap_class_original: "col-sm-6 col-md-6"
-                },
-                others: [
-                    {
-                        key: "其他",
-                        items: [
-                            {
-                                field: $("#report_from_other"),
-                                wrap: $("#report_from_other").parent().parent()
-                            }
-                        ]
-                    }
-                ]
-            },
-            has_past_adr_data : {
-                select: {
-                    field: $("select#has_past_adr"),
-                    wrap: $("select#has_past_adr").parent().parent(),
-                    wrap_class_selected: "col-sm-6 col-md-3",
-                    wrap_class_original: "col-sm-6 col-md-6"
-                },
-                others: [
-                    {
-                        key: "有",
-                        items: [
-                            {
-                                field: $("#has_past_adr_detail"),
-                                wrap: $("#has_past_adr_detail").parent().parent()
-                            }
-                        ]
-                    }
-                ]
-            },
-            has_family_adr_data : {
-                select: {
-                    field: $("select#has_family_adr"),
-                    wrap: $("select#has_family_adr").parent().parent(),
-                    wrap_class_selected: "col-sm-6 col-md-3",
-                    wrap_class_original: "col-sm-6 col-md-6"
-                },
-                others: [
-                    {
-                        key: "有",
-                        items: [
-                            {
-                                field: $("#has_family_adr_detail"),
-                                wrap: $("#has_family_adr_detail").parent().parent()
-                            }
-                        ]
-                    }
-                ]
-            },
-            relevant_info_data : {
-                select: {
-                    field: $("select#relevant_info"),
-                    wrap: $("select#relevant_info").parent().parent()
-                },
-                others: [
-                    {
-                        key: "过敏史",
-                        items: [
-                            {
-                                field: $("#relevant_info_allergy_history"),
-                                wrap: $("#relevant_info_allergy_history").parent().parent()
-                            }
-                        ]
-                    }, {
-                        key: "其他",
-                        items: [
-                            {
-                                field: $("#relevant_info_other"),
-                                wrap: $("#relevant_info_other").parent().parent()
-                            }
-                        ]
-                    }
-                ]
-            },
-            adr_result_data : {
-                select: {
-                    field: $("select#adr_result"),
-                    wrap: $("select#adr_result").parent().parent(),
-                    wrap_class_selected: "col-sm-6 col-md-6",
-                    wrap_class_original: "col-md-12"
-                },
-                others: [
-                    {
-                        key: "有后遗症",
-                        items: [
-                            {
-                                field: $("#adr_result_sequela_manifestation"),
-                                wrap: $("#adr_result_sequela_manifestation").parent().parent()
-                            }
-                        ]
-                    }, {
-                        key: "死亡",
-                        items: [
-                            {
-                                field: $("#adr_result_death_reason"),
-                                wrap: $("#adr_result_death_reason").parent().parent()
-                            }, {
-                                field: $("#adr_result_death_time"),
-                                wrap: $("#adr_result_death_time").parent().parent()
-                            }, 
-                            {
-                                field: $("#adr_result_isautopsy").closest(".select_model"),  //select_model
-                               
-                                
-                            }
-                        ]
-                    }
-                ]
-            },
-            adr_isautopsy_data:{
-                select: {
-                    field: $("select#adr_result_isautopsy"),
-                    wrap: $("select#adr_result_isautopsy").parent().parent(),
-                },
-                others: [
-                    {
-                        key:"是",
-                        items: [
-                            {
-                                field: $("#adr_result_autopsy_results"),
-                                wrap: $("#adr_result_autopsy_results").parent().parent()
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
+        
         var fileObj={} //附件
         var sexData=[]; //性别数据
         var medication_record_category=[]; //用药分类
@@ -1184,8 +987,204 @@
         var medication_take_steps_data=[]; //对药品采取的措施
         var is_exist=[{name:"是",value:"是"},{name:"否",value:"否"},{name:"不详",value:"不详"}]
 
-        require(['main', 'admin', 'jquery', 'dynamiclines', 'selectize', 'selectize_ext'], function (main, admin, $) {
-            
+        require(['autosize', 'admin', 'jquery', 'dynamiclines', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'upload', 'headerjs'], function (autosize, admin, $) {
+            // 自适应高度
+            autosize($('textarea'));
+            /**下拉框关联数据***/
+            var select_associate={
+                adr_type_data : {
+                    select: {
+                        field: $("select#adr_type"),
+                        wrap: $("select#adr_type").parent().parent(),
+                        wrap_class_selected: "col-sm-6 col-md-4",
+                        wrap_class_original: "col-sm-6 col-md-6"
+                    },
+                    others: [
+                        {
+                            key: "严重",
+                            items: [
+                                {
+                                    field: $("#adr_type_serious"),
+                                    label: $("label[for='adr_type_serious-selectized']"),
+                                    wrap: $("#adr_type_serious").parent().parent()
+                                }
+                            ]
+                        }
+                    ]
+                },
+                reporting_unit_category_data : {
+                    select: {
+                        field: $("select#reporting_unit_category"),
+                        wrap: $("select#reporting_unit_category").parent().parent(),
+                        wrap_class_selected: "col-sm-6 col-md-4",
+                        wrap_class_original: "col-sm-6 col-md-6"
+                    },
+                    others: [
+                        {
+                            key: "其他",
+                            items: [
+                                {
+                                    field: $("#reporting_unit_category_other"),
+                                    wrap: $("#reporting_unit_category_other").parent().parent()
+                                }
+                            ]
+                        }
+                    ]
+                },
+                reporter_career_data : {
+                    select: {
+                        field: $("select#reporter_career"),
+                        wrap: $("select#reporter_career").parent().parent(),
+                        wrap_class_selected: "col-sm-6 col-md-2",
+                        wrap_class_original: "col-sm-6 col-md-4"
+                    },
+                    others: [
+                        {
+                            key: "其他",
+                            items: [
+                                {
+                                    field: $("#reporter_career_other"),
+                                    wrap: $("#reporter_career_other").parent().parent()
+                                }
+                            ]
+                        }
+                    ]
+                },
+                report_from_data : {
+                    select: {
+                        field: $("select#report_from"),
+                        wrap: $("select#report_from").parent().parent(),
+                        wrap_class_selected: "col-sm-6 col-md-3",
+                        wrap_class_original: "col-sm-6 col-md-6"
+                    },
+                    others: [
+                        {
+                            key: "其他",
+                            items: [
+                                {
+                                    field: $("#report_from_other"),
+                                    wrap: $("#report_from_other").parent().parent()
+                                }
+                            ]
+                        }
+                    ]
+                },
+                has_past_adr_data : {
+                    select: {
+                        field: $("select#has_past_adr"),
+                        wrap: $("select#has_past_adr").parent().parent(),
+                        wrap_class_selected: "col-sm-6 col-md-3",
+                        wrap_class_original: "col-sm-6 col-md-6"
+                    },
+                    others: [
+                        {
+                            key: "有",
+                            items: [
+                                {
+                                    field: $("#has_past_adr_detail"),
+                                    wrap: $("#has_past_adr_detail").parent().parent()
+                                }
+                            ]
+                        }
+                    ]
+                },
+                has_family_adr_data : {
+                    select: {
+                        field: $("select#has_family_adr"),
+                        wrap: $("select#has_family_adr").parent().parent(),
+                        wrap_class_selected: "col-sm-6 col-md-3",
+                        wrap_class_original: "col-sm-6 col-md-6"
+                    },
+                    others: [
+                        {
+                            key: "有",
+                            items: [
+                                {
+                                    field: $("#has_family_adr_detail"),
+                                    wrap: $("#has_family_adr_detail").parent().parent()
+                                }
+                            ]
+                        }
+                    ]
+                },
+                relevant_info_data : {
+                    select: {
+                        field: $("select#relevant_info"),
+                        wrap: $("select#relevant_info").parent().parent()
+                    },
+                    others: [
+                        {
+                            key: "过敏史",
+                            items: [
+                                {
+                                    field: $("#relevant_info_allergy_history"),
+                                    wrap: $("#relevant_info_allergy_history").parent().parent()
+                                }
+                            ]
+                        }, {
+                            key: "其他",
+                            items: [
+                                {
+                                    field: $("#relevant_info_other"),
+                                    wrap: $("#relevant_info_other").parent().parent()
+                                }
+                            ]
+                        }
+                    ]
+                },
+                adr_result_data : {
+                    select: {
+                        field: $("select#adr_result"),
+                        wrap: $("select#adr_result").parent().parent(),
+                        wrap_class_selected: "col-sm-6 col-md-6",
+                        wrap_class_original: "col-md-12"
+                    },
+                    others: [
+                        {
+                            key: "有后遗症",
+                            items: [
+                                {
+                                    field: $("#adr_result_sequela_manifestation"),
+                                    wrap: $("#adr_result_sequela_manifestation").parent().parent()
+                                }
+                            ]
+                        }, {
+                            key: "死亡",
+                            items: [
+                                {
+                                    field: $("#adr_result_death_reason"),
+                                    wrap: $("#adr_result_death_reason").parent().parent()
+                                }, {
+                                    field: $("#adr_result_death_time"),
+                                    wrap: $("#adr_result_death_time").parent().parent()
+                                }, 
+                                {
+                                    field: $("#adr_result_isautopsy").closest(".select_model"),  //select_model
+                                
+                                    
+                                }
+                            ]
+                        }
+                    ]
+                },
+                adr_isautopsy_data:{
+                    select: {
+                        field: $("select#adr_result_isautopsy"),
+                        wrap: $("select#adr_result_isautopsy").parent().parent(),
+                    },
+                    others: [
+                        {
+                            key:"是",
+                            items: [
+                                {
+                                    field: $("#adr_result_autopsy_results"),
+                                    wrap: $("#adr_result_autopsy_results").parent().parent()
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
             getFormData(function(resultData){
                 resultData.disease_record?JSON.parse(resultData.disease_record):[]  //相关疾病史
                 formSetValue(".card",resultData);
@@ -1205,7 +1204,7 @@
 
                     //不良反应类型
                     selectSetVal($("#adr_type"),resultData.adr_type)
-                    main.selectedShow(select_associate.adr_type_data);
+                    admin.selectedShow(select_associate.adr_type_data);
 
                     //严重伤害情况
                     var adr_type_serious=getdict(result,"adr_type_serious");
@@ -1214,7 +1213,7 @@
                     //加载单位类别
                     var unit_category=getdict(result,"unit_category");
                     selectizes($("#reporting_unit_category"),{options:unit_category, valueField:"name",defaultData:resultData.reporting_unit_category})
-                    main.selectedShow(select_associate.reporting_unit_category_data);
+                    admin.selectedShow(select_associate.reporting_unit_category_data);
 
                     //性别
                     sexData=getdict(result,"sex");
@@ -1236,7 +1235,7 @@
                     // 加载相关重要信息  
                     var relevant_info=getdict(result,"relevant_info");
                     selectizes($("#relevant_info"),{options:relevant_info,defaultData:resultData.relevant_info})
-                    main.selectedShow(select_associate.relevant_info_data);
+                    admin.selectedShow(select_associate.relevant_info_data);
                     //不良反应开始结束时间
                     initDatetimePicker($("#adr_time"),{
                         defaultDate:resultData.adr_time,
@@ -1250,7 +1249,7 @@
                     //不良反应结果
                     var adr_result=getdict(result,"adr_result");
                     selectizes($("#adr_result"),{options:adr_result,defaultData:resultData.adr_result})
-                    main.selectedShow(select_associate.adr_result_data);
+                    admin.selectedShow(select_associate.adr_result_data);
 
                     //停药或减量后，反应/事件是否消失或减轻
                     var reduce_after_reduction=getdict(result,"reduce_after_reduction");
@@ -1272,12 +1271,12 @@
                     //报告人职业
                     var career=getdict(result,"career");
                     selectizes($("#reporter_career"),{options:career,defaultData:resultData.reporter_career})
-                    main.selectedShow(select_associate.reporter_career_data);
+                    admin.selectedShow(select_associate.reporter_career_data);
 
                     //信息来源 
                     var report_from=getdict(result,"report_from");
                     selectizes($("#report_from"),{options:report_from,defaultData:resultData.report_from})
-                    main.selectedShow(select_associate.report_from_data);
+                    admin.selectedShow(select_associate.report_from_data);
 
                     //报告状态 
                     var report_stateData=getdict(result,"report_state");
@@ -1291,18 +1290,18 @@
 
                     // 不良反应事件
                     selectizes($("#has_past_adr"),{defaultData:resultData.has_past_adr})
-                    main.selectedShow(select_associate.has_past_adr_data);
+                    admin.selectedShow(select_associate.has_past_adr_data);
 
                     //家族药品不良反应/事件
                     selectizes($("#has_family_adr"),{defaultData:resultData.has_family_adr}) 
-                    main.selectedShow(select_associate.has_family_adr_data);
+                    admin.selectedShow(select_associate.has_family_adr_data);
                     //死亡时间
                     initDatetimePicker($("#adr_result_death_time"),{
                         defaultDate:resultData.adr_result_death_time
                     });
                     //是否尸检
                     selectSetVal($("#adr_result_isautopsy"),resultData.adr_result_isautopsy)
-                    main.selectedShow(select_associate.adr_isautopsy_data);
+                    admin.selectedShow(select_associate.adr_isautopsy_data);
 
                     //不良反应/是否非预期
                     selectizes($("#adr_isexpect"),{options:[{name:"是",value:"是"},{name:"否",value:"否"}],defaultData:resultData.adr_isexpect})
@@ -1401,55 +1400,55 @@
                 
             })
            
-            // main.initDatetimePicker($(".datetime"), {enableTime: true});
+            // admin.initDatetimePicker($(".datetime"), {enableTime: true});
 
-            // main.selectedShow(adr_type_data);
-            // main.selectedShow(reporting_unit_category_data);
-            // main.selectedShow(reporter_career_data);
-            // main.selectedShow(report_from_data);
+            // admin.selectedShow(adr_type_data);
+            // admin.selectedShow(reporting_unit_category_data);
+            // admin.selectedShow(reporter_career_data);
+            // admin.selectedShow(report_from_data);
 
-            // main.selectedShow(has_past_adr_data);
-            // main.selectedShow(has_family_adr_data);
-            // main.selectedShow(relevant_info_data);
-            // main.selectedShow(adr_result_data);
+            // admin.selectedShow(has_past_adr_data);
+            // admin.selectedShow(has_family_adr_data);
+            // admin.selectedShow(relevant_info_data);
+            // admin.selectedShow(adr_result_data);
 
             dynamicLineInit();
 
           
 
             $("select#adr_type").change(function () {
-                main.selectedShow(select_associate.adr_type_data);
+                admin.selectedShow(select_associate.adr_type_data);
             });
 
             $("select#reporting_unit_category").change(function () {
-                main.selectedShow(select_associate.reporting_unit_category_data);
+                admin.selectedShow(select_associate.reporting_unit_category_data);
             });
 
             $("select#reporter_career").change(function () {
-                main.selectedShow(select_associate.reporter_career_data);
+                admin.selectedShow(select_associate.reporter_career_data);
             });
 
             $("select#report_from").change(function () {
-                main.selectedShow(select_associate.report_from_data);
+                admin.selectedShow(select_associate.report_from_data);
             });
 
             $("select#has_past_adr").change(function () {
-                main.selectedShow(select_associate.has_past_adr_data);
+                admin.selectedShow(select_associate.has_past_adr_data);
             });
 
             $("select#has_family_adr").change(function () {
-                main.selectedShow(select_associate.has_family_adr_data);
+                admin.selectedShow(select_associate.has_family_adr_data);
             });
 
             $("select#relevant_info").change(function () {
-                main.selectedShow(select_associate.relevant_info_data);
+                admin.selectedShow(select_associate.relevant_info_data);
             });
 
             
 
             $("select#adr_result").change(function () {
-                main.selectedShow(select_associate.adr_result_data);
-                main.selectedShow(select_associate.adr_isautopsy_data);
+                admin.selectedShow(select_associate.adr_result_data);
+                admin.selectedShow(select_associate.adr_isautopsy_data);
                 var values=$(this).val();
                 if(values=="死亡"){
                     
@@ -1467,7 +1466,7 @@
 
             });
             $("select#adr_result_isautopsy").change(function () {
-                main.selectedShow(select_associate.adr_isautopsy_data);
+                admin.selectedShow(select_associate.adr_isautopsy_data);
                 var values=$(this).val();
                 if(values!="是"){
                    $("#adr_result_autopsy_results").val("")
@@ -1514,7 +1513,7 @@
                     case "medication_record-fieldset":
                         
                         selectizes(new_row.find("#"+target_id+"medication_category"),{options:medication_record_category,defaultData:objs.medication_category})
-                        selectizes(new_row.find("#"+target_id+"medication_drug_id"),{labelField:"product_name",valueField:"product_name",defaultData:objs.medication_drug_id,loadUrl:ipDress+"/des/drug"}) //药品
+                        selectizes(new_row.find("#"+target_id+"medication_drug_id"),{labelField:"product_name",valueField:"product_name",defaultData:objs.medication_drug_id,loadUrl:ipDress+"/des/drug",create:true}) //药品
                         selectizes(new_row.find("#"+target_id+"medication_cause"),{labelField:"name",valueField:"name",create:true,defaultData:objs.medication_cause,loadUrl:ipDress+"/des/disease"}) //用药原因
                        
                         

@@ -31,26 +31,22 @@
         <div class="table-stack table-stack-inline ">
             <table class="table table-sm table-bordered pc-show" style="width: 100%; font-size: 13px;"></table>
         </div>
-        
+        <div id="pages"></div>
     </main>
      <!--# include file="/include/footers.html" -->
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../../static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
-        $(function () {
-            main.fastClick();
-        });
-    });
-</script>
+
+
     <script>
-        requirejs(['jquery', 'main', 'moment', 'portal'], function($, main, moment, portal) {
+        var currentpage=1
+        var linePages=10;
+        var defaultData=[];
+        var prmissions=[]; //权限列表
+        requirejs(['jquery', 'main', 'moment', 'layer', 'layer_ext', 'bootstrap', 'tool', 'pages', 'webheader'], function($, main, moment, layer) {
+            $(function () {
+                main.fastClick();
+            });
             var columns = [
                 {
                     title: '类型',
@@ -63,7 +59,7 @@
                                 mode = '充值';
                                 break;
                             case 'transfer':
-                                mode = '<a class="btn btn-sm btn-outline-primary mb-1 mt-1 ml-1 mr-1" href="/report/detail/' + item.id +'">转账</a>';
+                                mode = '<a class="btn btn-sm btn-outline-primary mb-1 mt-1 ml-1 mr-1" href="/report/detail/?id=' + item.id +'">转账</a>';
                                 break;
                             case 'withdraw':
                                 mode = '提现';
@@ -80,7 +76,7 @@
                     target: 1,
                     className: "align-middle",
                     data: function (item) {
-                        return moment(moment.utc(item.created_at).toDate()).format('YYYY-MM-DD HH:mm:ss');
+                        return item.created_at?moment(moment.utc(item.created_at).toDate()).format('YYYY-MM-DD HH:mm:ss'):"";
                     },
                     "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).attr('data-title', '时间')
@@ -91,7 +87,7 @@
                     target: 2,
                     className: "align-middle",
                     data: function (item) {
-                        return item.amount;
+                        return item.amount?item.amount:"";
                     },
                     "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).attr('data-title', '金额')
@@ -102,7 +98,7 @@
                     target: 3,
                     className: "align-middle",
                     data: function (item) {
-                        return item.balance_before;
+                        return item.balance_before?item.balance_before:"";
                     },
                     "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).attr('data-title', '余额（前）')
@@ -113,7 +109,7 @@
                     target: 4,
                     className: "align-middle",
                     data: function (item) {
-                        return item.balance_after;
+                        return item.balance_after?item.balance_after:"";
                     },
                     "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).attr('data-title', '余额（后）')
@@ -124,7 +120,7 @@
                     target: 5,
                     className: "align-middle",
                     data: function (item) {
-                        return item.remark;
+                        return item.remark?item.remark:"";
                     },
                     "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).attr('data-title', '备注')
@@ -154,26 +150,52 @@
                     }
                 }
             ];
-            main.initDataTables(
-                $(".table"),
-                "../../../user/account/log/data",
-                {
-                    "columns": columns,
-                    'dom': 'ftpr',
-                    'initComplete': function (settings, json) {
-                        $(".dataTable").addClass("layui-table")
-                        $(".pagination").addClass("justify-content-center");
-                        var jsonData=json.data?json.data:[];
+            ajxaData(1,function(resultData){
+
+            })
+            $("#pages").pageclick(function(page){
+                currentpage=page;
+                ajxaData(page)
+            })
+            function ajxaData(page,callBack){
+                callBack=callBack?callBack:function(){};
+                page=page?page:currentpage;
+                var searchval=removeNull($("#searchVal").val());
+                var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+                var objs={page:page,size:linePages}
+                searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+                ajaxFns(objs,function(res){
+                    if(res.success=="true"){
+                        var datas=res.data;
+                        defaultData=datas;
+                        var counts=res.recordsFiltered;
+                        prmissions=res.prmissions;
+                        initDataTables($(".table"), datas, {"columns": columns, "dom": "lftip"});
+                        pagination(page,counts)
+                        
+                        var jsonData=datas?datas:[];
                         
                         jsonData.map(function(obj){
                             obj.created_at=moment(moment.utc(obj.created_at).toDate()).format('YYYY-MM-DD HH:mm:ss')
                         })
-                        portal.showtemp(jsonData,"listTmpl", "#accountContent")
-                    }
-                }
-            );
-           
+                        showtemp(jsonData,"listTmpl", "#accountContent")
+                        callBack(datas)
+                    } 
+                },ipDress+"/des/accountsLog",{erro:function(){
+                    initDataTables($(".table"), "数据加载失败", {"columns": columns, "dom": "lftip"});
+                }})
+            }
+            function pagination(page,counts){
+                counts=counts?counts:0;
+                $("#pages").pages({
+                    counts:counts,
+                    currentPage:page,
+                    linePages:linePages,
+                    showCounts:true,
+                });
+            }
         });
+
     </script>
     <!--加载已覆盖监测哨点模板-->
     <script type="text/html" id="listTmpl">

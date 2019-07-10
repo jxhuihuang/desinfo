@@ -139,92 +139,78 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../../static/'
-    })
-    require(['autosize', 'layer_ext', 'tool'], function(autosize){
-        // 自适应高度
-        autosize($('textarea'));
-        
-    });
-</script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
 
     <script>
         var rolePurviewData=[];  //权限菜单数据
         var parent_menu=[];   //父菜单数据
 
-        var category_data={
-            select: {
-                field: $("select#category"),
-            },
-            others: [
-                {
-                    key:"admin",
-                    items: [
-                        {
-                            field: $("#parent_id").closest(".form-group"),
-                        }
-                    ]
-                }
-            ]
-        }
-        require(['jquery', 'selectize', 'selectize_ext'], function ($, selectize) {
+        
+        require(['jquery', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize) {
+            var category_data={
+                select: {
+                    field: $("select#category"),
+                },
+                others: [
+                    {
+                        key:"admin",
+                        items: [
+                            {
+                                field: $("#parent_id").closest(".form-group"),
+                            }
+                        ]
+                    }
+                ]
+            }
             $(document).ready(function () {
                 getDict()
                 $("select#category").change(function () {
                     selectedShow(category_data);  
-                    // main.selectedShow(unit_category_data);
                 });
-
-
             });
-            
-        });
-        // 加载字典 
-        function getDict(callBack){
-            callBack=callBack?callBack:function(){};
-            ajaxFns({prentCode:"menu_category, parent_menu, rolePurview, icon"},function(res){
-                var result=res.data?res.data:[];
-                //菜单类别
-                var menu_category=getdict(result,"menu_category");
-                selectizes($("#category"),{options:menu_category})    
-                //父菜单
-                parent_menu=getdict(result,"parent_menu");   
-                selectizes($("#parent_id"),{options:parent_menu})
-                //权限菜单
-                rolePurviewData=getdict(result,"rolePurview"); 
-                rolePurviewData.map(function(obj){
-                    $(".roles_permission").append(
-                        '<label class="custom-control custom-checkbox checkboxs" style="margin-left:.5rem">'+
-                            '<input class="custom-control-input" id="purview_menu" name="purview_menu" type="checkbox" value="'+obj.value+'" data-type="multiple">'+
-                            '<span class="custom-control-label">'+obj.name+'</span>'+
-                        '</label>'
-                    )
-                })
-                //加载图标
-                var icon=getdict(result,"icon"); 
-                selectizes($("#icon"),{options:icon,render: {
-                    option: function (data, escape) {
-                        return '<div> ' +
-                            '<span class="image"><i class="fe fe-' + data.name + '"></i></span>' +
-                            '<span class="title">' + escape(data.name) + '</span>' +
-                            '</div>';
-                    },
-                    item: function (data, escape) {
-                        return '<div> ' +
-                            '<span class="image"><i class="fe fe-' + data.name + '"></i></span>' +
-                            escape(data.name) +
-                            '</div>';
-                    }
-                }})
+            // 加载字典 
+            function getDict(callBack){
+                callBack=callBack?callBack:function(){};
+                ajaxFns({prentCode:"menu_category, parent_menu, rolePurview, icon"},function(res){
+                    var result=res.data?res.data:[];
+                    //菜单类别
+                    var menu_category=getdict(result,"menu_category");
+                    selectizes($("#category"),{options:menu_category})    
+                    //父菜单
+                    parent_menu=getdict(result,"parent_menu");   
+                    selectizes($("#parent_id"),{options:parent_menu})
+                    //权限菜单
+                    rolePurviewData=getdict(result,"rolePurview"); 
+                    rolePurviewData.map(function(obj){
+                        $(".roles_permission").append(
+                            '<label class="custom-control custom-checkbox checkboxs" style="margin-left:.5rem">'+
+                                '<input class="custom-control-input" id="purview_menu" name="purview_menu" type="checkbox" value="'+obj.value+'" data-type="multiple">'+
+                                '<span class="custom-control-label">'+obj.name+'</span>'+
+                            '</label>'
+                        )
+                    })
+                    //加载图标
+                    var icon=getdict(result,"icon"); 
+                    selectizes($("#icon"),{options:icon,render: {
+                        option: function (data, escape) {
+                            return '<div> ' +
+                                '<span class="image"><i class="fe fe-' + data.name + '"></i></span>' +
+                                '<span class="title">' + escape(data.name) + '</span>' +
+                                '</div>';
+                        },
+                        item: function (data, escape) {
+                            return '<div> ' +
+                                '<span class="image"><i class="fe fe-' + data.name + '"></i></span>' +
+                                escape(data.name) +
+                                '</div>';
+                        }
+                    }})
 
-                selectedShow(category_data);  
-            },ipDress+"/des/dictyList")
-        }
+                    selectedShow(category_data);  
+                },ipDress+"/des/dictyList")
+            }
+        });
+        
         function submits(event){
                 var e=window.event||event; //消除浏览器差异
                 e.preventDefault();

@@ -98,31 +98,19 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="/static/js/main.min.js"></script>
-<script type="text/javascript" src="/static/js/admin.min.js"></script>
-<script type="text/javascript" src="/static/js/portal.min.js"></script>
+
+<script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" charset="utf-8"  src="/static/plugins/ueditor1_4_3_3-utf8/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8"  src="/static/plugins/ueditor1_4_3_3-utf8/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8"  src="/static/plugins/ueditor1_4_3_3-utf8/lang/zh-cn/zh-cn.js"></script>
-<!-- <script type="text/javascript" charset="utf-8"  src="/static/plugins/ueditor1_4_3_3-utf8/third-party/zeroclipboard/ZeroClipboard.js"></script> -->
-<script>
-     require.config({
-        baseUrl: '../../../static/'
-    })
-    require(['autosize', 'layer_ext', 'tool'], function(autosize){
-        
-            
-    
-        // 自适应高度
-        autosize($('textarea'));
-    });
-</script>
+
+
 
 <script>
     var deptData=[];  //部门数据
     var cityData=[];
     
-    require(['jquery', 'selectize', 'ZeroClipboard', 'selectize_ext'], function ($, selectize, ZeroClipboard) {
+    require(['jquery', 'selectize', 'ZeroClipboard', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize, ZeroClipboard) {
         window['ZeroClipboard'] = ZeroClipboard;
         var ue = UE.getEditor('container', {
             autoHeight: true,
@@ -187,7 +175,6 @@
     function setContent(isAppendTo) {
         var arr = [];
         arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        
         alert(arr.join("\n"));
     }
 </script>

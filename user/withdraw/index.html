@@ -42,7 +42,7 @@
                     <select class="form-control select tr" id="mode" name="mode" placeholder="提现方式" required><option value="wechat">微信</option><option value="bank">银行</option></select>
                 </div>
             </div>
-            <div id="bank-info">
+            <div id="bank-info" hidden="hidden">
                 <div class="form-group row">
                     <label class="col-md-2 layui-col-sm3 col-form-label col-form-label-sm">银行信息</label>
                     <div class="col-md-10  layui-col-sm9">
@@ -70,22 +70,13 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../static/js/portal.min.js"></script>
+
 <script>
-    require.config({
-        baseUrl: '../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
+    var userData={}
+    require(['jquery', 'main', 'layer', 'layer_ext', 'bootstrap', 'tool', 'webheader'], function($, main, layer) {
         $(function () {
             main.fastClick();
         });
-    });
-</script>
-<script>
-    var userData={}
-    require(['jquery', 'main', 'portal'], function($, main, portal) {
         var mode_data = {
             select: {
                 field: $("select#mode"),

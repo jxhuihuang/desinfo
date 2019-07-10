@@ -759,7 +759,6 @@ function mergePermission(result){
     var permissionArry=[]
     var roleArry=[];
     result.map(function(objs){
-        
         objs.permission_list=stringToArry(objs.permission_list);//把权限字符串转化成数组
         objs.role=stringToArry(objs.role);//把权限字符串转化成数组
         var link=objs.link;

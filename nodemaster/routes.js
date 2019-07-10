@@ -17,6 +17,9 @@ var user=require('./projects/user/user');  //用户查询、操作
 var accountsQuery=require('./projects/accounts/accounts.query');  //用户账号查询
 var accounts=require('./projects/accounts/accounts');  //用户账号查询
 
+var accountLogsQuery=require('./projects/accounts/accounts_log_query');  //用户账号记录查询
+var accountsLog=require('./projects/accounts/accounts_log');  //用户账号记录查询
+
 var blanks=require('./projects/blanks/blanks');  //银行信息查询
 
 //上传接口
@@ -86,12 +89,16 @@ router.use('/accounts',accounts); //  前端用户账号查询
 
 router.use('/disease',disease); //疾病管理
 
+router.use('/accountsLog',accountsLog); // 后端用户账号记录查询
+
 
 
 //配置后台路由 
 router.use('/admin/login',login); //
 router.use('/admin/user',userQuery); //  
 router.use('/admin/accounts',accountsQuery); // 后端用户账号查询
+router.use('/admin/accountsLog',accountLogsQuery); // 后端用户账号记录查询
+
 
 router.use('/admin/systems',systems); //  
 
@@ -120,6 +127,7 @@ router.use('/admin/articles',articles_query); //通知公告
 router.use('/admin/disease',disease_query); //疾病管理
 
 
+router.use('/admin/accountsLog',accountsLog); // 后端用户账号记录查询
 
 
 

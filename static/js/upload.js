@@ -78,8 +78,9 @@ function(t,s){
         
         if(newparams.types=="avatar"){
             $parent.html(
+
             `
-                <div class="uploads uploads_avatar${className}">
+                <div class="uploads uploads_avatar${className}">+
                     <a class="upload-box " href="javascript:void(0)">
                         ${
                             newparams.showImg?`<span class="upload-show "></span>`:""

@@ -35,7 +35,7 @@
                 <label class="col-form-label col-form-label-sm labelValue" data-name="dept"></label>
             </div>
         </div>
-        <form method="POST" enctype="multipart/form-data" class="input-list" onsubmit="return submits(event)">
+        <form method="POST" enctype="multipart/form-data" class="input-list" >
             <div class="unit_categorys col-form-label col-form-label-sm labelValue" hidden="hidden" data-name="unit_categorys"></div>
             <div class="row">
                 <div class="form-group col-md-6 row">
@@ -171,74 +171,63 @@
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../static/js/portal.min.js"></script>
-<script>
-    require.config({
-        baseUrl: '../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool', 'upload'], function($, main, autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
-        $(function () {
-            main.fastClick();
-        });
-    });
-</script>
+
+
 <script>
     var fileObj={} //附件
     var userData={};
-    var unit_category_data = {
-        select: {
-            field: $(".unit_categorys")
-        },
-        others: [
-            {
-                key: "医疗机构",
-                items: [
-                    {
-                        field: $(".files[name=work_permit]").closest(".hiddens"),
-                        // wrap: $("#work_permit").parent().parent().parent(),
-                    }
-                ]
-            }, {
-                key: ["生产企业", '经营企业'],
-                items: [
-                    {
-                        field: $(".files[name=business_license]").closest(".hiddens"),
-                        // wrap: $("#business_license").parent().parent().parent(),
-                    }
-                ]
-            }, {
-                key: "生产企业",
-                items: [
-                    {
-                        field: $(".files[name=production_license]").closest(".hiddens"),
-                        // wrap: $("#production_license").parent().parent().parent(),
-                    }
-                ]
-            }
-        ]
-    };
-    var career_data = {
-        select: {
-            field: $("select#career")
-        },
-        others: [
-            {
-                key: "其他",
-                items: [
-                    {
-                        field: $("#career_other").closest(".hidden_box"),
-                        
-                    }
-                ]
-            }
-        ]
-    };
-    require(['jquery', 'main', 'portal', 'selectize', 'selectize_ext'], function($, main, portal, selectize){
-        
-
+    
+    require(['jquery', 'main', 'layer', 'selectize', 'layer_ext', 'selectize_ext', 'bootstrap', 'tool', 'upload', 'webheader'], function($, main, layer, selectize){
+        var unit_category_data = {
+            select: {
+                field: $(".unit_categorys")
+            },
+            others: [
+                {
+                    key: "医疗机构",
+                    items: [
+                        {
+                            field: $(".files[name=work_permit]").closest(".hiddens"),
+                            // wrap: $("#work_permit").parent().parent().parent(),
+                        }
+                    ]
+                }, {
+                    key: ["生产企业", '经营企业'],
+                    items: [
+                        {
+                            field: $(".files[name=business_license]").closest(".hiddens"),
+                            // wrap: $("#business_license").parent().parent().parent(),
+                        }
+                    ]
+                }, {
+                    key: "生产企业",
+                    items: [
+                        {
+                            field: $(".files[name=production_license]").closest(".hiddens"),
+                            // wrap: $("#production_license").parent().parent().parent(),
+                        }
+                    ]
+                }
+            ]
+        };
+        var career_data = {
+            select: {
+                field: $("select#career")
+            },
+            others: [
+                {
+                    key: "其他",
+                    items: [
+                        {
+                            field: $("#career_other").closest(".hidden_box"),
+                            
+                        }
+                    ]
+                }
+            ]
+        };
         $(document).ready(function () {
+            main.fastClick();
             getFormData(function(resultData){
                 //加载职业
                 ajaxFns({prentCode:"career"},function(res){
@@ -308,86 +297,88 @@
             main.selectedShow(career_data);
         });
 
-        
-    });
-    /**获取用户数据*/
-    function getFormData(callBack){
-        var userInfo=JSON.parse(localStorage.getItem("userInfo"));
-        ajaxFns({_methods:"queryUser"},function(res){
-            if(res.data && res.data.length>0){
-                var resultData=res.data[0];
-                userData=res.data[0];
-                formSetValue(".input-list",resultData)
-                if(resultData.account){
-                    resultData.account_balance=resultData.account.balance
+        $(".input-list").on("submit",function(event){
+            return submits(event)
+        })
+        /**获取用户数据*/
+        function getFormData(callBack){
+            var userInfo=JSON.parse(localStorage.getItem("userInfo"));
+            ajaxFns({_methods:"queryUser"},function(res){
+                if(res.data && res.data.length>0){
+                    var resultData=res.data[0];
+                    userData=res.data[0];
+                    formSetValue(".input-list",resultData)
+                    if(resultData.account){
+                        resultData.account_balance=resultData.account.balance
+                    }
+                    // resultData.account_balance=resultData.account_balance=="0"?"0.00":resultData.account_balance;
+                    resultData.activeName=resultData.active=="1"?"正常":resultData.active=="0"?"审核中":""
+                    resultData.unit_categorys=resultData.unit_category;
+                    resultData.unit_category=resultData.unit_category?"【<em>"+resultData.unit_category+"</em>】":""
+                    
+                    $(".labelValue").each(function(){
+                        var name=$(this).attr("data-name");
+
+                        $(this).html(resultData[name])
+                    })
+                    selectedShow(unit_category_data);
+                    callBack(resultData)
                 }
-                // resultData.account_balance=resultData.account_balance=="0"?"0.00":resultData.account_balance;
-                resultData.activeName=resultData.active=="1"?"正常":resultData.active=="0"?"审核中":""
-                resultData.unit_categorys=resultData.unit_category;
-                resultData.unit_category=resultData.unit_category?"【<em>"+resultData.unit_category+"</em>】":""
-                
-                $(".labelValue").each(function(){
-                    var name=$(this).attr("data-name");
+            },ipDress+"/des/user")
+        }
+        /**获取上传文件**/
+        function setFileData(datas){
+            for(var k in fileObj){
+                var arrys=fileObj[k];
+                if(!checkNull(arrys)){
+                    var newArry=[];
+                    arrys.map(function(obj){
+                        newArry.push(obj.path)
+                    })
+                    datas[k]=newArry.join(",")
+                }
+            }
+        }
+        /**提交代码**/
+        function submits(event){
+            var e=window.event||event; //消除浏览器差异
+            e.preventDefault();
+            var datas=serializeArray(".input-list"); //序列化表单
+            if(datas.password!="" || datas.password2!=""){
+                if(datas.password!=datas.password2!=""){
+                    layermsg("两次输入的密码不一致",{icon:2})
+                    return false;
+                }
+            }
 
-                    $(this).html(resultData[name])
-                })
-                selectedShow(unit_category_data);
-                callBack(resultData)
+            if(datas.transaction_password!="" || datas.transaction_password2!=""){
+                if(datas.transaction_password!=datas.transaction_password2!=""){
+                    layermsg("两次输入的交易密码不一致",{icon:2})
+                    return false;
+                }
             }
-        },ipDress+"/des/user")
-    }
-    /**获取上传文件**/
-    function setFileData(datas){
-        for(var k in fileObj){
-            var arrys=fileObj[k];
-            if(!checkNull(arrys)){
-                var newArry=[];
-                arrys.map(function(obj){
-                    newArry.push(obj.path)
-                })
-                datas[k]=newArry.join(",")
+            datas.id=userData.id;
+            datas.username=userData.username;
+            if(datas.career=="其他"){
+                datas.career=datas.career_other
             }
-        }
-    }
-    /**提交代码**/
-    function submits(event){
-        var e=window.event||event; //消除浏览器差异
-        e.preventDefault();
-        var datas=serializeArray(".input-list"); //序列化表单
-        if(datas.password!="" || datas.password2!=""){
-            if(datas.password!=datas.password2!=""){
-                layermsg("两次输入的密码不一致",{icon:2})
-                return false;
-            }
-        }
+            datas._methods="updata";
+            
 
-        if(datas.transaction_password!="" || datas.transaction_password2!=""){
-            if(datas.transaction_password!=datas.transaction_password2!=""){
-                layermsg("两次输入的交易密码不一致",{icon:2})
-                return false;
-            }
+            datas.account_password=datas.transaction_password;
+            datas.accounts_id=userData.account?userData.account.id:"";
+            setFileData(datas)
+            ajaxFns(datas,function(res){
+                if(res.success=="true"){
+                    layermsg("修改成功",{icon: 1});
+                    getFormData(function(resultData){
+                        resetUserInfo(resultData)
+                    })
+                    
+                }
+            },ipDress+"/des/user")
         }
-        datas.id=userData.id;
-        datas.username=userData.username;
-        if(datas.career=="其他"){
-            datas.career=datas.career_other
-        }
-        datas._methods="updata";
-        
-
-        datas.account_password=datas.transaction_password;
-        datas.accounts_id=userData.account?userData.account.id:"";
-        setFileData(datas)
-        ajaxFns(datas,function(res){
-            if(res.success=="true"){
-                layermsg("修改成功",{icon: 1});
-                getFormData(function(resultData){
-                    resetUserInfo(resultData)
-                })
-                
-            }
-        },ipDress+"/des/user")
-    }
+    });
 </script>
 
 </body>

@@ -124,23 +124,15 @@
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="../../static/js/main.min.js"></script>
 <script type="text/javascript" src="../../static/js/portal.min.js"></script>
+
 <script>
-    require.config({
-        baseUrl: '../../static/'
-    })
-    require(['jquery', 'main', 'autosize', 'layer', 'layer_ext', 'bootstrap', 'tool'], function($, main, autosize, layer){
-        // layer_flash([["warning", "\u6ca1\u6709\u201ctest002\u201d\u7684\u751f\u4ea7\u4f01\u4e1a\u4fe1\u606f\uff01"]]);
-            
+    var manufacturer_id="";
+    require(['jquery', 'main', 'layer', 'autosize', 'layer_ext', 'dynamicline', 'selectize', 'selectize_ext', 'bootstrap', 'tool', 'webheader'], function ($, main, layer, autosize) {
         // 自适应高度
         autosize($('textarea'));
         $(function () {
             main.fastClick();
         });
-    });
-</script>
-<script>
-    var manufacturer_id="";
-    require(['jquery', 'main', 'layer', 'autosize', 'portal', 'dynamicline', 'selectize', 'selectize_ext'], function ($, main, layer, autosize, portal) {
         getManufacturer(function(){
             initDatetimePicker($("#approval_date"),{
                 maxDate:new Date(),
