@@ -27,8 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 	
 </head>
 <body>
@@ -42,8 +43,7 @@
             <div class="container my-3 my-md-5">
                 <div class="row">
                     <div class="col-12">
-                        <form class="card" method="POST" enctype="multipart/form-data"  onsubmit="return submits(event)">
-                            <input type="hidden" name="csrf_token" value="ImUxM2EwMDJjNjIxY2Q2ZjIzYjA3ODNmNjMyNjE2NjQzYWIwOTk0N2Yi.XKxCaA.htP9VsRci5NQz5xEUagAy5i02uA"/>
+                        <form class="card" method="POST" enctype="multipart/form-data" >
                             <div class="card-header">
                                 <h3 class="card-title">编辑</h3>
                             </div>
@@ -399,7 +399,7 @@
                 ]
             };
 
-            $(document).ready(function () {
+            $(function () {
                 getFormData(function(resultData){
                     formSetValue(".card",resultData)
                     $(".card").find(".form-control-plaintext").each(function(result){
@@ -491,7 +491,45 @@
 
 
                 })
-               
+
+
+                /**提交表单**/
+                $("form.card").on("submit",function(event){
+                    var e=window.event||event; //消除浏览器差异
+                    e.preventDefault();
+                    var datas=serializeArray("form.card"); //序列化表单
+                    datas._methods="updata";
+                    if(datas.password!="" || datas.password2!=""){
+                        if(datas.password!=datas.password2!=""){
+                            layermsg("两次输入的密码不一致",{icon:2})
+                            return false;
+                        }
+                    }
+
+                    if(datas.account_password!="" || datas.account_password2!=""){
+                        if(datas.account_password!=datas.account_password2!=""){
+                            layermsg("两次输入的交易密码不一致",{icon:2})
+                            return false;
+                        }
+                    }
+                    if(datas.unit_category=="其他"){
+                        datas.unit_category=datas.unit_category_other
+                    }
+                    if(datas.career=="其他"){
+                        datas.career=datas.career_other
+                    }
+                    datas.accounts_id=userData.account?userData.account.id:"";
+                    setFileData(datas)
+                    ajaxFns(datas,function(res){
+                        if(res.success=="true"){
+                            layermsg("修改成功",{icon: 1})
+                            getFormData(function(resultData){
+                                resetUserInfo(resultData)
+                            })
+                            
+                        }
+                    },ipDress+"/des/admin/user")
+                })
                 
                 
             });
@@ -503,72 +541,36 @@
             $("select#unit_category").change(function () {
                 selectedShow(unit_category_data);
             });
-        });
-
-        function getFormData(callBack){
-            var userInfo=JSON.parse(localStorage.getItem("userInfo"));
-            var username=userInfo.username
-            ajaxFns({_methods:"queryUser"},function(res){
-                if(res.data && res.data.length>0){
-                    resultData=res.data[0];
-                    userData=resultData;
-                    if(resultData.account){
-                        resultData.account_balance=resultData.account.balance
+            
+            function getFormData(callBack){
+                var userInfo=JSON.parse(localStorage.getItem("userInfo"));
+                var username=userInfo.username
+                ajaxFns({_methods:"queryUser"},function(res){
+                    if(res.data && res.data.length>0){
+                        resultData=res.data[0];
+                        userData=resultData;
+                        if(resultData.account){
+                            resultData.account_balance=resultData.account.balance
+                        }
+                        callBack(resultData)
                     }
-                    callBack(resultData)
-                }
-            },ipDress+"/des/admin/user")
-        }
-         /**获取上传文件**/
-         function setFileData(datas){
-            for(var k in fileObj){
-                var arrys=fileObj[k];
-                if(!checkNull(arrys)){
-                    var newArry=[];
-                    arrys.map(function(obj){
-                        newArry.push(obj.path)
-                    })
-                    datas[k]=newArry.join(",")
-                }
-            }
-        }
-        /**提交代码**/
-        function submits(event){
-            var e=window.event||event; //消除浏览器差异
-            e.preventDefault();
-            var datas=serializeArray("form.card"); //序列化表单
-            datas._methods="updata";
-            if(datas.password!="" || datas.password2!=""){
-                if(datas.password!=datas.password2!=""){
-                    layer.msg("两次输入的密码不一致",{icon:2})
-                    return false;
-                }
+                },ipDress+"/des/admin/user")
             }
 
-            if(datas.account_password!="" || datas.account_password2!=""){
-                if(datas.account_password!=datas.account_password2!=""){
-                    layer.msg("两次输入的交易密码不一致",{icon:2})
-                    return false;
+            /**获取上传文件**/
+            function setFileData(datas){
+                for(var k in fileObj){
+                    var arrys=fileObj[k];
+                    if(!checkNull(arrys)){
+                        var newArry=[];
+                        arrys.map(function(obj){
+                            newArry.push(obj.path)
+                        })
+                        datas[k]=newArry.join(",")
+                    }
                 }
             }
-            if(datas.unit_category=="其他"){
-                datas.unit_category=datas.unit_category_other
-            }
-            if(datas.career=="其他"){
-                datas.career=datas.career_other
-            }
-            datas.accounts_id=userData.account?userData.account.id:"";
-            setFileData(datas)
-            ajaxFns(datas,function(res){
-                if(res.success=="true"){
-                    layer.msg("修改成功",{icon: 1})
-                    getFormData(function(resultData){
-                        resetUserInfo(resultData)
-                    })
-                    
-                }
-            },ipDress+"/des/admin/user")
-        }
+        });
     </script>
 
 </body>

@@ -27,8 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/admin.min.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 	
 </head>
 <body>
@@ -43,7 +44,7 @@
         <div class="container my-3 my-md-5">
             <div class="row">
                 <div class="col-12">
-                    <form class="card" method="POST" enctype="multipart/form-data" onsubmit="return submits(event)">
+                    <form class="card" method="POST" enctype="multipart/form-data">
                         <div class="card-header">
                             <h3 class="card-title">新增</h3>
                         </div>
@@ -295,7 +296,7 @@
                 ]
             };
 
-            $(document).ready(function () {
+            $(function () {
                 // 加载字典 
                 ajaxFns({prentCode:"timezone, career, unit_category"},function(res){
                     var result=res.data;
@@ -316,7 +317,7 @@
                 
                 
                 // 加载部门单位 
-                ajaxFns({},function(res){
+                ajaxFns({active:1},function(res){
                     var result=res.data;
                     deptData=result;
                     // 单位名称
@@ -337,7 +338,7 @@
                 },ipDress+"/des/dept")
                 
                 //加载角色
-                ajaxFns({},function(res){
+                ajaxFns({active:1},function(res){
                     roleData=res.data;
                     selectizes($("#roles"),{options:res.data,valueField:"id"})
                 },ipDress+"/des/role")
@@ -384,6 +385,72 @@
                 })
                 selectedShow(unit_category_data);
                 selectedShow(career_data);
+
+                /**提交表单**/
+                $("form.card").on("submit",function(event){
+                    var e=window.event||event; //消除浏览器差异
+                    e.preventDefault();
+                    var datas=serializeArray("form.card") //序列化表单;
+                    var roles_id=datas.roles;
+                    setFileData(datas)
+                    /**获取角色名称*/
+                    if(!checkNull(roles_id)){
+                        var roles_name="";
+                        if(roles_id.toString().indexOf(",")==-1){
+                            roleData.map(function(obj){
+                                if(obj.id==roles_id){
+                                    roles_name=obj.name;
+                                }
+                            })
+                            datas.roles_name=roles_name;
+                        }else{
+                            var roles_name=[];
+                            for(var i=0; i<roles_id.split(",").length; i++){
+                                var rolesId=roles_id.split(",")[i];
+                                roleData.map(function(obj){
+                                    if(obj.id==rolesId){
+                                        roles_name.push(obj.name)
+                                    }
+                                })
+                            }
+                            roles_name=roles_name.length>0?roles_name.join(","):"";
+                            datas.roles_name=roles_name;
+                        }
+                    }
+                    /**获取单位名称*/
+                    if(!checkNull(datas.dept_id)){
+                        deptData.map(function(obj){
+                            if(obj.id==datas.dept_id){
+                                datas.dept=obj.name
+                            }
+                        })
+                    }
+                    /**获取邀请单位名*/
+                    if(!checkNull(datas.invitation_dept_id)){
+                        deptData.map(function(obj){
+                            if(obj.id==datas.invitation_dept_id){
+                                datas.invitation_dept=obj.name
+                            }
+                        })
+                    }
+                    if(datas.unit_category=="其他"){
+                        datas.unit_category=datas.unit_category_other
+                    }
+                    if(datas.career=="其他"){
+                        datas.career=datas.career_other
+                    }
+                    
+                    datas._methods="insert";
+                    datas.password=datas.password?datas.password:"123456";
+                    ajaxFns(datas,function(res){
+                        if(res.success=="true"){
+                            layermsg("新增成功",{icon:1},function(){
+                                window.location.href="/admin/user/"
+                            })
+                        }
+                    },ipDress+"/des/admin/user")
+                })
+
             });
 
             $("select#unit_category").change(function () {
@@ -393,85 +460,21 @@
             $("select#career").change(function () {
                 admin.selectedShow(career_data);
             });
-            
 
-        });
-        /**获取上传文件**/
-        function setFileData(datas){
-            for(var k in fileObj){
-                var arrys=fileObj[k];
-                if(!checkNull(arrys)){
-                    var newArry=[];
-                    arrys.map(function(obj){
-                        newArry.push(obj.path)
-                    })
-                    datas[k]=newArry.join(",")
-                }
-            }
-        }
-        function submits(event){
-            var e=window.event||event; //消除浏览器差异
-            e.preventDefault();
-            var datas=serializeArray("form.card") //序列化表单;
-            var roles_id=datas.roles;
-            setFileData(datas)
-            /**获取角色名称*/
-            if(!checkNull(roles_id)){
-                var roles_name="";
-                if(roles_id.toString().indexOf(",")==-1){
-                    roleData.map(function(obj){
-                        if(obj.id==roles_id){
-                            roles_name=obj.name;
-                        }
-                    })
-                    datas.roles_name=roles_name;
-                }else{
-                    var roles_name=[];
-                    for(var i=0; i<roles_id.split(",").length; i++){
-                        var rolesId=roles_id.split(",")[i];
-                        roleData.map(function(obj){
-                            if(obj.id==rolesId){
-                                roles_name.push(obj.name)
-                            }
+            /**获取上传文件**/
+            function setFileData(datas){
+                for(var k in fileObj){
+                    var arrys=fileObj[k];
+                    if(!checkNull(arrys)){
+                        var newArry=[];
+                        arrys.map(function(obj){
+                            newArry.push(obj.path)
                         })
+                        datas[k]=newArry.join(",")
                     }
-                    roles_name=roles_name.length>0?roles_name.join(","):"";
-                    datas.roles_name=roles_name;
                 }
             }
-            /**获取单位名称*/
-            if(!checkNull(datas.dept_id)){
-                deptData.map(function(obj){
-                    if(obj.id==datas.dept_id){
-                        datas.dept=obj.name
-                    }
-                })
-            }
-            /**获取邀请单位名*/
-            if(!checkNull(datas.invitation_dept_id)){
-                deptData.map(function(obj){
-                    if(obj.id==datas.invitation_dept_id){
-                        datas.invitation_dept=obj.name
-                    }
-                })
-            }
-            if(datas.unit_category=="其他"){
-                datas.unit_category=datas.unit_category_other
-            }
-            if(datas.career=="其他"){
-                datas.career=datas.career_other
-            }
-            
-            datas._methods="insert";
-            datas.password=datas.password?datas.password:"123456";
-            ajaxFns(datas,function(res){
-                if(res.success=="true"){
-                    layer.msg("新增成功",{icon:1},function(){
-                        window.location.href="/admin/user/"
-                    })
-                }
-            },ipDress+"/des/admin/user")
-        }
+        });
     </script>
 </body>
 </html>

@@ -524,8 +524,6 @@
                     }else{
                         see='<a href="'+fileUrl+'" download="'+filename+'">查看</a>'
                     }
-                   
-
                 }
                 
 
@@ -687,9 +685,13 @@
     function getFormData(callBack){
         var id=geturl("id");
         ajaxFns({id:id},function(res){
-            if(res.data && res.data.length>0){
-                resultData=res.data[0];
-                callBack(resultData)
+            if(res.data){
+                if(res.data.length>0){
+                    resultData=res.data[0];
+                    callBack(resultData)
+                }else{
+                    notpermission(".detailMian","抱歉，页面不存在");
+                }
             }
         },ipDress+"/des/report")
     }

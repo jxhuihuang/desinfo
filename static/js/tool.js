@@ -5,6 +5,7 @@ var ipDressurl=currentUrl;
 var ipDressurl_top="";
 var now_permission=false;
 var admin_id=7; //超级用户id
+var admin_name="超级管理员"; //超级用户id
 var register_rorle_id=3; //注册时默认角色id
 var body_widths=isMobile?window.innerWidth:window.screen.availWidth ;
 var body_heights=isMobile?window.innerHeight:window.screen.availHeight;
@@ -21,6 +22,9 @@ var ipDress=ipDressurl_top+ipDressurl;
 var default_avatar="/uploads"+"/default.png";
 var default_group="/uploads"+"/group.png";
 var img_ipDress=ipDress
+
+
+
 /****跳转 */
 function linkTo(url){
   var referrerurl = document.referrer? document.referrer:"";  //获取的上一页
@@ -409,7 +413,7 @@ function generateMixed(n, type) {
                                 layer.msg(resultMsg?resultMsg:"接口异常",{icon:2})
                             break;
                         }
-                    success(data);
+                        success(data);
                     }else{
                         success(data);
                     }
@@ -812,7 +816,19 @@ function showtemp(data,listTmpl, id, callback){
     }
 }
 
-
+/**显示template模板 */
+function showtempAdd(data,listTmpl, id, callback){
+    var datas=data?data:[];
+    var callback=callback?callback:function(){};
+    if(datas.length==0){
+        // $(id).append("没有检索到数据");
+    }else{
+        var newData={list:datas}
+      
+        var templates=template(listTmpl, newData);
+        $(id).append(templates)
+    }
+}
 function getCurrentUrl(){
     var url=currentUrl.replace(ipDress,"");
     if(url.indexOf("?")>0){
@@ -1230,6 +1246,8 @@ function selectizes(elem, params){
     var $this=elem
     var elem_id=$this.attr("id")?"#"+$this.attr("id"):"."+$this.attr("class");
     var elemType=$this.attr("id")?"id":"class"
+    var placeholder=$this.attr("placeholder")?$this.attr("placeholder"):"";
+
     params=params&& Object.getOwnPropertyNames(params).length>0?params:{};
     var ismMultiple=$this.attr("multiple")?true:false;
     $this.attr("autocomplete","off")
@@ -1286,7 +1304,7 @@ function selectizes(elem, params){
         $this.addClass("select")
        
         if(options.length!=0){
-            var selectOption='<option  value="">请选择</option>';
+            var selectOption=placeholder?'<option  value="">'+placeholder+'</option>':'<option  value="">请选择</option>';
             options.map(function(obj){
                 var name=obj[labelField];
                 var value=obj[valueField]
@@ -1506,18 +1524,20 @@ jQuery.fn.extend({
 
 })
 
+/**通用弹出框*** */
 function layermsg(text,option,callBack){
     callBack=callBack?callBack:function(){};
     var default_params = {
         time:1000,
         icon: 1,
-        skin:'',
+        skin:'layermsgs',
         tips:2, //tips层的私有参数。支持上右下左四个方向，通过1-4进行方向设定。如tips: 3则表示在元素的下面出现。有时你还可能会定义一些颜色，可以设定tips: [1, '#c00']
+        shade:0.1,
+        offset: 'auto'
     }
     var params = $.extend(true, {}, default_params, option);
     
     if(isMobile){
-
         params.skin='mobile_layer '+params.skin
         params.icon=-1
         layer.msg(text,params,function(){
@@ -1578,4 +1598,16 @@ function resetUserInfo(obj){
             $(".nav-username em").html(userInfo.name?userInfo.name:"")
         }
     }
+}
+
+/****分页 *******/
+function pagination(page,counts,linePages){
+    linePages=linePages?linePages:10
+    counts=counts?counts:0;
+    $("#pages").pages({
+        counts:counts,
+        currentPage:page,
+        linePages:linePages,
+        showCounts:true,
+    });
 }

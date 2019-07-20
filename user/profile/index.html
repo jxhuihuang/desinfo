@@ -246,6 +246,7 @@
                     ipDress:img_ipDress,
                     className:"avatar_box",
                     onChanges:function(photoArry){
+                        
                         fileObj["avatar"]=photoArry
                     }
                 });
@@ -253,38 +254,35 @@
                     var identity_cardArry=stringToArry(resultData.identity_card);
                     identity_cardArry.map(function(obj){
                         if(!checkNull(obj)){
-                            $(".identity_card").append(`
-                                <figure><img src="${img_ipDress+obj}" class="img-fluid" /></figure>
-                            `)
+                            $(".identity_card").append(
+                                '<figure><img src="'+img_ipDress+obj+'" class="img-fluid" /></figure>'
+                            )
                         }
-                        
-
                     })
                 }
                 if(resultData.work_permit){
                     var work_permitArry=stringToArry(resultData.work_permit);
                     work_permitArry.map(function(obj){
-                        $(".work_permit").append(`
-                            <figure><img src="${img_ipDress+obj}" class="img-fluid" /></figure>
-                        `)
-
+                        $(".work_permit").append(
+                            '<figure><img src="'+img_ipDress+obj+'" class="img-fluid" /></figure>'
+                        )
                     })
                 }
                 if(resultData.business_license){
                     var business_licenseArry=stringToArry(resultData.business_license);
                     business_licenseArry.map(function(obj){
-                        $(".business_license").append(`
-                            <figure><img src="${img_ipDress+obj}" class="img-fluid" /></figure>
-                        `)
+                        $(".business_license").append(
+                            '<figure><img src="'+img_ipDress+obj+'" class="img-fluid" /></figure>'
+                        )
 
                     })
                 }
                 if(resultData.production_license){
                     var production_licenseArry=stringToArry(resultData.production_license);
                     production_licenseArry.map(function(obj){
-                        $(".production_license").append(`
-                            <figure><img src="${img_ipDress+obj}" class="img-fluid" /></figure>
-                        `)
+                        $(".production_license").append(
+                            '<figure><img src="'+img_ipDress+obj+'" class="img-fluid" /></figure>'
+                        )
 
                     })
                 }

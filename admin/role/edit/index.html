@@ -33,8 +33,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 	
 </head>
 <body>
@@ -49,8 +50,7 @@
             <div class="container my-3 my-md-5">
                 <div class="row">
                     <div class="col-12">
-                        <form class="card" method="POST" onsubmit="return submits(event)">
-                            <input type="hidden" name="csrf_token" value="ImNlNDhlZjZlY2QyZmM1ZjA5YTY1MDVhMjE5M2Q3Yjk1NmM5OTYxNzgi.XJn2kA.7QmpRKWu5iiFbISVRJl9o6VzanY"/>
+                        <form class="card" method="POST" >
                             <div class="card-header">
                                 <h3 class="card-title">编辑</h3>
                             </div>
@@ -71,14 +71,14 @@
 
                                     <input class="form-control" id="description" name="description" type="text" value="">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     
             
                                     <label class="form-label" for="parents">父角色</label>
             
 
                                     <select class="form-control" id="parents" multiple name="parents"></select>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     
             
@@ -118,41 +118,51 @@
 
     <script>
         require(['jquery', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize) {
+            var userRoleName="";
+            var rolename='';
             $(document).ready(function () {
                 getformData(function(resultData){
                     formSetValue(".card",resultData)
-                    //加载角色
-                    ajaxFns({},function(res){
-                        roleData=res.data;
-                        selectizes($("#parents"),{options:res.data,valueField:"id",defaultData:resultData.parents})
-                    },ipDress+"/des/role")
+                })
+                /**提交表单**/
+                $("form.card").on("submit",function(event){
+                    var e=window.event||event; //消除浏览器差异
+                    e.preventDefault();
+                    var datas=serializeArray("form.card") //序列化表单;
+                    datas.id=geturl("id");
+                    datas._methods="updata";
+                    if(userRoleName=="超级管理员" && rolename=="超级管理员"){
+                        datas.name="超级管理员";
+                    }
+                    ajaxFns(datas,function(res){
+                        if(res.success=="true"){
+                            layermsg("修改成功",{icon: 1})
+                        }
+                    },ipDress+"/des/admin/role")
                 })
                 
             });
+            /**获取数据*/
+            function getformData(callBack){
+                var roleId=geturl("id");
+                ajaxFns({id:roleId},function(res){
+                    if(res.data){
+                        if(res.data.length>0){
+                            var resultData=res.data[0];
+                            userRoleName=res.userRoleName?res.userRoleName:"";
+                            rolename=resultData.name?resultData.name:'';
+                            if(userRoleName=="超级管理员" && rolename=="超级管理员"){
+                                $("#name").attr("disabled",true)
+                            }
+                            callBack(resultData)
+                        }else{
+                            notpermission_a(".page-main","页面不存在")
+                        }
+                        
+                    }
+                },ipDress+"/des/admin/role")
+            }
         });
-        /**获取数据*/
-        function getformData(callBack){
-            var roleId=geturl("id");
-            ajaxFns({id:roleId},function(res){
-                if(res.data && res.data.length>0){
-                    var resultData=res.data[0];
-                    callBack(resultData)
-                }
-            },ipDress+"/des/admin/role")
-        }
-        function submits(event){
-            var e=window.event||event; //消除浏览器差异
-            e.preventDefault();
-            var datas=serializeArray("form.card") //序列化表单;
-            datas.id=geturl("id");
-            datas._methods="updata";
-            ajaxFns(datas,function(res){
-                if(res.success=="true"){
-                    layer.msg("修改成功",{icon: 1})
-                }
-            },ipDress+"/des/admin/role")
-
-        }
     </script>
 
 </body>

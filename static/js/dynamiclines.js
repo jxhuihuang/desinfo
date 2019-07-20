@@ -90,8 +90,8 @@ function dynamicLineEvent(container) {
                 }
             }
         })
-
-       return {objs, targetkey, thisRow};
+      
+       return {objs, targetkey, thisRow}
     }
     // 清空所有元素
     $this.find("[data-toggle=fieldset-clear-all]").on('click', function () {
@@ -258,7 +258,6 @@ function dynamicSetData(elem, obj, callBack){
             }else if($this.is("select")){
                 // 下拉框
 
-                
                 if($this.next().hasClass("selectize-control")){
                      $this.selectSetVal(values)
                 }else{

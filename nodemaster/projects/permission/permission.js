@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
                     let navColumns=params.navColumns;
                     params=filter(tableKeys, params); //过滤
                     params.category=!params.category?"admin":params.category;
-                    const {username="", roles=""}=permissionRes.decode;
+                    const {name="", roles="", roles_name=""}=permissionRes.decode;
                     let user_role=roles;
                     if(user_role.toString().indexOf(",")!=-1){
                         user_role={[Op.or]:stringToArry(user_role)};
@@ -50,8 +50,9 @@ router.post('/', function(req, res, next) {
                                 resultCode:"0",
                                 success:"true",
                                 result:newColumnsArry,
-                                userName:username,
+                                name:name,
                                 roles:roles,
+                                roles_name:roles_name,
                                 islogin:permissionRes.islogin,
                                 permission:permissionRes.permission,
                                 permissionErro:permissionRes.resultCode,
@@ -66,12 +67,11 @@ router.post('/', function(req, res, next) {
         break;
         //前台
         case "web":
-            
             let navColumns=params.navColumns;
             params=filter(tableKeys, params); //过滤
             params.category=!params.category?"portal":params.category;
             checkPermission(req, res, jwt, mysql, currentUrl,  function(permissionRes){
-                const {username="", roles="", active="", unit_category=""}=permissionRes.decode;
+                const {name="", roles="", active="", unit_category="", roles_name=""}=permissionRes.decode;
                 let user_role=roles;
                 if(user_role.toString().indexOf(",")!=-1){
                     user_role={[Op.or]:stringToArry(user_role)};
@@ -93,8 +93,9 @@ router.post('/', function(req, res, next) {
                             resultCode:"0",
                             success:"true",
                             result:newColumnsArry,
-                            userName:username,
+                            name:name,
                             roles:roles,
+                            roles_name:roles_name,
                             islogin:permissionRes.islogin,
                             permission:permissionRes.permission,
                             permissionErro:permissionRes.resultCode,

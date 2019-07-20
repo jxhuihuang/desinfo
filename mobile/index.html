@@ -1,0 +1,196 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+    
+    <title>药品不良反应上报系统 - 首页</title>
+   
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/antd-mobile.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/static/lib/css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/lib/plugins/jquery-weui/jquery-weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/lib/css/mobile.css" />
+    <script type="text/javascript" src="/static/plugins/template/template.js"></script>
+</head>
+<body ontouchstart> 
+    
+    <!--# include file="/mobile/include/headers.html" -->
+    <main>
+        <div class="weui-tab">
+        <div class="weui-navbar">
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            药品目录
+            </a>
+            <a class="weui-navbar__item" href="#tab2">
+            已覆盖监测哨点
+            </a>
+        </div>
+        <div class="weui-tab__bd ">
+            <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active ">
+                
+            <div id="drugs"></div>
+            <div class="weui-loadmore" style="display: none">
+                <i class="weui-loading"></i>
+                <span class="weui-loadmore__tips">正在加载</span>
+                </div>
+            </div>
+            <div id="tab2" class="weui-tab__bd-item ">
+            <div class="weui-cells" id="hospitals">
+                
+            </div>
+            <div class="weui-loadmore" style="display: none">
+                <i class="weui-loading"></i>
+                <span class="weui-loadmore__tips">正在加载</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+    <script type="text/javascript" src="/static/lib/js/mobile.js"></script>
+<script>
+    var drup_currentpage=1;
+    var hos_currentpage=1;
+    var linePages=10;
+    requirejs(['jquery', 'main', 'fastclick', 'layer', 'weui', 'tool', 'pages', 'webheader'], function($, main, FastClick, layer) {
+        $(function() {
+            $('.weui-cell_swiped').swipeout()
+            FastClick.attach(document.body);
+            $(document.body).infinite();
+            getdrupData(drup_currentpage,function(resultData){
+              showtemp(resultData,"druglistTmpl", "#drugs")  //加载模板
+            })
+            getHospitalData(hos_currentpage,function(resultData){
+              showtemp(resultData,"hospitallistTmpl", "#hospitals")
+            })
+        });
+        var loading = false;  //状态标记
+        $(".weui-loadmore").css("display","none")
+        $(document.body).infinite().on("infinite", function() {
+            if(loading) return;
+            loading = true;
+            var tab=$(".weui-navbar__item.weui-bar__item--on").attr("href").replace("#","")
+            
+            $("#"+tab+" .weui-loadmore").css("display","block")
+            if(tab=="tab1"){
+                setTimeout(function() {
+                    drup_currentpage=drup_currentpage+1
+                    getdrupData(drup_currentpage,function(resultData){
+                        if(resultData.length>0){
+                            showtempAdd(resultData,"druglistTmpl", "#drugs")  //加载模板
+                        }
+                        loading = false;
+                        $("#"+tab+" .weui-loadmore").css("display","none")
+                    })
+                }, 1000);   //模拟延迟
+            }
+            if(tab=="tab2"){
+                setTimeout(function() {
+                    hos_currentpage=hos_currentpage+1
+                    getHospitalData(hos_currentpage,function(resultData){
+                        if(resultData.length>0){
+                            showtempAdd(resultData,"hospitallistTmpl", "#hospitals")  //加载模板
+                        }
+                        loading = false;
+                        $("#"+tab+" .weui-loadmore").css("display","none")
+
+                    })
+                }, 1000);   //模拟延迟
+
+            }
+        });
+        /***获取药品列表数据**/
+        function getdrupData(page,callBack){
+            page=page?page:drup_currentpage;
+            var searchval=removeNull($("#searchVal").val());
+            var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+            var objs={page:page,size:linePages,upper_id:2}
+            searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+            ajaxFns(objs,function(res){
+                if(res.success=="true"){
+                    var datas=res.data;
+                    var counts=res.recordsFiltered;
+                    /*手机端加载drug数据*/
+                    var jsonData=datas?datas:[];
+                    callBack(jsonData)
+                } 
+            },ipDress+"/des/drug",{erro:function(){
+                
+            }})
+        }
+
+        function getHospitalData(page,callBack){
+            page=page?page:hos_currentpage;
+            var searchval=removeNull($("#searchVal").val());
+            var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+            var objs={page:page,size:linePages, upper_id:"2"}
+            searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+            ajaxFns(objs,function(res){
+                if(res.success=="true"){
+                    var datas=res.data;
+                    var counts=res.recordsFiltered;
+                    /*手机端加载hospital数据*/
+                    var list="";
+                    var jsonData=datas?datas:[];
+                    callBack(jsonData)
+                }
+            },ipDress+"/des/dept",{erro:function(){
+                
+            }})
+        }
+    })
+   </script>
+  <!--加载药品目录模板-->
+  <script type="text/html" id="druglistTmpl">
+    {{each list as value i}}
+        <div class="am-card last_noborder mt1_r" >
+            <div class="am-card-header">【{{value.product_name}}】{{value.approval_number}}</div>     
+            <div class="am-card-body">
+                <div class="am-list">
+                    <div class="am-list-body">
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-5">生产单位:</div>
+                                <div class="am-list-extra tl">{{value.production_unit}}</div>
+                            </div>
+                        </div>
+                        <div class="am-list-item am-list-item-middle">
+                            <div class="am-list-line">
+                                <div class="am-input-label am-input-label-5 tr">奖  金:</div>
+                                <div class="am-list-extra tl"><em style="color:#f00; margin-right:.3rem; font-size:1rem">{{value.reward}}</em>元/份</div>
+                            </div>  
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="ant-card-actions">
+                  <div style="height:100%; line-height:40px; color:#888; text-align:right; padding-right:2rem; ">
+                        剩余 <em style="color:#3f9cd6">{{value.quantity}} </em>份
+                  </div>
+            </div>
+        </div>
+        <div class="am-whitespace am-whitespace-md"></div>
+    {{/each}}
+</script>
+
+  <!--加载已覆盖监测哨点模板-->
+<script type="text/html" id="hospitallistTmpl">
+    {{each list as value i}}
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>{{value.name}}</p>
+            </div>
+        </div>
+    {{/each}}
+</script>
+</body>
+</html>

@@ -26,21 +26,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/admin.min.css" />
-    <script>
-       
-        if(token && token!=""){
-            var token=localStorage.getItem("token");
-            var userInfo=JSON.parse(localStorage.getItem("userInfo"));
-            var username=userInfo.username;
-            ajaxFns({link:"/admin/dashboard",username:userInfo.username},function(res){ 
-                var result=res.result;
-                if(result["/admin/dashboard"]){
-                    window.location.href="../../../admin/dashboard"
-                }
-            },ipDress+"/des/admin/permissionck")
-        }
-    </script>
 </head>
 <body>
 <div class="page">
@@ -53,7 +40,7 @@
                         <img  src="/static/img/logos.png" class="h-6 login_log" alt="">
                         <span class="cms_name"></span>
                     </div>
-                    <form class="card" action="" method="post" onsubmit="return submits(event)">
+                    <form class="card" action="" method="post" >
                         <!-- <input type="hidden" name="csrf_token" value="IjJiNmZmYzUwOTU0ZjhlOWRkZjYwOTgzZGY0NDAwZGYyODUyMTRlMzIi.XHCg7w.jxpVPIGoMB2yeN94i4WFj32Y3mA"/> -->
                         <div class="card-body p-6">
                             <div class="card-title" >账号登录</div>
@@ -88,55 +75,60 @@
 
 
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
-<script type="text/javascript" src="../../../static/plugins/tabler-0.0.32/js/tabler.js"></script>
-<script type="text/javascript" src="../../../static/js/main.min.js"></script>
-<script type="text/javascript" src="../../../static/js/admin.min.js"></script>
-<script type="text/javascript" src="../../../static/js/portal.min.js"></script>
+<script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
 <script>
-    require.config({
-        baseUrl: '../../../static/'
-    })
-    require(['autosize', 'layer', , 'tool', 'layer_ext'], function(autosize, layer){
-        // 自适应高度
-        autosize($('textarea'));
-
-    });
-    requirejs(['jquery', 'main','autosize', 'portal'], function($, main,autosize, portal) {
+    requirejs(['jquery', 'admin', 'tool', 'layer_ext'], function($, admin) {
+        var token=localStorage.getItem("token");
+        if(!checkNull(token) ){
+            var userInfo=localStorage.getItem("userInfo")?JSON.parse(localStorage.getItem("userInfo")):{};
+            var username=userInfo.username?userInfo.username:"";
+            if(username!=""){
+                ajaxFns({link:"/admin/dashboard",username:userInfo.username},function(res){ 
+                    if(res.islogin){
+                        window.location.href="../../../admin/dashboard"
+                    }
+                },ipDress+"/des/admin/permissionck")
+            }
+        }
         $(function(){
             getcmsData()
+            /**提交表单**/
+            $(".card").on("submit",function(event){
+                var e=window.event||event; //消除浏览器差异
+                e.preventDefault();
+                var datas=serializeArray("form.card") //序列化表单;
+                datas. _methods="query"
+                ajaxFns(datas,function(res){
+                    if(res.success=="true"){
+                        var resData=res.data;  
+                        var userInfo={username:resData.username, name:resData.name, dept_id:resData.dept_id, dept:resData.dept, avatar:resData.avatar}
+                        localStorage.setItem("token",resData.token);
+                        localStorage.setItem("userInfo",JSON.stringify(userInfo));
+                        layer.msg("登录成功",{time: 1000, icon: 1},function(){
+                            window.location.href="../../../admin/dashboard"
+                        })
+                    }else{
+                        if(res.resultCode=="14"){
+                            layer.msg("用户权限不足",{icon: 2})
+                        }
+                    }
+                },ipDress+"/des/admin/login")
+            })
+
         })
-    })
-    function getcmsData(){
-        ajaxFns({},function(res){
-            if(res.data && res.data.length>0){
-                var cmsData=res.data[0];
-                $(".cms_name").html(cmsData.name)
-                var logo=cmsData.logo?img_ipDress+cmsData.logo:"/static/img/logos.png"
-                $(".login_log").attr("src",logo)
-            }
-        },ipDress+"/des/admin/systems")
-    }
-    function submits(event){
-        var e=window.event||event; //消除浏览器差异
-        e.preventDefault();
-        var datas=serializeArray("form.card") //序列化表单;
-        datas. _methods="query"
-        ajaxFns(datas,function(res){
-            if(res.success=="true"){
-                var resData=res.data;  
-                var userInfo={username:resData.username, name:resData.name, dept_id:resData.dept_id, dept:resData.dept, avatar:resData.avatar}
-                localStorage.setItem("token",resData.token);
-                localStorage.setItem("userInfo",JSON.stringify(userInfo));
-                layer.msg("登录成功",{time: 1000, icon: 1},function(){
-                    window.location.href="../../../admin/dashboard"
-                })
-            }else{
-                if(res.resultCode=="14"){
-                    layer.msg("用户权限不足",{icon: 2})
+        /**加载数据***/
+        function getcmsData(){
+            ajaxFns({},function(res){
+                if(res.data && res.data.length>0){
+                    var cmsData=res.data[0];
+                    $(".cms_name").html(cmsData.name)
+                    var logo=cmsData.logo?img_ipDress+cmsData.logo:"/static/img/logos.png"
+                    $(".login_log").attr("src",logo)
                 }
-            }
-        },ipDress+"/des/admin/login")
-    }
+            },ipDress+"/des/admin/systems")
+        }
+    })
 </script>
 
 </body>

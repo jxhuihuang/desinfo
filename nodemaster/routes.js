@@ -105,8 +105,8 @@ router.use('/admin/systems',systems); //
 router.use('/admin/dictionary',dictionary_query);
 router.use('/admin/role',role_query);
 
-
-// router.use('/admin/permission',permission_query);
+  
+ // router.use('/admin/permission',permission_query);
 
 router.use('/admin/manufacturer',manufacturer_query);
 

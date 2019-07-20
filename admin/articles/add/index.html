@@ -22,11 +22,12 @@
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
     
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
-    
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 
 	
 </head>
@@ -42,7 +43,7 @@
             <div class="container my-3 my-md-5">
                 <div class="row">
                     <div class="col-12">
-                        <form class="card" method="POST" enctype="multipart/form-data" onsubmit="return submits(event)">
+                        <form class="card" method="POST" enctype="multipart/form-data">
                             <div class="card-header">
                                 <h3 class="card-title">新增</h3>
                             </div>
@@ -95,58 +96,48 @@
     </div>
     <!--# include file="/admin/include/footer.html" -->  
 </div>
-
-
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
-
 <script type="text/javascript" src="/static/js/admin.js"></script>
-<script type="text/javascript" charset="utf-8"  src="/static/plugins/ueditor1_4_3_3-utf8/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8"  src="/static/plugins/ueditor1_4_3_3-utf8/ueditor.all.min.js"></script>
-<script type="text/javascript" charset="utf-8"  src="/static/plugins/ueditor1_4_3_3-utf8/lang/zh-cn/zh-cn.js"></script>
-
 
 <script>
-    var deptData=[];  //部门数据
-    var cityData=[];
-    require(['jquery', 'selectize', 'ZeroClipboard','zhCn', 'ueditor', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize, ZeroClipboard) {
+    require(['jquery', 'selectize', 'ZeroClipboard', 'ueditor', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize, ZeroClipboard, UE) {
+        var deptData=[];  //部门数据
+        var cityData=[];
         window['ZeroClipboard'] = ZeroClipboard;
         $(function(){
-            
             var ue = UE.getEditor('container', {
                 autoHeight: true,
                 toolbars: [
-                [ 'source', 'undo', 'redo'],
-                ['bold', 'italic', 'underline', 'indent', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify', 'selectall', 'cleardoc']
+                    [ 'source', 'undo', 'redo'],
+                    ['bold', 'italic', 'underline', 'indent', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify', 'selectall', 'cleardoc']
                 ],
-                //关闭字数统计
-                wordCount:false,
+                wordCount:false, //关闭字数统计
                 initialFrameHeight :360,
                 serverUrl:ipDress+'/des/upload',
-            }
-            
-            );
+            });
             // 加载分类 
             ajaxFns({prentCode:"article_categories"},function(res){
                 deptData=res.data
                 selectizes($("#category_id"),{options:res.data})
             },ipDress+"/des/dictyList")
+
+            /**提交表单**/
+            $(".card").on("submit",function(event){
+                var e=window.event||event; //消除浏览器差异
+                e.preventDefault();
+                var datas=serializeArray("form.card") //序列化表单;
+                datas._methods="insert";
+                ajaxFns(datas,function(res){
+                    if(res.success=="true"){
+                        layermsg("新增成功",{icon:1},function(){
+                            window.location.href="/admin/articles/"
+                        })
+                    }
+                },ipDress+"/des/admin/articles")
+            })
         })
     });
-    function submits(event){
-        var e=window.event||event; //消除浏览器差异
-        e.preventDefault();
-        var datas=serializeArray("form.card") //序列化表单;
-        datas._methods="insert";
-        ajaxFns(datas,function(res){
-            if(res.success=="true"){
-                layer.msg("新增成功",{icon:1},function(){
-                    window.location.href="/admin/articles/"
-                })
-            }
-        },ipDress+"/des/admin/articles")
-
-    }
 </script>
 
 </body>

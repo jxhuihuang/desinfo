@@ -27,8 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 	
 </head>
 <body>
@@ -207,7 +208,6 @@
             else {
                 tr.addClass('details');
                 row.child(formatRowDetail(row.data())).show();
-
                 if (idx === -1) {
                     detailRows.push(tr.attr('id'));
                     
@@ -242,7 +242,7 @@
                     var counts=res.recordsFiltered;
                     prmissions=res.prmissions;
                     indexof(prmissions,"add")? $(".btn-container .addbtn_container").html('<a class="addBtn icon" href="/admin/user/account/log/add"><i class="fe fe-plus"></i>新增</a>'):"";
-                    var newcolumns=setTablepers(columns, prmissions, "edit,delete")/***设置表格操作栏，根据权限判断是否显示 */
+                    var newcolumns=setTablepers(columns, prmissions, "review")/***设置表格操作栏，根据权限判断是否显示 */
                     initDataTables($(".table"), datas, {"columns": newcolumns, "dom": "lftip"});
                     dt =initDataTables($(".table"), datas, {"columns": columns, "dom": "lftip"});  
                     pagination(page,counts)

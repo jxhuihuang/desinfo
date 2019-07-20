@@ -21,56 +21,35 @@
 
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
 
-    
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
-    
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/flatpickr_ext.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/admin.min.css" />
-    <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
-    <script type="text/javascript" src="../../../static/plugins/tabler-0.0.32/js/tabler.js"></script>
-    <script type="text/javascript" src="../../../static/js/main.min.js"></script>
-    <script type="text/javascript" src="../../../static/js/admin.min.js"></script>
-    <script type="text/javascript" src="../../../static/js/portal.min.js"></script>
-    <script>
-        require.config({
-            baseUrl: '../../../static/'
-        })
-        require(['autosize', 'layer', 'layer_ext'], function(autosize, layer){
-            // 自适应高度
-            autosize($('textarea'));
-
-        });
-        
-        
-    </script>
-    <script>
-        requirejs(['jquery', 'main','autosize', 'portal', 'tool'], function($, main,autosize, portal) {
-            getpermissionData([], function(res){
-                if(!res.islogin){
-                    window.location.href="/admin/auth/login/index.html"
-                }else{
-                    if(res.permission){
-                        window.location.href="./dashboard"
-                    }else{
-                        notpermission_a(".page-main");
-                    }
-                }
-                
-            })
-        })
-    </script>
-
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 </head>
 <body>
-<div class="page page-main">
-	
-   
-</div>
+<div class="page page-main"></div>
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
+<script type="text/javascript" src="/static/js/admin.js"></script>
 
-
-
+<script>
+    requirejs(['jquery', 'layer', 'layer_ext', 'tool'], function($, layer) {
+        getpermissionData([], function(res){
+            if(!res.islogin){
+                window.location.href="/admin/auth/login"
+            }else{
+                if(res.permission){
+                    window.location.href="./dashboard"
+                }else{
+                    notpermission_a(".page-main");
+                }
+            }
+        })
+    })
+</script>
 
 </body>
 </html>

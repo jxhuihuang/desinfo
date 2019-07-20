@@ -30,6 +30,7 @@ router.post('/', function(req, res, next) {
                     let keys=params.keys;
                     let attributesKey=checkNull(params.keys)?{ exclude: ['password'] }:stringToArry(keys) 
                     let ispage=page!=0 && size!=0?true:false; //是否分页
+                    let roles_name=decode.roles_name?decode.roles_name:"";
                     let limit="";
                     let offset="";
                     UserModel.belongsTo(AccountsModel, {foreignKey: 'id', targetKey:'user_id'});
@@ -61,6 +62,7 @@ router.post('/', function(req, res, next) {
                                 draw: page,
                                 recordsFiltered: count,
                                 prmissions:prmissions,
+                                userRoleName:roles_name
                             })
                         }else{
                             res.json({
@@ -68,6 +70,7 @@ router.post('/', function(req, res, next) {
                                 resultCode:"0",
                                 success:"true",
                                 data: result,
+                                userRoleName:roles_name
                             })
                         }
                     },res)

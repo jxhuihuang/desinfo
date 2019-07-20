@@ -106,7 +106,7 @@
             page=page?page:1;
             var searchval=removeNull($("#searchVal").val());
             var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
-            var objs={page:page,size:linePages,invitation_dept_id:dept_id, keys:"name,dept"}
+            var objs={page:page,size:linePages,invitation_dept_id:dept_id, keys:"name,dept", active:1}
             searchval!=""?objs[searchkey]="%"+searchval+"%":"";
             ajaxFns(objs,function(res){
                 if(!res.data || res.data.length<=0){

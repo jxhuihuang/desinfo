@@ -27,8 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 	
 </head>
 <body>
@@ -47,7 +48,7 @@
                     <div class="col-10">
                         <div class="searchBox">
                             <input type="search" class="form-search" id="searchVal" data-key="name" placeholder="请输入搜索的菜单名"  tabindex="1">
-                            <button class="search-btn" onclick="toSearch()">搜索</button>
+                            <button class="search-btn">搜索</button>
                         </div>
                     </div>
                     <div class="col-2 btn-container">
@@ -77,6 +78,7 @@
 <script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
     <script>
+        var dt ='';
         var currentpage=1
         var linePages=10;
         var tableData=[];
@@ -134,95 +136,86 @@
                     return item.active ? '<span class="status-icon bg-success"></span>' : '<span class="status-icon bg-danger"></span>';
                 }
             },
-            // {
-            //     title: '角色',
-            //     target: 7,
-            //     data: function (item) {
-            //         return item.roles;
-            //     }
-            // },
             {
                 title:  '', // '<a class="icon" href="/admin/menu/add"><i class="fe fe-plus"></i></a>',
                 target: 8,
                 className: "text-right",
                 data: function (item) {
+                    var edit_btn=indexof(prmissions, "edit")?'<a href="/admin/menu/edit?id='+ item.id + '" class="dropdown-item" target="_blank"><i class="dropdown-icon fe fe-edit-2"></i> 编辑</a>':"";
+                    var remove_btn=indexof(prmissions, "delete")?'<a href="javascript:void(0)" class="dropdown-item removes"><i class="dropdown-icon fe fe-trash"></i> 删除</a>':'';
                     var operations ='';
                     if(indexof(prmissions, "edit") || indexof(prmissions, "delete")){
-                        operations += '<div class="item-action dropdown">'
-                        operations +=    '<a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>'
-                        operations +=    '<div class="dropdown-menu dropdown-menu-right">'
-                        operations += indexof(prmissions, "edit")?'<a href="/admin/menu/edit?id='+ item.id + '" class="dropdown-item" target="_blank"><i class="dropdown-icon fe fe-edit-2"></i> 编辑</a>':""
-                        if(indexof(prmissions, "delete")){
-                            operations +=        indexof(prmissions, "edit")?'<div class="dropdown-divider"></div>':""
-                            operations +=        '<a href="javascript:void(0)" class="dropdown-item" onClick="removeMenu(' + item.id + ')"><i class="dropdown-icon fe fe-trash"></i> 删除</a>'
-
-                        }
-                        operations +=     '</div>'
-                        operations +='</div>';
+                        operations += 
+                        '<div class="item-action dropdown">'+
+                            '<a href="javascript:void(0)" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>'+
+                            '<div class="dropdown-menu dropdown-menu-right">'+
+                                edit_btn+
+                                remove_btn+
+                            '</div>'+
+                        '</div>';
                     }
                     return operations;
                 }
             }
         ];
         requirejs(['jquery', 'admin', 'layer_ext',  'datatables.bootstrap4', 'tool', 'pages', 'headerjs'], function($, admin) {
-            ajxaData(1)
-            $("#pages").pageclick(function(page){
-                currentpage=page;
-                ajxaData(page)
+            $(function(){
+                ajxaData(1)
+                $("#pages").pageclick(function(page){
+                    currentpage=page;
+                    ajxaData(page)
+                })
+                /***点击搜索**/
+                $(".search-btn").on("click",function(){
+                    currentpage=1
+                    ajxaData(1,linePages)
+                })
+                /***点击删除**/
+                $('table').delegate('tr td .removes','click',  function () {
+                    var tr = $(this).closest('tr');
+                    var row = dt.row(tr);
+                    var trDatas=row.data();
+                    var id=trDatas.id;
+                    layerConfirm('是否确认删除?',function(index){
+                        var datas={_methods:"delete",id:id};
+                        ajaxFns(datas,function(res){
+                            if(res.success=="true"){
+                                layer.close(index);
+                                layermsg("删除成功",{icon:1},function(){
+                                    ajxaData(currentpage)
+                                })
+                            
+                            } else{
+                                layer.close(index);
+                                layermsg(res.resultMsg,{icon:2})
+                            }
+                        },ipDress+"/des/admin/menu")
+                    })
+                })
             })
-        });
-        function ajxaData(page){
-            page=page?page:currentpage;
-            var searchval=removeNull($("#searchVal").val());
-            var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
-            var objs={page:page,size:linePages}
-            searchval!=""?objs[searchkey]="%"+searchval+"%":"";
-            
-            ajaxFns(objs,function(res){
-                if(res.success=="true"){
-                    var datas=res.data;
-                    var counts=res.recordsFiltered;
-                    prmissions=res.prmissions;
-                    indexof(prmissions,"add")? $(".btn-container .addbtn_container").html('<a class="addBtn icon" href="/admin/menu/add"><i class="fe fe-plus"></i>新增</a>'):"";
-                    var newcolumns=setTablepers(columns, prmissions, "edit,delete")/***设置表格操作栏，根据权限判断是否显示 */
-                    initDataTables($(".table"), datas, {"columns": newcolumns, "dom": "lftip"});
-                    pagination(page,counts)
-                } 
-            },ipDress+"/des/admin/menu",{erro:function(){
-                initDataTables($(".table"), "数据加载失败", {"columns": columns, "dom": "lftip"});
-            }})
-        }
-        function pagination(page,counts){
-            counts=counts?counts:0;
-            $("#pages").pages({
-                counts:counts,
-                currentPage:page,
-                linePages:linePages,
-                showCounts:true,
-            });
-        }
-        /**删除菜单**/
-        function removeMenu(id){
-            layerConfirm('是否确认删除?',function(index){
-                var datas={_methods:"delete",id:id};
-                ajaxFns(datas,function(res){
+            /**加载数据***/
+            function ajxaData(page){
+                page=page?page:currentpage;
+                var searchval=removeNull($("#searchVal").val());
+                var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+                var objs={page:page,size:linePages}
+                searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+                ajaxFns(objs,function(res){
                     if(res.success=="true"){
-                        layer.close(index);
-                        layer.msg("删除成功",{icon:1},function(){
-                            ajxaData(currentpage)
-                        })
-                    
-                    } else{
-                        layer.close(index);
-                        layer.msg(res.resultMsg,{icon:2})
-                    }
-                },ipDress+"/des/admin/menu")
-            })
-        }
-        function toSearch(){
-            currentpage=1
-            ajxaData(1,linePages)
-        }
+                        var datas=res.data;
+                        var counts=res.recordsFiltered;
+                        prmissions=res.prmissions;
+                        indexof(prmissions,"add")? $(".btn-container .addbtn_container").html('<a class="addBtn icon" href="/admin/menu/add"><i class="fe fe-plus"></i>新增</a>'):"";
+                        var newcolumns=setTablepers(columns, prmissions, "edit,delete")/***设置表格操作栏，根据权限判断是否显示 */
+                        initDataTables($(".table"), datas, {"columns": newcolumns, "dom": "lftip"});
+                        dt=initDataTables($(".table"), datas, {"columns": newcolumns, "dom": "lftip"}); 
+                        pagination(page,counts,linePages)
+                    } 
+                },ipDress+"/des/admin/menu",{erro:function(){
+                    initDataTables($(".table"), "数据加载失败", {"columns": columns, "dom": "lftip"});
+                }})
+            } 
+        });
     </script>
 
 </body>

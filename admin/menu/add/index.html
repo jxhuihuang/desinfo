@@ -27,8 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 	
 </head>
 <body>
@@ -43,7 +44,7 @@
             <div class="container my-3 my-md-5">
                 <div class="row">
                     <div class="col-12">
-                        <form class="card" method="POST" onsubmit="return submits(event)">
+                        <form class="card" method="POST" >
                             <!-- <input type="hidden" name="csrf_token" value="ImUxM2EwMDJjNjIxY2Q2ZjIzYjA3ODNmNjMyNjE2NjQzYWIwOTk0N2Yi.XKxHaw._uY3NjXUbk5lgAZiS-0HFNs5l18"/> -->
                             <div class="card-header">
                                 <h3 class="card-title">编辑</h3>
@@ -144,8 +145,6 @@
     <script>
         var rolePurviewData=[];  //权限菜单数据
         var parent_menu=[];   //父菜单数据
-
-        
         require(['jquery', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize) {
             var category_data={
                 select: {
@@ -162,11 +161,47 @@
                     }
                 ]
             }
-            $(document).ready(function () {
+            $(function () {
                 getDict()
                 $("select#category").change(function () {
                     selectedShow(category_data);  
                 });
+                
+                /**提交表单**/
+                $("form.card").on("submit",function(event){
+                    var e=window.event||event; //消除浏览器差异
+                    e.preventDefault();
+                    var datas=serializeArray(".card") //序列化表单;
+                    datas. _methods="insert"
+                    if(!checkNull(datas.purview_menu)){
+                        var purview_menu=[]
+                        rolePurviewData.map(function(objs){
+                            if(datas.purview_menu.indexOf(objs.value)!=-1){
+                                purview_menu.push(objs.name+":"+objs.value)
+                            }
+                        })
+                        datas.purview_menu=purview_menu.length>0?purview_menu.join(","):""
+                    }
+                    //根据上级菜单id获取上级菜单名
+                    if(!checkNull(datas.parent_id)){
+                        parent_menu.map(function(obj){
+                            if(obj.value==datas.parent_id){
+                                datas.parent=obj.name
+                            }
+                        })
+                        
+                    }
+                    ajaxFns(datas,function(res){
+                        if(res.success=="true"){
+                            layermsg("新增成功",{icon:1},function(){
+                                window.location.href='../'
+                            })
+                        } else{
+                            layermsg(res.resultMsg,{icon:2})
+                        }
+                    },ipDress+"/des/admin/menu")
+                    
+                })
             });
             // 加载字典 
             function getDict(callBack){
@@ -210,42 +245,6 @@
                 },ipDress+"/des/dictyList")
             }
         });
-        
-        function submits(event){
-                var e=window.event||event; //消除浏览器差异
-                e.preventDefault();
-                var datas=serializeArray(".card") //序列化表单;
-                datas. _methods="insert"
-                
-                if(!checkNull(datas.purview_menu)){
-                    var purview_menu=[]
-                    rolePurviewData.map(function(objs){
-                        if(datas.purview_menu.indexOf(objs.value)!=-1){
-                            purview_menu.push(objs.name+":"+objs.value)
-                        }
-                    })
-                    datas.purview_menu=purview_menu.length>0?purview_menu.join(","):""
-                }
-                //根据上级菜单id获取上级菜单名
-                if(!checkNull(datas.parent_id)){
-                    parent_menu.map(function(obj){
-                        if(obj.value==datas.parent_id){
-                            datas.parent=obj.name
-                        }
-                    })
-                    
-                }
-                
-                ajaxFns(datas,function(res){
-                    if(res.success=="true"){
-                        layer.msg("新增成功",{icon:1},function(){
-                            window.location.href='../'
-                        })
-                    } else{
-                        layer.msg(res.resultMsg,{icon:2})
-                    }
-                },ipDress+"/des/admin/menu")
-        }
     </script>
 
 </body>

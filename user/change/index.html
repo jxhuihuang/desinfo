@@ -165,7 +165,7 @@
                     selectedShow(unit_category_data);
                 },ipDress+"/des/dictyList")
                 // 加载邀请单位 ">
-                ajaxFns({},function(res){
+                ajaxFns({active:1},function(res){
                     var result=res.data;
                     deptData=result;
                     selectizes($("#dept_id"),{
@@ -186,6 +186,7 @@
                     
                     ipDress:img_ipDress,
                     onChanges:function(photoArry){
+                        
                         fileObj["avatar"]=photoArry
                     }
                 });
@@ -194,6 +195,7 @@
                     accept:"images",
                     multiple:true,
                     ipDress:img_ipDress,
+                    number:2,
                     defaultData:!checkNull(resultData.identity_card)?resultData.identity_card:"",
                     onChanges:function(photoArry){
                         fileObj["identity_card"]=photoArry

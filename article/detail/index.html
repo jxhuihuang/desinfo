@@ -60,11 +60,16 @@
         function ajxaData(){
             var id=geturl("id")
             ajaxFns({id:id},function(res){
-                if(res.success=="true" && res.data && res.data.length>0){
-                    var result=res.data[0];
-                    $(".acticle_title").html(result.title)
-                    $(".acticle_content").html(result.content);
-                    $(".acticle_date").html(moment(result.created_at).format('YYYY-MM-DD HH:mm:ss'))
+                if(res.success=="true" && res.data){
+                    if(res.data.length>0){
+                        var result=res.data[0];
+                        $(".acticle_title").html(result.title)
+                        $(".acticle_content").html(result.content);
+                        $(".acticle_date").html(moment(result.created_at).format('YYYY-MM-DD HH:mm:ss'))
+                    }
+                    if(res.data.length<=0){
+                        notpermission(".acticle_container","抱歉，页面不存在");
+                    }
                 } 
             },ipDress+"/des/articles",{erro:function(){
             

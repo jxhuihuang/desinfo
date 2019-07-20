@@ -27,8 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 	
 </head>
 <body>
@@ -42,10 +43,9 @@
             <div class="container my-3 my-md-5">
                 <div class="row">
                     <div class="col-12">
-                        <form class="card" method="POST" onsubmit="return submits(event)">
-                            <input type="hidden" name="csrf_token" value="ImNlNDhlZjZlY2QyZmM1ZjA5YTY1MDVhMjE5M2Q3Yjk1NmM5OTYxNzgi.XJn3Jg.CGKyYfqY9I5X6tutz-Rpui_qlbs"/>
+                        <form class="card" method="POST" >
                             <div class="card-header">
-                                <h3 class="card-title">编辑</h3>
+                                <h3 class="card-title">新增</h3>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -64,14 +64,14 @@
 
                                     <input class="form-control" id="description" name="description" type="text" value="">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     
             
                                     <label class="form-label" for="parents">父角色</label>
             
 
                                     <select class="form-control" id="parents" multiple name="parents"></select>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     
             
@@ -110,29 +110,26 @@
 
 <script>
     require(['jquery', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize) {
-        $(document).ready(function () {
-            //加载角色
-            ajaxFns({},function(res){
-                roleData=res.data;
-                selectizes($("#parents"),{options:res.data,valueField:"id"})
-            },ipDress+"/des/role")
+        $(function () {
+            /**提交表单**/
+            $("form.card").on("submit",function(event){
+                var e=window.event||event; //消除浏览器差异
+                e.preventDefault();
+                var datas=serializeArray("form.card") //序列化表单;;
+                datas. _methods="insert"
+                ajaxFns(datas,function(res){
+                    if(res.success=="true"){
+                        layermsg("新增成功",{icon:1},function(){
+                            window.location.href='../'
+                        })
+                    } else{
+                        layermsg(res.resultMsg,{icon:2})
+                    }
+                },ipDress+"/des/admin/role")
+            })
+            
         });
     });
-    function submits(event){
-            var e=window.event||event; //消除浏览器差异
-            e.preventDefault();
-            var datas=serializeArray("form.card") //序列化表单;;
-            datas. _methods="insert"
-            ajaxFns(datas,function(res){
-                if(res.success=="true"){
-                    layer.msg("新增成功",{icon:1},function(){
-                        window.location.href='../'
-                    })
-                } else{
-                    layer.msg(res.resultMsg,{icon:2})
-                }
-            },ipDress+"/des/admin/role")
-    }
 </script>
 
 </body>

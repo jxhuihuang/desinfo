@@ -22,10 +22,16 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="./static/css/bootstrap_ext.min.css" />
     <link rel="stylesheet" type="text/css" href="./static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="./static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="./static/css/portal.min.css" />
     <link rel="stylesheet" href="./static/css/header.min.css" />
     <link rel="stylesheet" href="./static/css/index.css" />
     <script type="text/javascript" src="/static/plugins/template/template.js"></script>
+    <script>
+        // if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+        //     location.href="/mobile/index.html"
+        // }
+    </script>
 </head>
 <body ontouchstart> 
     <!--# include file="/include/headers.html" -->
@@ -57,11 +63,6 @@
 <script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
 <!-- <script type="text/javascript" src="./static/plugins/requirejs-2.3.5/require.min.js"></script> -->
 <script type="text/javascript" src="./static/js/main.min.js"></script>
-
-
-<script>
-   
-</script>
 
 <script>
     var drup_currentpage=1;
@@ -109,7 +110,6 @@
             className: "align-middle",
             data: function (item) {
                 return item.name;
-
             }
         }
     ];
@@ -133,80 +133,83 @@
         $(window).resize(function() {
             ismobile()
         });
-    });
-    
-    function getdrupData(page){
-        page=page?page:drup_currentpage;
-        var searchval=removeNull($("#searchVal").val());
-        var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
-        var objs={page:page,size:linePages,upper_id:2}
-        searchval!=""?objs[searchkey]="%"+searchval+"%":"";
-        ajaxFns(objs,function(res){
-            if(res.success=="true"){
-                var datas=res.data;
-                var counts=res.recordsFiltered;
-                initDataTables($("#drug"), datas, {"columns": drug_columns, "dom": "lftip",'initComplete': function (settings, json) {
+
+        function getdrupData(page){
+            page=page?page:drup_currentpage;
+            var searchval=removeNull($("#searchVal").val());
+            var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+            var objs={page:page,size:linePages,upper_id:2}
+            searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+            ajaxFns(objs,function(res){
+                if(res.success=="true"){
+                    var datas=res.data;
+                    var counts=res.recordsFiltered;
+                    initDataTables($("#drug"), datas, {"columns": drug_columns, "dom": "lftip",'initComplete': function (settings, json) {
+                        $("#drug").addClass("layui-table ")
+                    }});
+                    pagination(page,counts,"#drup_pages")
+                    
+                    
+                    /*手机端加载drug数据*/
+                    var jsonData=datas?datas:[];
+                    if(jsonData.length==0){
+                        $(".pagination").hide();
+                    }
+                    showtemp(jsonData,"druglistTmpl", "#mobile-drug")  //加载模板
+                    initDataTablesControls($(".card"));
+                } 
+            },ipDress+"/des/drug",{erro:function(){
+                initDataTables($("#drug"), "数据加载失败", {"columns": drug_columns, "dom": "lftip",'initComplete': function (settings, json) {
                     $("#drug").addClass("layui-table ")
                 }});
-                pagination(page,counts,"#drup_pages")
-                
-                
-                /*手机端加载drug数据*/
-                var jsonData=datas?datas:[];
-                if(jsonData.length==0){
-                    $(".pagination").hide();
-                }
-                showtemp(jsonData,"druglistTmpl", "#mobile-drug")  //加载模板
-                initDataTablesControls($(".card"));
-            } 
-        },ipDress+"/des/drug",{erro:function(){
-            initDataTables($("#drug"), "数据加载失败", {"columns": drug_columns, "dom": "lftip",'initComplete': function (settings, json) {
-                $("#drug").addClass("layui-table ")
-            }});
-        }})
-    }
+            }})
+        }
 
-    function getHospitalData(page){
-        page=page?page:hos_currentpage;
-        var searchval=removeNull($("#searchVal").val());
-        var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
-        var objs={page:page,size:linePages, upper_id:"2"}
-        searchval!=""?objs[searchkey]="%"+searchval+"%":"";
-        ajaxFns(objs,function(res){
-            if(res.success=="true"){
-                var datas=res.data;
-                var counts=res.recordsFiltered;
-                initDataTables($("#hospital"), datas, {"columns": hospital_columns, "dom": "lftip",'initComplete': function (settings, json) {
+        function getHospitalData(page){
+            page=page?page:hos_currentpage;
+            var searchval=removeNull($("#searchVal").val());
+            var searchkey=checkNull($("#searchVal").attr("data-key"))?"name":$("#searchVal").attr("data-key");
+            var objs={page:page,size:linePages, upper_id:"2"}
+            searchval!=""?objs[searchkey]="%"+searchval+"%":"";
+            ajaxFns(objs,function(res){
+                if(res.success=="true"){
+                    var datas=res.data;
+                    var counts=res.recordsFiltered;
+                    initDataTables($("#hospital"), datas, {"columns": hospital_columns, "dom": "lftip",'initComplete': function (settings, json) {
+                        $("#hospital").addClass("layui-table ")
+                    }});
+                    pagination(page, counts, "#hos_pages")
+                    
+                    /*手机端加载hospital数据*/
+                    var list="";
+                    var jsonData=datas?datas:[];
+                    if(jsonData.length==0){
+                        $(".pagination").hide();
+                    }
+                    showtemp(jsonData,"hospitallistTmpl", "#mobile-hospital")
+                }
+            },ipDress+"/des/dept",{erro:function(){
+                initDataTables($("#hospital"), "数据加载失败", {"columns": drug_columns, "dom": "lftip",'initComplete': function (settings, json) {
                     $("#hospital").addClass("layui-table ")
                 }});
-                pagination(page, counts, "#hos_pages")
-                
-                /*手机端加载hospital数据*/
-                var list="";
-                var jsonData=datas?datas:[];
-                if(jsonData.length==0){
-                    $(".pagination").hide();
-                }
-                showtemp(jsonData,"hospitallistTmpl", "#mobile-hospital")
-            }
-        },ipDress+"/des/dept",{erro:function(){
-            initDataTables($("#hospital"), "数据加载失败", {"columns": drug_columns, "dom": "lftip",'initComplete': function (settings, json) {
-                $("#hospital").addClass("layui-table ")
-            }});
-        }})
+            }})
 
-    }
+        }
 
-    function pagination(page,counts, id, ismobile){
-        counts=counts?counts:0;
-        $(id).pages({
-            counts:counts,
-            currentPage:page,
-            linePages:linePages,
-            showCounts:false,
-            ismobile:ismobile,
-        });
-    }
+        function pagination(page,counts, id, ismobile){
+            counts=counts?counts:0;
+            $(id).pages({
+                counts:counts,
+                currentPage:page,
+                linePages:linePages,
+                showCounts:false,
+                ismobile:ismobile,
+            });
+        }
+
+    });
+    
+  
 </script>
 
 <!--加载药品目录模板-->

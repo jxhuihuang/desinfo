@@ -43,7 +43,7 @@ let table={
         // defaultValue: 'default.png'
     },
     identity_card:{
-        type:Sequelize.STRING
+        type:Sequelize.TEXT
     },
     work_permit:{
         type:Sequelize.STRING

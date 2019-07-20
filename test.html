@@ -1,0 +1,151 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+
+    <title>药品不良反应上报系统管理后台 - 通知公告</title>
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/datatables/1.10.19/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+    <script>
+        if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+            location.href="/mobile/index.html"
+        }
+    </script>
+</head>
+<body>
+<div class="page">
+	
+    <div class="page-main">
+        <!--# include file="/admin/include/header.html" -->  
+        <div class="row contentMain"> 
+                <div class="sider">
+                    <!--# include file="/admin/include/sider.html" -->
+                </div> 
+            <div class="container my-3 my-md-5">
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" method="POST" enctype="multipart/form-data" onsubmit="return submits(event)">
+                            <div class="card-header">
+                                <h3 class="card-title">新增</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label">标题<span class="form-required">*</span></label>
+            
+
+                                    <input class="form-control" id="title" name="title" required type="text" value="">
+                                </div>
+                                
+                                <div class="form-group">
+                                    
+            
+                                    <label class="form-label" for="content">内容<span class="form-required" >*</span></label>
+                                    <script id="container" name="content" type="text/plain">
+                                       
+                                    </script>
+                                    <!-- <textarea class="form-control" id="content" name="content" required ></textarea> -->
+                                </div>
+                                <div class="form-group">
+                                    
+    
+                                    <label class="form-label" for="category_id">分类<span class="form-required">*</span></label>
+            
+
+                                    <select class="form-control" id="category_id" name="category_id" required ></select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" id="active" name="active" type="checkbox" value="y">
+                                        <span class="custom-control-label">是否可用</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <div class="d-flex">
+                                    <button type="reset" class="btn btn-secondary">重置</button>
+                                    <input class="btn btn-primary ml-auto" id="submit" name="submit" type="submit" value="保存">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--# include file="/admin/include/footer.html" -->  
+</div>
+
+
+<script type="text/javascript" src="https://cdn.staticfile.org/require.js/2.3.6/require.min.js"></script>
+<script type="text/javascript" src="/static/plugins/tabler-0.0.32/js/tabler.js"></script>
+
+<script type="text/javascript" src="/static/js/admin.js"></script>
+
+
+
+<script>
+    var deptData=[];  //部门数据
+    var cityData=[];
+    require(['jquery', 'selectize', 'ZeroClipboard', 'ueditor', 'selectize_ext', 'layer_ext', 'tool', 'headerjs'], function ($, selectize, ZeroClipboard, UE) {
+
+        $(function(){
+            window['ZeroClipboard'] = ZeroClipboard;
+            var ue = UE.getEditor('container', {
+                autoHeight: true,
+                toolbars: [
+                    [ 'source', 'undo', 'redo'],
+                    ['bold', 'italic', 'underline', 'indent', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify', 'selectall', 'cleardoc']
+                ],
+                //关闭字数统计
+                wordCount:false,
+                initialFrameHeight :360,
+                serverUrl:ipDress+'/des/upload',
+            });
+            // 加载分类 
+            ajaxFns({prentCode:"article_categories"},function(res){
+                deptData=res.data
+                selectizes($("#category_id"),{options:res.data})
+            },ipDress+"/des/dictyList")
+        })
+    });
+    function submits(event){
+        var e=window.event||event; //消除浏览器差异
+        e.preventDefault();
+        var datas=serializeArray("form.card") //序列化表单;
+        datas._methods="insert";
+        ajaxFns(datas,function(res){
+            if(res.success=="true"){
+                layer.msg("新增成功",{icon:1},function(){
+                    window.location.href="/admin/articles/"
+                })
+            }
+        },ipDress+"/des/admin/articles")
+    }
+</script>
+
+</body>
+</html>

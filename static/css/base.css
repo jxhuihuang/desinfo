@@ -35,14 +35,13 @@ em{
 /*阿里巴矢量图库样式*/
 @font-face {
     font-family: 'myIconfont';  /* project id 986405 */
-    src: url('//at.alicdn.com/t/font_986405_sslq6jfznf.eot');
-    src: url('//at.alicdn.com/t/font_986405_sslq6jfznf.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_986405_sslq6jfznf.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_986405_sslq6jfznf.woff') format('woff'),
-    url('//at.alicdn.com/t/font_986405_sslq6jfznf.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_986405_sslq6jfznf.svg#myIconfont') format('svg');
-  }
-
+    src: url('//at.alicdn.com/t/font_986405_89cmy8gxg3i.eot');
+    src: url('//at.alicdn.com/t/font_986405_89cmy8gxg3i.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_986405_89cmy8gxg3i.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_986405_89cmy8gxg3i.woff') format('woff'),
+    url('//at.alicdn.com/t/font_986405_89cmy8gxg3i.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_986405_89cmy8gxg3i.svg#myIconfont') format('svg');
+}
 .myIconfont{
     font-family:"myIconfont" !important;
     font-size:16px;
@@ -4433,7 +4432,7 @@ html:not([data-scale]) .last_noborder .am-list-body:after {
 
 .am-list-item .am-list-line .am-list-extra {
     color: #888;
-    webkit-flex-basis: 66%;
+    /* webkit-flex-basis: 66%; */
     -ms-flex-preferred-size: 66%;
     flex-basis: 66%;
     font-size: 15px;
@@ -4482,7 +4481,6 @@ html:not([data-scale]) .last_noborder .am-list-body:after {
     color: #FFF;
 }
 @media Screen  and (max-width:768px){
-    
     .d-flexs {
         display: flex!important;
         flex-flow: column-reverse wrap;
@@ -4640,7 +4638,9 @@ html:not([data-scale]) .last_noborder .am-list-body:after {
 
 .pages_main .pagesination.pageNum{
     margin-left: 10px;
-    @media screen and(max-width:640px){
+}
+@media Screen  and (max-width:768px){
+    .pages_main .pagesination.pageNum{
         display:none;
     }
 }
@@ -4717,4 +4717,18 @@ html:not([data-scale]) .last_noborder .am-list-body:after {
     .pc-show{
         display:none!important;
     }
+}
+
+/**弹出框优化css**/
+.layermsgs.layermsgs{
+    box-shadow: 1px 1px 50px rgba(0,0,0,.1);
+}
+
+
+/**表格***/
+
+table .dropdown-menu a.removes:not(:first-child){
+    border-top: 1px solid #e9ecef; 
+    padding-top:6px;
+    margin-top: 6px;
 }

@@ -18,9 +18,15 @@ require.config({
         },
         'pages':['jquery'],
         'headerjs':['jquery','tool'],
-        'zhCn':['ueditor'],
-        'ueditorConfig':['ueditor'],
-        'ZeroClipboard':['ueditor']
+        'ueditor':{
+            deps:["ueditorConfig", "ZeroClipboard"],
+            exports:'UE',
+            init:function(ZeroClipboard){
+                //导出到全局变量，供ueditor使用
+                // window['ZeroClipboard'] = ZeroClipboard;
+            }
+        },
+        
         // 'template':['jquery']
     },
     paths: {
@@ -42,10 +48,10 @@ require.config({
         'tool' : '/static/js/tool',
         'pages': '/static/js/pages',
         'headerjs':'/static/js/headerjs',
-        "ueditorConfig":"/static/plugins/ueditor1_4_3_3-utf8/ueditor.config",
-        "ueditor":"/static/plugins/ueditor1_4_3_3-utf8/ueditor.all.min",
-        "zhCn":"/static/plugins/ueditor1_4_3_3-utf8/lang/zh-cn/zh-cn",
-        "ZeroClipboard": "/static/plugins/ueditor1_4_3_3-utf8/third-party/zeroclipboard/ZeroClipboard", //主要是加这句话
+        "ueditorConfig":"/static/plugins/ueditor1.4.3.3/ueditor.config",
+        "ueditor":"/static/plugins/ueditor1.4.3.3/ueditor.all.min",
+        // "zh-cn":"/static/plugins/ueditor1.4.3.3/lang/zh-cn/zh-cn",
+        "ZeroClipboard": "/static/plugins/ueditor1.4.3.3/third-party/zeroclipboard/ZeroClipboard", //主要是加这句话
         // 'template':'/static/plugins/template/template'
     },
     map: {

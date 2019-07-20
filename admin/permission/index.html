@@ -17,7 +17,7 @@
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
     <script type="text/javascript" src="/static/plugins/template/template.js"></script>
-    <title>    药品不良反应上报系统管理后台 - 用户管理  </title>
+    <title>    药品不良反应上报系统管理后台 - 角色权限管理  </title>
 
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"> -->
 
@@ -27,8 +27,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/portal.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
     <link rel="stylesheet" type="text/css" href="./index.css" />
 	
 </head>
@@ -61,13 +63,12 @@
 
                 </div>
                 <div class=" text-center  mt20">
-                    <button class="btn btn-primary  submit_btn" id="submit" onclick="submits()">保存</button>
+                    <button class="btn btn-primary  submit_btn" id="submit" >保存</button>
                 </div>
             </div>
         </div>
     </div>
     <!--# include file="/admin/include/footer.html" -->  
-    
 
 </div>
 
@@ -76,6 +77,7 @@
 <script type="text/javascript" src="/static/js/admin.js"></script>
 
     <script>
+        var roleName="";
         require(['jquery', 'admin', 'selectize', 'selectize_ext', 'layer_ext', 'headerjs'], function ($, admin, selectize) {
             $("#active").change(function(){
                 var checked=$(this).prop("checked")
@@ -85,34 +87,235 @@
                     $(this).val("0")
                 }
             })
-            $(document).ready(function () {
+            $(function () {
                 getroleName(function(){
                     getMenucData(function(result){
                         setValue()
                     })
+                })
+
+                $("body").delegate("input[type='checkbox']", 'click', function() {
+                    var data_lv=$(this).attr("data-lv");
+                    var isChecked=$(this).prop("checked");
+                    var name=removeNull($(this).attr("name"))
+                    isChecked?$(this).prop("checked",true):$(this).prop("checked",false);
+                    if(data_lv=="all"){
+                        $(".permission_main").find("input[type='checkbox']").each(function(){
+                            $(this).prop("checked",isChecked)
+                        })
+                    }else{
+                        $(this).parents(".permission_box[data-lv='"+data_lv+"']").find("input[type='checkbox']").each(function(){
+                            $(this).prop("checked",isChecked)
+                        })
+                        var permission_box_Length=$(this).parents(".permission_box").length;
+                        for(var i=0; i<permission_box_Length; i++){
+                            
+                            var $this=$($(this).parents(".permission_box")[i])
+                            var box_lv=$this.attr("data-lv")
+                            if(box_lv!=data_lv){
+                                var $checkElem=$this.find("h2 .custom-control-label").parents(".permission_box[data-lv='"+box_lv+"']")
+                                
+                                var ulLength=$checkElem.find(".children").length;
+                                if(ulLength>0){
+                                    if(isCheckAll($checkElem.find(".children"))){
+                                        $checkElem.find("h2 input[type='checkbox'][data-lv='"+box_lv+"']").prop("checked",true)
+
+                                    }else{
+                                        $checkElem.find("h2 input[type='checkbox'][data-lv='"+box_lv+"']").prop("checked",false)
+
+                                    }
+                                }
+                            }
+                            
+                        }
+                        isCheckAll($("#permsionmain"))?$("input[data-lv='all']").prop("checked",true):$("input[data-lv='all']").prop("checked",false)
+                    }
+                });
                 
+                /**提交表单**/
+                $("#submit").on("click",function(event){
+                    var role_id=geturl("id");
+                    var perData=[]
+                    $(".check_box").each(function(){
+                        var checkData=[];
+                        var checkLength=$(this).find("input[name='checks']").length;
+                        var name=$(this).attr("data-name");
+                        var link=$(this).attr("data-link");
+                        var id=$(this).attr("data-id");
+                        var category=$(this).attr("data-category");  
+                        var menus_id=$(this).attr("data-menus");
+                        if(checkLength>0){
+                            for(var k=0; k<checkLength; k++){
+                                var $input=$($(this).find("input[name='checks']")[k]);
+                                
+                                if($input.prop("checked")){
+                                    var value=$input.val();
+                                    checkData.push(value)
+                                }
+                            }
+                            checkData=checkData.length>0?checkData.join(","):"";
+                            var objs={
+                                name:name,
+                                link:link,
+                                permission_list:checkData,
+                                role:role_id,
+                                // title:name,
+                                category:category,
+                                menus_id:menus_id,
+                            }
+                            !checkNull(id)?objs.id=id:"";
+                            perData.push(objs)
+                        }
+                    })
+                    var datas={_methods:"updata", perData:perData};
+                    
+                    ajaxFns(datas,function(res){
+                        if(res.success=="true"){
+                            
+                            layermsg("修改成功",{icon:1},function(){
+                                setValue()
+                                // window.location.href="/admin/user/"
+                            })
+                        }
+                    },ipDress+"/des/admin/rolePermission")
                 })
 
             });
-            $("body").delegate("input[type='checkbox']", 'click', function() {
-                var data_lv=$(this).attr("data-lv");
-                var isChecked=$(this).prop("checked");
-                var name=removeNull($(this).attr("name"))
-                isChecked?$(this).prop("checked",true):$(this).prop("checked",false);
-                if(data_lv=="all"){
-                    $(".permission_main").find("input[type='checkbox']").each(function(){
-                        $(this).prop("checked",isChecked)
-                    })
-                }else{
-                    $(this).parents(".permission_box[data-lv='"+data_lv+"']").find("input[type='checkbox']").each(function(){
-                        $(this).prop("checked",isChecked)
-                    })
+
+            function getroleName(callBack){
+                callBack=callBack?callBack:function(){};
+                var role_id=geturl("id");
+                ajaxFns({id:role_id},function(res){
+                    if(res && res.data && res.data.length>0){
+                        var datas=res.data[0]
+                        var name=removeNull(datas.name);
+                        roleName=name;
+                        $("#product_name").val(name);
+                        callBack()
+                    }else{
+                        notpermission(".page-content","页面不存在")
+                    }
+                },ipDress+"/des/admin/role")
+
+            }
+
+            /**获取并设置默认值**/
+            function setValue(){
+                var role_id=geturl("id");
+                ajaxFns({role:role_id},function(res){
+                    if(res.data){
+                        if(res.data.length>0){
+                            var datas=res.data;
+                            datas.map(function(objs){
+                                var link=objs.link;
+                                var permission_list=objs.permission_list
+                                var id=objs.id;
+                                
+                                
+                                $(".check_box[data-link='"+link+"']").attr("data-id",id)
+                                for(var k=0; k<$(".check_box[data-link='"+link+"']").find("input[type='checkbox']").length; k++){
+                                    var $input=$($(".check_box[data-link='"+link+"']").find("input[type='checkbox']")[k])
+                                    var value=$input.val();
+                                    if(permission_list.indexOf(value)!=-1){
+                                        $input.prop("checked",true)
+                                    }
+                                }
+                            })
+                            checkchecked(".permission_main")
+                        }else{
+                            notpermission_a(".page > .page-main","页面不存在")
+                        }
+                       
+                    }
+
+                },ipDress+"/des/admin/rolePermission")
+            }
+
+            function getMenucData(callBack){
+                ajaxFns({_methods:"perquery"},function(res){
+                    if(res.success=="true" && res.data){
+                        var data=res.data
+                        var permissionData=[]
+                        var categoryArry=[]
+                        var parentArry=[]
+                        data.map(function(result){ 
+                            var purview_menu=result.purview_menu;
+                            var menu_id=result.id;
+                            var purview_Arry=[];
+                            var link=result.link;
+                            if(link=="/admin/permission" && roleName=="超级管理员"){
+                                return false;
+                            }
+                            if(purview_menu.indexOf(",")==-1){
+                                purview_Arry.push({
+                                    name:purview_menu.split(":")[0],
+                                    value:purview_menu.split(":")[1],
+                                })
+                            }else{
+                                var purviewSplit=purview_menu.split(",");
+                                for (var i=0; i<purviewSplit.length; i++){
+                                    var purviews=purviewSplit[i]
+                                    purview_Arry.push({
+                                        name:purviews.split(":")[0],
+                                        value:purviews.split(":")[1]
+                                    })
+                                }
+                            }
+                            result.purview_menu=purview_Arry;
+
+                            if(!categoryArry.includes(result.category)){
+                                categoryArry.push(result.category);
+                                permissionData.push({
+                                    name:result.category,
+                                    children: []
+                                })
+                            }
+                            permissionData.map(function(objs){
+                                if(objs.name==result.category){
+                                    if(checkNull(result.parent)){
+                                        objs.children.push({
+                                            menu_id:menu_id,
+                                            name:result.name,
+                                            link:result.link,
+                                            purview_menu:result.purview_menu,
+                                            category:result.category,
+                                        })
+                                    }else{
+                                        if(!parentArry.includes(result.parent)){
+                                            parentArry.push(result.parent);
+                                            objs.children.push({
+                                                name:result.parent,
+                                                children:[]
+                                            })
+                                        }
+                                        objs.children.map(function(perObjs){
+                                            if(perObjs.name==result.parent){
+                                                perObjs.children.push({
+                                                    menu_id:menu_id,
+                                                    name:result.name,
+                                                    link:result.link,
+                                                    purview_menu:result.purview_menu,
+                                                    category:result.category,
+                                                })
+                                            }
+                                        })
+                                        
+                                    }
+                                }
+                            })
+                        })
+                        showtemp(permissionData,"permsionmainTmpl", "#permsionmain")
+                        callBack(permissionData);
+                    } 
+                },ipDress+"/des/admin/menu")
+            }
+
+            function checkchecked(id){ //checkchecked(".permission_main")
+                $(id).find(".check_box").each(function(){
                     var permission_box_Length=$(this).parents(".permission_box").length;
                     for(var i=0; i<permission_box_Length; i++){
-                        
                         var $this=$($(this).parents(".permission_box")[i])
                         var box_lv=$this.attr("data-lv")
-                        if(box_lv!=data_lv){
                             var $checkElem=$this.find("h2 .custom-control-label").parents(".permission_box[data-lv='"+box_lv+"']")
                             
                             var ulLength=$checkElem.find(".children").length;
@@ -125,218 +328,27 @@
 
                                 }
                             }
-                        }
-                        
                     }
                     isCheckAll($("#permsionmain"))?$("input[data-lv='all']").prop("checked",true):$("input[data-lv='all']").prop("checked",false)
-                }
+                })
+            }
 
-            });
-           
-        });
+            function isCheckAll(elem){
+                elem=elem?elem:$("#permsionmain");
+                var $this=elem
+                var isCheckAll=true;
+                $this.find("input[type='checkbox']").each(function(){
+                    var isChecked=$(this).prop("checked");
+                    if(!isChecked){
+                        isCheckAll=false;
+                    }
+                })
+                return isCheckAll
+            }
+
+        }); //
 
         
-        function getroleName(callBack){
-            callBack=callBack?callBack:function(){};
-            var role_id=geturl("id");
-            ajaxFns({id:role_id},function(res){
-                if(res && res.data && res.data.length>0){
-                    var datas=res.data[0]
-                    var name=removeNull(datas.name);
-                    $("#product_name").val(name)
-                    callBack()
-                }else{
-                    notpermission(".page-content","页面不存在")
-                }
-            },ipDress+"/des/admin/role")
-
-        }
-        /**获取并设置默认值**/
-        function setValue(){
-            var role_id=geturl("id");
-            ajaxFns({role:role_id},function(res){
-                
-                if(res.data && res.data.length>0){
-                    var datas=res.data;
-                    datas.map(function(objs){
-                        var link=objs.link;
-                        var permission_list=objs.permission_list
-                        var id=objs.id;
-                        
-                        $(".check_box[data-link='"+link+"']").attr("data-id",id)
-                       
-                        for(var k=0; k<$(".check_box[data-link='"+link+"']").find("input[type='checkbox']").length; k++){
-                             var $input=$($(".check_box[data-link='"+link+"']").find("input[type='checkbox']")[k])
-                             var value=$input.val();
-                             if(permission_list.indexOf(value)!=-1){
-                                $input.prop("checked",true)
-
-                             }
-                        }
-                    })
-                    checkchecked(".permission_main")
-                }
-
-            },ipDress+"/des/admin/rolePermission")
-        }
-        function getMenucData(callBack){
-            ajaxFns({_methods:"perquery"},function(res){
-                if(res.success=="true" && res.data){
-                    var data=res.data
-                    var permissionData=[]
-                    var categoryArry=[]
-                    var parentArry=[]
-                    data.map(function(result){ 
-                        var purview_menu=result.purview_menu;
-                        var menu_id=result.id;
-                        var purview_Arry=[];
-                        if(purview_menu.indexOf(",")==-1){
-                            purview_Arry.push({
-                                name:purview_menu.split(":")[0],
-                                value:purview_menu.split(":")[1],
-                            })
-                        }else{
-                            var purviewSplit=purview_menu.split(",");
-                            for (var i=0; i<purviewSplit.length; i++){
-                                var purviews=purviewSplit[i]
-                                purview_Arry.push({
-                                    name:purviews.split(":")[0],
-                                    value:purviews.split(":")[1]
-                                })
-                            }
-                        }
-                        result.purview_menu=purview_Arry;
-
-                        if(!categoryArry.includes(result.category)){
-                            categoryArry.push(result.category);
-                            permissionData.push({
-                                name:result.category,
-                                children: []
-                            })
-                        }
-                        permissionData.map(function(objs){
-                            
-                            if(objs.name==result.category){
-                                if(checkNull(result.parent)){
-                                    objs.children.push({
-                                        menu_id:menu_id,
-                                        name:result.name,
-                                        link:result.link,
-                                        purview_menu:result.purview_menu,
-                                        category:result.category,
-                                    })
-                                }else{
-                                    if(!parentArry.includes(result.parent)){
-                                        parentArry.push(result.parent);
-                                        objs.children.push({
-                                            name:result.parent,
-                                            children:[]
-                                        })
-                                    }
-                                    objs.children.map(function(perObjs){
-                                        if(perObjs.name==result.parent){
-                                            perObjs.children.push({
-                                                menu_id:menu_id,
-                                                name:result.name,
-                                                link:result.link,
-                                                purview_menu:result.purview_menu,
-                                                category:result.category,
-                                            })
-                                        }
-                                    })
-                                    
-                                }
-                            }
-                        })
-                    })
-                    showtemp(permissionData,"permsionmainTmpl", "#permsionmain")
-                    callBack(permissionData);
-                } 
-            },ipDress+"/des/admin/menu")
-        }
-
-
-        function submits(){
-            var role_id=geturl("id");
-            var perData=[]
-            $(".check_box").each(function(){
-                var checkData=[];
-                var checkLength=$(this).find("input[name='checks']").length;
-                var name=$(this).attr("data-name");
-                var link=$(this).attr("data-link");
-                var id=$(this).attr("data-id");
-                var category=$(this).attr("data-category");  
-                var menus_id=$(this).attr("data-menus");
-                if(checkLength>0){
-                    for(var k=0; k<checkLength; k++){
-                        var $input=$($(this).find("input[name='checks']")[k]);
-                        
-                        if($input.prop("checked")){
-                            var value=$input.val();
-                            checkData.push(value)
-                        }
-                    }
-                    checkData=checkData.length>0?checkData.join(","):"";
-                    var objs={
-                        name:name,
-                        link:link,
-                        permission_list:checkData,
-                        role:role_id,
-                        // title:name,
-                        category:category,
-                        menus_id:menus_id,
-                    }
-                    !checkNull(id)?objs.id=id:"";
-                    perData.push(objs)
-                }
-            })
-            var datas={_methods:"updata", perData:perData};
-            
-            ajaxFns(datas,function(res){
-                if(res.success=="true"){
-                    
-                    layer.msg("修改成功",{icon:1},function(){
-                        setValue()
-                        // window.location.href="/admin/user/"
-                    })
-                }
-            },ipDress+"/des/admin/rolePermission")
-        }
-        function checkchecked(id){ //checkchecked(".permission_main")
-            $(id).find(".check_box").each(function(){
-                var permission_box_Length=$(this).parents(".permission_box").length;
-                for(var i=0; i<permission_box_Length; i++){
-                    var $this=$($(this).parents(".permission_box")[i])
-                    var box_lv=$this.attr("data-lv")
-                        var $checkElem=$this.find("h2 .custom-control-label").parents(".permission_box[data-lv='"+box_lv+"']")
-                        
-                        var ulLength=$checkElem.find(".children").length;
-                        if(ulLength>0){
-                            if(isCheckAll($checkElem.find(".children"))){
-                                $checkElem.find("h2 input[type='checkbox'][data-lv='"+box_lv+"']").prop("checked",true)
-
-                            }else{
-                                $checkElem.find("h2 input[type='checkbox'][data-lv='"+box_lv+"']").prop("checked",false)
-
-                            }
-                        }
-                }
-                isCheckAll($("#permsionmain"))?$("input[data-lv='all']").prop("checked",true):$("input[data-lv='all']").prop("checked",false)
-            })
-        }
-
-        function isCheckAll(elem){
-            elem=elem?elem:$("#permsionmain");
-            var $this=elem
-            var isCheckAll=true;
-            $this.find("input[type='checkbox']").each(function(){
-                var isChecked=$(this).prop("checked");
-                if(!isChecked){
-                    isCheckAll=false;
-                }
-            })
-            return isCheckAll
-        }
     </script>
     
     <script type="text/html" id="permsionmainTmpl">

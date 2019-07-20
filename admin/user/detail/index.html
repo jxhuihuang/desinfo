@@ -27,7 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
     <link rel="stylesheet" type="text/css" href="./index.css" />
 	
 </head>
@@ -228,7 +230,7 @@
             };
 
             
-            $(document).ready(function () {
+            $(function () {
                 getFormData(function(resultData){
                     var avatar=resultData.avatar?ipDress+resultData.avatar:img_ipDress+default_avatar;
                     $(".default_avatar").attr("style","background-image: url("+avatar+")")
@@ -268,22 +270,29 @@
                 })
                 
             });
+            
+            /**获取用户数据**/
+            function getFormData(callBack){
+                var userId=geturl("id");
+                ajaxFns({id:userId},function(res){
+                    if(res.data){
+                        if( res.data.length>0){
+                            resultData=res.data[0];
+                            if(resultData.account){
+                                resultData.account_balance=resultData.account.balance
+                            }
+                            userData=resultData
+                            callBack(resultData)
+                        }else{
+                            notpermission_a(".page-main","页面不存在")
+                        }
+                        
+                    }
+                },ipDress+"/des/admin/user")
+            }
 
         });
-        /**获取用户数据**/
-        function getFormData(callBack){
-            var userId=geturl("id");
-            ajaxFns({id:userId},function(res){
-                if(res.data && res.data.length>0){
-                    resultData=res.data[0];
-                    if(resultData.account){
-                        resultData.account_balance=resultData.account.balance
-                    }
-                    userData=resultData
-                    callBack(resultData)
-                }
-            },ipDress+"/des/admin/user")
-        }
+        
     </script>
 
 </body>

@@ -120,7 +120,8 @@
                 <label class="pc-show" for="dept_id">单位名称</label>
                 <i class="myIconfont mobile-show input-icon">&#xe682;</i>
                 <div class="form-controls">
-                    <select class="form-control  select  tl"  id="dept_id" name="dept_id" placeholder="单位名称"></select>
+                    <select class="form-control  select  tl pc-show"  id="dept_id" name="dept_id" placeholder="单位名称"></select>
+                    <input class="form-control mobile-show"  id="dept_id" name="dept_id" placeholder="单位名称" type="text" value="">
                 </div>
             
             </div>
@@ -128,7 +129,8 @@
                 <label class="pc-show" for="invitation_dept_id">邀请单位</label>
                 <i class="myIconfont mobile-show input-icon">&#xe682;</i>
                 <div class="form-controls">
-                    <select class="form-control select1" id="invitation_dept_id" name="invitation_dept_id" placeholder="邀请单位"></select>
+                    <select class="form-control select1 pc-show" id="invitation_dept_id" name="invitation_dept_id" placeholder="邀请单位"></select>
+                    <input class="form-control mobile-show"  id="invitation_dept_id" name="invitation_dept_id" placeholder="邀请单位" type="text" value="">
                 </div>
                 
             </div>
@@ -159,7 +161,7 @@
             </div>
             <div class="form-group row upload required  pb1_r mlr0-2_r uploads" hidden="hidden">
                 <label class="col-form-label col-form-label" for="work_permit">工作证</label>
-                <div class="rel flex1 upload-rt">
+                <div class="rel  upload-rt">
                     <a class="upload-box">
                         
                         <button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button> 
@@ -171,7 +173,7 @@
             </div>
             <div class="form-group row upload required  pb1_r mlr0-2_r uploads" hidden="hidden">
                 <label class="col-form-label col-form-label"  for="business_license">营业执照</label>
-                <div class="rel flex1 upload-rt">
+                <div class="rel  upload-rt">
                     <a class="upload-box">
                         <span class="upload-img"></span>
                         <button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button> 
@@ -182,7 +184,7 @@
             </div>
             <div class="form-group row upload required  pb1_r mlr0-2_r uploads" hidden="hidden">
                 <label class="col-form-label col-form-label"  for="production_license">生产许可证</label>
-                <div class="rel flex1 upload-rt">
+                <div class="rel  upload-rt">
                     <a class="upload-box">
                         <span class="upload-img"></span>
                         <button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button> 
@@ -317,6 +319,7 @@
                 accept:"images",
                 multiple:true,
                 ipDress:img_ipDress,
+                number:2,
                 onChanges:function(photoArry){
                     fileObj["identity_card"]=photoArry
                 }
@@ -417,6 +420,9 @@
                 }
             })
         }
+        if(checkNull(datas.dept)){
+            datas.dept=datas.dept_id;
+        }
         /**获取邀请单位名*/
         if(!checkNull(datas.invitation_dept_id)){
             deptData.map(function(obj){
@@ -424,6 +430,9 @@
                     datas.invitation_dept=obj.name
                 }
             })
+        }
+        if(checkNull(datas.invitation_dept)){
+            datas.invitation_dept=datas.invitation_dept_id;
         }
         /**获取角色名称*/
         if(!checkNull(roles_id)){
@@ -439,7 +448,7 @@
             if(res.success=="true"){
                 adddept(function(){
                     layermsg("注册成功",{icon:1},function(){
-                        window.location.href="../../auth/login"
+                        // window.location.href="../../auth/login"
                     })
                 });
                 

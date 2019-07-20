@@ -1,0 +1,307 @@
+body{
+    background:#f4f4f5;  /* rgb(212, 211, 211)!important;  /**#f4f4f5*/
+    
+}
+main{
+    margin-top: 3rem;
+    display: block;
+    position: relative;
+}
+/***顶部栏css****/
+header{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    height: 3rem;
+    /* padding: .5rem 3rem; */
+    width: 100%;
+    right: 1rem;
+    background-color: #343a40!important;
+    text-align: center;
+}
+
+header .weui-cells{
+    background: transparent;
+    color: #FFF;
+    height: inherit;
+    margin-top:0;
+}
+
+header .weui-cells .weui-cell{
+    height: 3rem;
+    line-height: 3rem;
+    padding: 0 .6rem;
+}
+
+header .toback{
+    font-size: 1rem;
+}
+
+header .header_edit{
+    font-size: 1.3rem;
+}
+
+/*导航下拉*/
+#navbarCollapses{
+    margin-left: 0rem;
+    background: #F2F2F2;
+    padding: 0;
+    position: absolute;
+    height: calc(100vh - 56px);
+    width: 100%;
+    transition: all .2s;
+    display: none;
+    overflow-y: scroll;
+    z-index: 999;
+}
+#navbarCollapses .nav-item .nav-link{
+    display: block;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    padding: 0;
+    color: #777!important;
+    padding: 0 1rem;
+    text-align: left;
+}
+#navbarCollapses .nav-item .nav-link::after{
+    display: none;
+}
+.nav-link.logout{
+    height: 44px;
+    line-height: 44px;
+    margin:1rem 0;
+    text-align: center!important;
+    font-size: 15px;
+    background: #FFF;
+    width: auto!important;
+}
+.nav-item .dropdown-menu {
+    display:block;
+    background: #FFF;
+    color: #666;
+    padding: .5rem 0;
+    border:none;
+}
+.nav-item .dropdown-menu::after{
+    content: "";
+}
+.dropdown-menu  .dropdown-item{
+    padding:0px;
+    width:30%;
+    text-align: center;
+    font-size: 15px;
+    display: inline-block;
+}
+
+/**动画 */
+.addAnimation{
+    animation:mymove .2s linear; 
+    -webkit-animation:mymove .2s linear; 
+    animation-iteration-count:1;
+    -webkit-animation-iteration-count:1; 
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes mymove{
+    from {left:-100%;}
+    to {left:0%;}
+}
+
+@-webkit-keyframes mymove /*Safari and Chrome*/
+{
+    from {left:-100%;}
+    to {left:0%;}
+}
+.removeAnimation{
+    animation:mymove .2s linear; 
+    -webkit-animation:removemymove .2s linear; 
+    animation-iteration-count:1;
+    -webkit-animation-iteration-count:1; 
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+@keyframes removemymove{
+    from {left:0%;}
+    to {left:-100%;}
+}
+
+@-webkit-keyframes removemymove /*Safari and Chrome*/
+{
+    from {left:0%;}
+    to {left:-100%;}
+}
+
+
+/***通用****/
+
+.mlr0_r{
+    margin-left:0!important;
+    margin-right: 0!important;
+}
+.mlr0-2_r{
+    margin-left:.2rem!important;
+    margin-right: .2rem!important;
+}
+.mlr0-5_r{
+    margin-left:.5rem!important;
+    margin-right: .5rem!important;
+}
+.mlr1_r{
+    margin-left:1rem!important;
+    margin-right: 1rem!important;
+}
+.mt1_r{
+    margin-top:1rem;
+}
+.mt0-5_r{
+    margin-top:.5rem;
+}
+.mt1-5_r{
+    margin-top:1.5rem;
+}
+.mt2_r{
+    margin-top:2rem;
+}
+.mt3_r{
+    margin-top:3rem;
+}
+.mb1_r{
+    margin-bottom: 1rem;
+}
+.plr0_r{
+    padding-left:0!important;
+    padding-right: 0!important;
+}
+.plr1_r{
+    padding-left: 1rem;
+    padding-right:1rem;
+}
+.pb1_r{
+    padding-bottom:1rem;
+
+}
+.float_n{
+    float: none;
+}
+
+
+
+/***插件css***/
+
+.weui-preview_tle{
+    display: inline-block;
+    width: 100%;
+    float: none;
+    text-align: center;
+    text-align-last:auto;
+}
+.weui-form-preview__item{
+    padding: .5rem 0;
+}
+.weui-form-preview__item:not(:first-child){
+    border-top:1px solid #DDD;
+}
+.weui-form-preview__label{
+    color: #333;
+}
+.weui-form-preview__value{
+    text-align: left;
+    font-size: .8rem;
+}
+#drugs{
+    padding: 0 10px;
+    overflow: hidden;
+}
+
+/*卡片*/
+.am-card{
+    padding-bottom: 0px; 
+}
+
+.am-card:not(.am-card-full) {
+    border: 1px solid #ddd!important;
+    border-radius: 5px;
+}
+.am-card::before, .am-card-body::before{
+    content: "";
+    border: none!important;
+    display: none;
+    background-color:transparent!important;
+}
+.am-card-header{
+    border-bottom: 1px solid #ddd;
+}
+.am-card-body {
+    position: relative;
+    border-top: none;
+    padding: 10px 10px 6px;
+    font-size: 15px;
+    color: #333;
+    min-height: 40px;
+}
+.ant-card-actions {
+    border-top: 1px solid #e8e8e8;
+    background: #fafafa;
+    zoom: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-height: 44px;
+}
+.ant-card-actions>li {
+    float: left;
+    text-align: center;
+    margin: 10px 0;
+    color: rgba(0,0,0,0.45);
+}
+.ant-card-actions>li i{
+    font-size: 1.1rem;
+
+}
+.ant-card-actions>li a{
+    display: block;
+
+}
+.ant-card-actions>li:not(:last-child) {
+    border-right: 1px solid #DDD;
+}
+html:not([data-scale]) .last_noborder .am-list-body:after {
+    content: "";
+    height: 0px;
+}
+
+.am-list-item .am-input-label {
+    color: #333;
+    font-size: 15px;
+    padding: 2px 0;
+}
+
+.am-list-item .am-list-line .am-list-extra {
+    color: #888;
+    /* webkit-flex-basis: 66%; */
+    -ms-flex-preferred-size: 66%;
+    flex-basis: 66%;
+    font-size: 15px;
+    text-align: left;
+}
+
+.am-list-item {
+    color: #666;
+    font-size: 16px;
+}
+
+.am-card-header{
+    color: #666;
+    font-size: 16px;
+}
+
+
+
+.pills-tab{
+    position: fixed;
+    top: 3rem;
+}

@@ -27,9 +27,12 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/portal.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
     <link rel="stylesheet" type="text/css" href="./index.css" />
+
 </head>
 <body>
 <div class="page">
@@ -41,8 +44,7 @@
                 <!--# include file="/admin/include/sider.html" -->
             </div>
             <div class="container my-3 my-md-5">
-                <form class="card" method="POST" onsubmit="return submits(event)">
-                    <!-- <input type="hidden" name="csrf_token" value="Ijg3Njg1MGJjNzQwNWVhZTJkZDQ5MWI4NzBiODZmZjljODFhNTVmNDAi.XIirfw.9SELfdPGZ5mEOOlCwH0kBsR1N4k"/> -->
+                <form class="card" method="POST" >
                     <input type="hidden" name="id" />
                     <div class="card-header">
                         <h3 class="card-title">修改字典</h3>
@@ -69,7 +71,7 @@
                             <input class="form-control" id="seq" name="seq" type="text" value="">
                         </div>
                         <div class="form-group mt20 col-12">
-                            <label class="form-label" for="table">字典值 <span class="fr pointer" onclick="addTr(event)">新增</span></label>
+                            <label class="form-label" for="table">字典值 <span class="fr pointer addTr" >新增</span></label>
                             <table class="layui-table table-value" style="width:100%">
                                 <thead>
                                     <th>名字</th>
@@ -86,7 +88,7 @@
                                         <td><input class="form-control" id="value"  type="text" value=""></td>
                                         <td><input class="form-control" id="seq"  type="text" value=""  autocomplete="off"></td>
                                         <td><input class="form-control" id="category"  type="text" value=""></td>
-                                        <td class="operate" ><span class="pointer" onclick="removeTr(event)">删除</span>  </td>   <!--<span class="pointer mr5" onclick="updataVal(event)">保存</span> -->
+                                        <td class="operate" ><span class="pointer removeTr" >删除</span>  </td>   
                                     </tr>
                                 </tbody>
                             </table>
@@ -123,143 +125,125 @@
     require(['autosize', 'layer', 'layer_ext', 'tool', 'headerjs'], function(autosize, layer){
         // 自适应高度
         var id=geturl("id");
-        getData(id);
-        autosize($('textarea'));
-    });
-    function getData(id){
-        $("input[name=id]").val(id);
-        var order=id==80?"category":"seq";
-        ajaxFns({id:id,_methods:"query",order:order},function(res){
-            if(res.success=="true"){
-                var datas=res.data[0];
-                originalData=datas;
-                value_params=datas.diclists
-
-                formSetValue(".card",datas)
-                $(".table-value tbody").find("tr.hide").find("#parentId").val(datas.id);
-                datas.diclists.map(function(obj){   //diclists
-                    var trValue=$(".table-value tbody").find("tr.hide").html();
-                    var trValues='<tr>'+trValue+'</tr>'
-                    $(".table-value tbody").append(trValues)
-                    $(".table-value tbody tr:last-child").find("#id").val(obj.id);
-                    $(".table-value tbody tr:last-child").find("#parentId").val(obj.parentId);
-                    $(".table-value tbody tr:last-child").find("#name").val(obj.name);
-                    $(".table-value tbody tr:last-child").find("#value").val(obj.value);
-                    $(".table-value tbody tr:last-child").find("#category").val(obj.category);
-                    $(".table-value tbody tr:last-child").find("#seq").val(obj.seq);
-                    value_obj[obj.id]=obj;
-                })
-            }
-            
-        },ipDress+"/des/admin/dictionary")
-    }
-    function addTr(event){
-        var e=window.event || event;
-        var $this=$(e.target).parents(".form-group");
-        var trValue=$this.find("tr.hide").html();
         
-        var trValues='<tr>'+trValue+'</tr>'
-        $this.find("tbody").append(trValues)
-    }
-    function removeTr(event){
-        var e=window.event || event;
-        var $this=$(e.target).parents("tr");
-        var trLength=$(".table-value tbody tr").not(".hide").length;
-        // if(trLength<=1){
-        //     layer.msg("至少保留一个",{icon:2})
-        // }else{
-            layer.confirm('是否确认删除?', {icon: 3, title:'提示'}, function(index){
-                var id=$this.find("#id").val().replace(/(^\s*)|(\s*$)/g, "");
-                if(id==""){
-                    $this.remove();
-                    layer.close(index);
-                }else{
-                    ajaxFns({id,_methods:"deleteVal"},function(res){
-                        if(res.success=="true"){
-                                layer.msg("删除成功",{icon:1})
-                                $this.remove();
-                                layer.close(index);
-                        } else{
-                                layer.close(index);
-                                layer.msg(res.resultMsg,{icon:2})     
+        $(function(){
+            getData(id);
+            /**新增tr**/
+            $(".addTr").on("click",function(event){
+                var e=window.event || event;
+                var $this=$(e.target).parents(".form-group");
+                var trValue=$this.find("tr.hide").html();
+                
+                var trValues='<tr>'+trValue+'</tr>'
+                $this.find("tbody").append(trValues)
+            })
+            /***点击删除tr**/
+            $('table').delegate('.removeTr','click',  function (event) {
+                var e=window.event || event;
+                var $this=$(e.target).parents("tr");
+                var trLength=$(".table-value tbody tr").not(".hide").length;
+                // if(trLength<=1){
+                //     layer.msg("至少保留一个",{icon:2})
+                // }else{
+                    layer.confirm('是否确认删除?', {icon: 3, title:'提示'}, function(index){
+                        var id=$this.find("#id").val().replace(/(^\s*)|(\s*$)/g, "");
+                        if(id==""){
+                            $this.remove();
+                            layer.close(index);
+                        }else{
+                            ajaxFns({id,_methods:"deleteVal"},function(res){
+                                if(res.success=="true"){
+                                        layer.msg("删除成功",{icon:1})
+                                        $this.remove();
+                                        layer.close(index);
+                                } else{
+                                        layer.close(index);
+                                        layer.msg(res.resultMsg,{icon:2})     
+                                }
+                            },ipDress+"/des/admin/dictionary")
                         }
-                    },ipDress+"/des/admin/dictionary")
+                    });
+                    
+                // }
+            })
+            /**提交表单**/
+            $("form.card").on("submit",function(event){
+                var e=window.event||event; //消除浏览器差异
+                e.preventDefault();
+                var datas=serializeArray("form.card") //序列化表单;;
+                var values=[];
+                var isempty=false;
+                $(".table-value tbody tr:not(.hide)").each(function(){
+                    var id=$(this).find("#id").val().replace(/(^\s*)|(\s*$)/g, "");
+                    var parentId=$(this).find("#parentId").val().replace(/(^\s*)|(\s*$)/g, "");
+                    var name=$(this).find("#name").val().replace(/(^\s*)|(\s*$)/g, "");
+                    var value=$(this).find("#value").val().replace(/(^\s*)|(\s*$)/g, "");
+                    var seq=$(this).find("#seq").val().replace(/(^\s*)|(\s*$)/g, "");
+                    var category=$(this).find("#category").val().replace(/(^\s*)|(\s*$)/g, "");
+                    if(name!="" && value!=""){
+                        if(id==""){
+                            values.push({parentId:datas.id, name, value, seq, prentCode:datas.code, category})
+                        }
+                        if(value_obj[id]){
+                            var value_obj_val=value_obj[id];
+                            if(value_obj_val.name!=name || value_obj_val.value!=value || value_obj_val.seq!=seq || value_obj_val.category!=category){
+                                values.push({id, parentId, name, value, seq, prentCode:datas.code, category})
+                            }
+                        }
+                    }else{
+                        isempty=true
+                    }
+                })
+                if(isempty){
+                    layer.msg("字典值不能为空",{icon:2})
+                    return false;
                 }
-            });
-            
-        // }
-        
-        
-        
-        
-    }
-    function updataVal(event){
-        var code=$("#code").val().replace(/(^\s*)|(\s*$)/g, "");
-        var e=window.event || event;
-        var $parents=$(e.target).parents("tr");
-        var id=$parents.find("#id").val().replace(/(^\s*)|(\s*$)/g, "");
-        var parentId=$parents.find("#parentId").val().replace(/(^\s*)|(\s*$)/g, "");
-        var name=$parents.find("#name").val().replace(/(^\s*)|(\s*$)/g, "");
-        var value=$parents.find("#value").val().replace(/(^\s*)|(\s*$)/g, "");
-        var category=$parents.find("#category").val().replace(/(^\s*)|(\s*$)/g, "");
-        var seq=$parents.find("#seq").val().replace(/(^\s*)|(\s*$)/g, "");
-        parentId=parentId && parentId!="" ?parentId : originalData.id
-        if(name=="" || value==""){
-            layer.msg("请输入完整数据",{icon:2})
-        }else{
-            var values={id, parentId, name, value, category, seq, prentCode:originalData.code, _methods:"updataVal"};
-            ajaxFns(values,function(res){
+                !isempty?datas.values=JSON.stringify(values):"";
+                datas._methods="updata";
+                ajaxFns(datas,function(res){
                 if(res.success=="true"){
                         layer.msg("修改成功",{icon:1})
+                        
                 } else{
                         layer.msg(res.resultMsg,{icon:2})
                 }
+                },ipDress+"/des/admin/dictionary")
+            })
+        })
+        function getData(id){
+            $("input[name=id]").val(id);
+            var order=id==80?"category":"seq";
+            ajaxFns({id:id,_methods:"query",order:order},function(res){
+                if(res.success=="true"){
+                    if(res.data.length>0){
+                        var datas=res.data[0];
+                        originalData=datas;
+                        value_params=datas.diclists
+                        
+                        formSetValue(".card",datas)
+                        $(".table-value tbody").find("tr.hide").find("#parentId").val(datas.id);
+                        datas.diclists.map(function(obj){   //diclists
+                            var trValue=$(".table-value tbody").find("tr.hide").html();
+                            var trValues='<tr>'+trValue+'</tr>'
+                            $(".table-value tbody").append(trValues)
+                            $(".table-value tbody tr:last-child").find("#id").val(obj.id);
+                            $(".table-value tbody tr:last-child").find("#parentId").val(obj.parentId);
+                            $(".table-value tbody tr:last-child").find("#name").val(obj.name);
+                            $(".table-value tbody tr:last-child").find("#value").val(obj.value);
+                            $(".table-value tbody tr:last-child").find("#category").val(obj.category);
+                            $(".table-value tbody tr:last-child").find("#seq").val(obj.seq);
+                            value_obj[obj.id]=obj;
+                        })
+                        
+                    }else{
+                        notpermission_a(".page-main","页面不存在")
+                    }
+                    
+                }
+                
             },ipDress+"/des/admin/dictionary")
         }
-    }
-
-    function submits(event){
-        var e=window.event||event; //消除浏览器差异
-        e.preventDefault();
-        var datas=serializeArray("form.card") //序列化表单;;
-        var values=[];
-        var isempty=false;
-        $(".table-value tbody tr:not(.hide)").each(function(){
-            var id=$(this).find("#id").val().replace(/(^\s*)|(\s*$)/g, "");
-            var parentId=$(this).find("#parentId").val().replace(/(^\s*)|(\s*$)/g, "");
-            var name=$(this).find("#name").val().replace(/(^\s*)|(\s*$)/g, "");
-            var value=$(this).find("#value").val().replace(/(^\s*)|(\s*$)/g, "");
-            var seq=$(this).find("#seq").val().replace(/(^\s*)|(\s*$)/g, "");
-            var category=$(this).find("#category").val().replace(/(^\s*)|(\s*$)/g, "");
-            if(name!="" && value!=""){
-                if(id==""){
-                    values.push({parentId:datas.id, name, value, seq, prentCode:datas.code, category})
-                }
-                if(value_obj[id]){
-                    var value_obj_val=value_obj[id];
-                    if(value_obj_val.name!=name || value_obj_val.value!=value || value_obj_val.seq!=seq || value_obj_val.category!=category){
-                        values.push({id, parentId, name, value, seq, prentCode:datas.code, category})
-                    }
-                }
-            }else{
-                isempty=true
-            }
-        })
-        if(isempty){
-            layer.msg("字典值不能为空",{icon:2})
-            return false;
-        }
-        !isempty?datas.values=JSON.stringify(values):"";
-        datas._methods="updata";
-        ajaxFns(datas,function(res){
-           if(res.success=="true"){
-                layer.msg("修改成功",{icon:1})
-                
-           } else{
-                layer.msg(res.resultMsg,{icon:2})
-           }
-        },ipDress+"/des/admin/dictionary")
-    }
+    });
 </script>
 
 </body>

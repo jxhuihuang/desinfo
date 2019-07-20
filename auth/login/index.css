@@ -185,6 +185,11 @@
     input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].btn-block {
         width: 90%;
     }
+    .uploads{
+        padding-left: .8rem;
+        padding-right: .8rem;
+
+    }
 
 }
 

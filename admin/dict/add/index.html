@@ -27,8 +27,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/portal.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 </head>
 <body>
 <div class="page">
@@ -40,8 +42,7 @@
                 <!--# include file="/admin/include/sider.html" -->
             </div>
             <div class="container my-3 my-md-5">
-                <form class="card" method="POST" onsubmit="return submits(event)">
-                    <input type="hidden" name="csrf_token" value="Ijg3Njg1MGJjNzQwNWVhZTJkZDQ5MWI4NzBiODZmZjljODFhNTVmNDAi.XIirfw.9SELfdPGZ5mEOOlCwH0kBsR1N4k"/>
+                <form class="card" method="POST">
                     <div class="card-header">
                         <h3 class="card-title">新增字典</h3>
                     </div>
@@ -67,7 +68,7 @@
                             <input class="form-control" id="seq" name="seq" type="text" value="">
                         </div>
                         <div class="form-group mt20 col-12">
-                            <label class="form-label" for="table">字典值 <span class="fr pointer" onclick="addTr(event)">新增</span></label>
+                            <label class="form-label" for="table">字典值 <span class="fr pointer addTr">新增</span></label>
                             <table class="layui-table table-value" style="width:100%">
                                 <thead>
                                     <th>名字</th>
@@ -82,7 +83,7 @@
                                         <td><input class="form-control" id="value"  type="text" value=""></td>
                                         <td><input class="form-control" id="seq"  type="text" value=""  autocomplete="off"></td>
                                         <td><input class="form-control" id="category"  type="text" value=""></td>
-                                        <td class="pointer" onclick="removeTr(event)">删除</td>
+                                        <td class="pointer removeTr">删除</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -116,61 +117,66 @@
 <script>
     
     require(['layer', 'layer_ext', 'tool', 'headerjs'], function(layer){
+        $(function(){
+            /**新增**/
+            $(".addTr").on("click",function(event){
+                var e=window.event || event;
+                var $this=$(e.target).parents(".form-group");
+                var trValue=$this.find("tr.hide").html();
+                var trValues='<tr>'+trValue+'</tr>'
+                $this.find("tbody").append(trValues)
+            })
+            /***点击删除tr**/
+            $('table').delegate('.removeTr','click',  function (event) {
+                var e=window.event || event;
+                var $this=$(e.target).parents("tr");
+                var trLength=$(".table-value tbody tr").not(".hide").length;
+                // if(trLength<=1){
+                //     layer.msg("至少保留一个",{icon:2})
+                // }else{
+                    $this.remove();
+                // }
+            })
+
+            /**提交表单**/
+            $("form.card").on("submit",function(event){
+                var e=window.event||event; //消除浏览器差异
+                e.preventDefault();
+                var datas=serializeArray("form.card"); //序列化表单;
+                var values=[];
+                var isempty=false;
+                $(".table-value tbody tr:not(.hide)").each(function(){
+                    var name=$(this).find("#name").val().replace(/(^\s*)|(\s*$)/g, "");
+                    var value=$(this).find("#value").val().replace(/(^\s*)|(\s*$)/g, "");
+                    var category=$(this).find("#category").val().replace(/(^\s*)|(\s*$)/g, "");
+                    var seq=$(this).find("#seq").val().replace(/(^\s*)|(\s*$)/g, "");
+                    if(name!="" && value!=""){
+                        values.push({name, value, category, seq, prentCode:datas.code})
+                    }else{
+                        isempty=true
+                    }
+                })
+                if(isempty){
+                    layermsg("字典值不能为空",{icon:2})
+                    return false;
+                }
+                !isempty? datas.values=values:[];
+                datas._methods="insert";
+                ajaxFns(datas,function(res){
+                if(res.success=="true"){
+                        layermsg("新增成功",{icon:1},function(){
+                            linkTo('../')
+                        })
+                } else{
+                        layermsg(res.resultMsg,{icon:2})
+                }
+                },ipDress+"/des/admin/dictionary")
+            })
+
+        })
+
         
     });
-    function addTr(event){
-        var e=window.event || event;
-        var $this=$(e.target).parents(".form-group");
-        var trValue=$this.find("tr.hide").html();
-        
-        var trValues='<tr>'+trValue+'</tr>'
-        $this.find("tbody").append(trValues)
-    }
-    function removeTr(event){
-        var e=window.event || event;
-        var $this=$(e.target).parents("tr");
-        var trLength=$(".table-value tbody tr").not(".hide").length;
-        // if(trLength<=1){
-        //     layer.msg("至少保留一个",{icon:2})
-        // }else{
-            $this.remove();
-        // }
-        
-    }
-    function submits(event){
-        var e=window.event||event; //消除浏览器差异
-        e.preventDefault();
-
-        var datas=serializeArray("form.card"); //序列化表单;
-        var values=[];
-        var isempty=false;
-        $(".table-value tbody tr:not(.hide)").each(function(){
-            var name=$(this).find("#name").val().replace(/(^\s*)|(\s*$)/g, "");
-            var value=$(this).find("#value").val().replace(/(^\s*)|(\s*$)/g, "");
-            var category=$(this).find("#category").val().replace(/(^\s*)|(\s*$)/g, "");
-            var seq=$(this).find("#seq").val().replace(/(^\s*)|(\s*$)/g, "");
-            if(name!="" && value!=""){
-                values.push({name, value, category, seq, prentCode:datas.code})
-            }else{
-                isempty=true
-            }
-        })
-        if(isempty){
-            layer.msg("字典值不能为空",{icon:2})
-            return false;
-        }
-        !isempty? datas.values=values:[];
-        datas._methods="insert";
-        ajaxFns(datas,function(res){
-           if(res.success=="true"){
-                layer.msg("新增成功",{icon:1},function(){
-                    linkTo('../')
-                })
-           } else{
-                layer.msg(res.resultMsg,{icon:2})
-           }
-        },ipDress+"/des/admin/dictionary")
-    }
 </script>
 
 </body>

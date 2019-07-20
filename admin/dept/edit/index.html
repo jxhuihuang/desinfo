@@ -27,8 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 	
 </head>
 <body>
@@ -43,7 +44,7 @@
             <div class="container my-3 my-md-5">
                 <div class="row">
                     <div class="col-12">
-                        <form class="card" method="POST" enctype="multipart/form-data" onsubmit="return submits(event)">
+                        <form class="card" method="POST" enctype="multipart/form-data" >
                             <div class="card-header">
                                 <h3 class="card-title">编辑</h3>
                             </div>
@@ -143,7 +144,7 @@
     var cityData=[];
     var fileObj={} //附件
     require(['jquery', 'selectize', 'selectize_ext', 'layer_ext', 'tool', 'upload', 'headerjs'], function ($, selectize) {
-        $(document).ready(function () {
+        $(function () {
            
             getData(function(resultData){
                  // 加载字典 
@@ -175,7 +176,21 @@
                 },ipDress+"/des/dictyList")
 
                 
-
+                /**提交表单**/
+                $("form.card").on("submit",function(event){
+                    var e=window.event||event; //消除浏览器差异
+                    e.preventDefault();
+                    var id=geturl("id");
+                    var datas=serializeArray("form.card"); //序列化表单
+                    datas.id=id
+                    datas._methods="updata";
+                    setFileData(datas)
+                    ajaxFns(datas,function(res){
+                        if(res.success=="true"){
+                            layermsg("修改成功",{icon: 1})
+                        }
+                    },ipDress+"/des/admin/dept")
+                })
                 
                 
                 /**上传附件**/
@@ -203,48 +218,36 @@
                     })
             });
         });
-    });
-
-    //获取默认数据
-    function getData(callBack){
-        callBack=callBack?callBack:function(){};
-        var id=geturl("id");
-        ajaxFns({id:id},function(res){
-            if(res.data && res.data.length>0){
-                var resultData=res.data[0];
-                formSetValue(".card",resultData)
-                callBack(resultData)
-            }
-        },ipDress+"/des/admin/dept")
-    }
-    /**获取上传文件**/
-    function setFileData(datas){
-        for(var k in fileObj){
-            var arrys=fileObj[k];
-            if(!checkNull(arrys)){
-                var newArry=[];
-                arrys.map(function(obj){
-                    newArry.push(obj.path)
-                })
-                datas[k]=newArry.join(",")
+        //获取默认数据
+        function getData(callBack){
+            callBack=callBack?callBack:function(){};
+            var id=geturl("id");
+            ajaxFns({id:id},function(res){
+                if(res.data ){
+                    if(res.data.length>0){
+                        var resultData=res.data[0];
+                        formSetValue(".card",resultData)
+                        callBack(resultData)
+                    }else{
+                        notpermission_a(".page-main","页面不存在")
+                    }
+                }
+            },ipDress+"/des/admin/dept")
+        }
+        /**获取上传文件**/
+        function setFileData(datas){
+            for(var k in fileObj){
+                var arrys=fileObj[k];
+                if(!checkNull(arrys)){
+                    var newArry=[];
+                    arrys.map(function(obj){
+                        newArry.push(obj.path)
+                    })
+                    datas[k]=newArry.join(",")
+                }
             }
         }
-    }
-    /**提交代码**/
-    function submits(event){
-        var e=window.event||event; //消除浏览器差异
-        e.preventDefault();
-        var id=geturl("id");
-        var datas=serializeArray("form.card"); //序列化表单
-        datas.id=id
-        datas._methods="updata";
-        setFileData(datas)
-        ajaxFns(datas,function(res){
-            if(res.success=="true"){
-                layer.msg("修改成功",{icon: 1})
-            }
-        },ipDress+"/des/admin/dept")
-    }
+    });
 </script>
 
 </body>

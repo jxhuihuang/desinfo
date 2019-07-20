@@ -3,6 +3,7 @@ function(t,s){
     s={};
     var photoArry=[]
     var fileObj={}
+    var closeIcon='<i class="myIconfont closeIcon"></i>'
     /*****初始化上传 */
    
     /***处理参数 */
@@ -17,6 +18,7 @@ function(t,s){
             ipDress:"",
             showImg:true,
             className:"",
+            number:0,
         }
         var settings = {};
 
@@ -29,6 +31,7 @@ function(t,s){
         newparams.text=settings.text;
         newparams.ipDress=settings.ipDress;
         newparams.showImg=settings.showImg;
+        newparams.number=settings.number;
         params.defaultData=removeNull(params.defaultData)
         newparams.className=settings.className;
         return newparams;
@@ -42,6 +45,7 @@ function(t,s){
         var file_name=$this.attr("name")
         var newparams=uploadzeparams(params,$this)
         var className=newparams.className!=""?" "+newparams.className:"";
+        var number=newparams.number;
         newinput.attr("hidden",false)
         // newinput.attr("onchange","fileChange(event)")
         var $parent=$this.parent();
@@ -54,10 +58,13 @@ function(t,s){
             }
             
         }
+        
         if(newparams.multiple){
             newinput.attr("multiple",true)
         }
-        
+        if(number!=0){
+            newinput.attr("number",number)
+        }
         var defaultDatas=[]
         if(newparams.defaultData && newparams.defaultData!=""){
             // fileObj[file_name]
@@ -75,64 +82,28 @@ function(t,s){
             }
             fileObj[file_name]=defaultDatas;
         }
+        var uploadshow_box=newparams.showImg ? '<span class="upload-show "></span>':'';
+        var upload_btn=isMobile?'<div class="upload_mobile_btn"><i class="myIconfont">&#xe832;</i></div>':'<button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button> '
+        var imgList='';
+        if(newparams.showImg){
+            defaultDatas.map(function(obj){
+                var closeIcon_icon=newparams.multiple?closeIcon:"";
+                imgList+='<figure><img  class="avatar_img " src="'+obj.src+'"/>'+closeIcon_icon+'</figure>'
+            })
+           
+        }
+        $parent.html(
         
-        if(newparams.types=="avatar"){
-            $parent.html(
-
-            `
-                <div class="uploads uploads_avatar${className}">+
-                    <a class="upload-box " href="javascript:void(0)">
-                        ${
-                            newparams.showImg?`<span class="upload-show "></span>`:""
-                        }
-                        
-                        <!-- <button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button>  -->
-                        ${
-                            newparams.text!=""?`<div class="uppoad_placeholder"> <span>${newparams.text}</span> </div> `:`<div class="uppoad_placeholder"><span> <i class="myIconfont" style="font-size:40px;color:#666">&#xe832;</i> </span> </div> `
-                        }
-                        
-                    </a>
-                </div>
-            `
-            )
-            if(newparams.showImg){
-                defaultDatas.map(function(obj){
-                    $parent.find(".upload-show").append(
-                        `<figure><img  class="avatar_img " src="${obj.src}"/></figure>`
-                    )
-                })
-            }
-            
-            $parent.find(".upload-box ").append(newinput)
-            
-        }else{
-            $parent.html(
-            `
-                <div class="uploads uploads_buttom${className}">
-                    ${
-                        newparams.showImg?`<span class="upload-show "></span>`:""
-                    }
-                    <a class="upload-box" href="javascript:viod(0)">
-                    
-                        <button type="button"><i class="myIconfont">&#xe620;</i>立即上传</button> 
-                       
-                    </a>
-                    
-                </div>
-            `
-            )
-            if(newparams.showImg){
-                defaultDatas.map(function(obj){
-                    $parent.find(".upload-show").append(
-                        `
-                        <figure><img  class="avatar_img " src="${obj.src}"/> ${newparams.multiple?`<i class="myIconfont closeIcon" >&#xe925;</i>`:""}</figure>
-                        `
-                    )
-                    
-                })
-            }
-            $parent.find(".upload-box ").append(newinput)
-        } 
+            '<div class="uploads uploads_buttom upload-show'+className+'">'+
+                imgList+
+                '<a class="upload-box" href="javascript:viod(0)">'+
+                    upload_btn+
+                '</a>'+ 
+                
+            '</div>'
+        )
+        
+        $parent.find(".upload-box ").append(newinput)
         
 
         $parent.delegate('.closeIcon', 'click', function() {
@@ -176,12 +147,12 @@ function(t,s){
             var name=objs.name;
             var fileType=objs.fileType
             if(ismMultiple){
-                $this.closest(".uploads").find(".upload-show").append('<figure><img src="'+src+'" class="img-fluid"><i class="myIconfont closeIcon">&#xe925;</i></figure>')
+                $this.closest(".upload-show").find(".upload-box").before('<figure><img src="'+src+'" class="img-fluid">'+closeIcon+'</figure>')
             }else{
-                if($this.closest(".uploads").find(".upload-show").find("img").length>0){
-                    $this.closest(".uploads").find(".upload-show img").attr("src", src)
+                if($this.closest(".upload-show").find("figure img").length>0){
+                    $this.closest(".upload-show").find("figure img").attr("src", src)
                 }else{
-                    $this.closest(".uploads").find(".upload-show").html('<figure><img src="'+src+'" class="img-fluid"></figure>')
+                    $this.closest(".uploads").find(".upload-box").before('<figure><img src="'+src+'" class="img-fluid"></figure>')
                 }
                 
             }
@@ -192,7 +163,7 @@ function(t,s){
         callBack=callBack?callBack:function(){};
         var e=window.event|| event
         var $this=$(e.currentTarget);
-
+        var name=$this.attr("name");
         var imgaccep="gif|jpg|jpeg|png|bmp|svg" //图片允许的格式
         var filesaccep="docx|doc|txt|rar|zip|xls|xlsx|ppt|pptx"  //文件格式
         
@@ -203,6 +174,10 @@ function(t,s){
         var myfilesObj=e.currentTarget.files  //e.currentTarget.files[0]
         var files=dealparams(myfilesObj)
         var accepttype=removeNull($this.attr("data-accepttype"));
+        var number=$this.attr("number")?$this.attr("number"):"";
+        var fileObj_length=fileObj[name]?fileObj[name].length:0;
+        let files_length=files.length?files.length:0;
+        var length=fileObj_length+files_length;
         var checkText=""
         files.map(function(obj,i){
             if(!isNaN(i)){
@@ -222,6 +197,11 @@ function(t,s){
                 }
             }
         })
+        if(number!="" && checkText==""){
+            if(length>number){
+                checkText="上传文件数量不能超过"+number+"个";
+            }
+        }
         return checkText
     }
     /**选择上传的图片 */
@@ -365,6 +345,16 @@ function(t,s){
         return nerArry
     }
    
+    //判断移动端还是电脑端
+    var isMobile = (function () {
+        if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+            return true //手机端";
+        }
+        else {
+            return false//pc端
+        }
+    })();
+
 }(jQuery, window, document)
 
 
@@ -374,7 +364,7 @@ function(t,s){
  * defaultData :   默认值
  * ismMultiple 是否多选
  * 
- * 
+ * number 设置同时可上传的文件数量   0（即不限制）
  * 
  * 
  * 

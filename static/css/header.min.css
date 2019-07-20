@@ -269,9 +269,8 @@ body > .container {
         background:#FFF!important;
     }
     .row {
-        
-        margin-right: 0!important; 
-        margin-left: 0!important;
+        margin-right: 0!important;
+        margin-left:  0!important;
     }
     form.col-12{
         padding-right: 0!important;
@@ -519,7 +518,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 .uploads {
     width: auto;
     height: auto;
-    max-height: 160px;
+    /* min-height: 60px; */
     
     overflow: hidden;
     
@@ -571,22 +570,40 @@ div.dataTables_wrapper div.dataTables_paginate {
     vertical-align: middle
 }
 .uploads.uploads_buttom .upload-show{
+    display: inline-block;
     vertical-align: middle;
     width: auto;
     height: 120px;
 }
-.uploads.uploads_buttom .upload-show .closeIcon{
+.uploads.upload-show .closeIcon{
    position: absolute;
    cursor: pointer;
-   top: -2px;
+   top: 0px;
    right: 0;
-   font-size: 18px;
+   font-size: 14px;
    width: 20px;
    height: 20px;
    border-radius: 50%;
+   z-index: 20;
+   background: #333;
+   color: #FFF;
+   box-shadow: -0.2px 0px 3px 0.2px rgba(255, 255, 255, .7);
    /* background: #495057;
    color: #FFF; */
 
+}
+.uploads.upload-show .closeIcon::before{
+    position: absolute;
+    content:"";
+    width: 50%;
+    height: 2px;
+    background: rgb(255,255,255,.7);
+    top: 0;
+    bottom:0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    
 }
 .uploads_buttom figure{
     position: relative;
@@ -608,10 +625,11 @@ div.dataTables_wrapper div.dataTables_paginate {
     width: 100%;
     height: 100%;
     cursor: pointer;
-    vertical-align: middle
+    vertical-align: middle;
 }
 
 .uploads > .upload-show{
+    float: left;
     
 }
 .upload-show span{
@@ -662,6 +680,15 @@ div.dataTables_wrapper div.dataTables_paginate {
 } 
 /* 屏幕小于等于768 */
 @media Screen  and (max-width:768px){
+    .avatar_main{
+        text-align: left;
+    }
+    .uploads {
+        width: auto;
+        height: auto;
+        min-height: 5rem;
+        overflow: hidden;
+    }
     .uploads.uploads_avatar{
         position: relative;
         width: 6rem;
@@ -677,16 +704,57 @@ div.dataTables_wrapper div.dataTables_paginate {
     .upload-box span{
         margin-right: .6rem
     }
+    .uploads.uploads_buttom .upload-show{
+        display: inline-block;
+        vertical-align: top;
+        width: auto;
+        height: 5rem;
+    }
+    .uploads_buttom figure{
+        position: relative;
+        vertical-align: middle;
+        text-align: center;
+        display: inline-block;
+        width: 5rem;
+        height: auto;
+        max-height: 5rem;
+        overflow: hidden;
+        padding: 5px;
+        border: 1px solid #EDEDED;
+        margin:0 5px 5px 0;
+    }
     .uploads.avatar_box figure{
         border-radius: 50%;
         width: 4rem;
         height: 4rem;
         padding: 0;
     }
+
     .avatar_box .uppoad_placeholder{
         width: 4rem;
         height: 4rem;
         line-height: 4rem;
+    }
+    .uploads.uploads_buttom .upload-box {
+        display: inline-block;
+        width: 5rem;
+        vertical-align: top;
+        margin: 0 5px 5px 0;
+    }
+    .upload_mobile_btn{
+        float: left;
+        position: relative;
+       
+        width: 5rem;
+        height: 5rem;
+        border: 1px solid #EDEDED;
+        text-align: center;
+    }
+    .upload_mobile_btn i{
+        font-size: 2rem;
+        color: #EDEDED;
+        line-height:  5rem;
+
     }
 }
 /*表单行高度*/

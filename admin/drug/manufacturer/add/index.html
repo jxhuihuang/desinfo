@@ -27,9 +27,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/flatpickr/4.5.2/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/tabler-0.0.32/css/tabler.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/flatpickr_ext.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/admin.min.css" />
-
-	
+    <link rel="stylesheet" type="text/css" href="/static/css/sider.css" />
 </head>
 <body>
 <div class="page">
@@ -43,10 +43,9 @@
             <div class="container my-3 my-md-5">
                 <div class="row">
                     <div class="col-12">
-                        <form class="card" method="POST" enctype="multipart/form-data" onsubmit="return submits(event)">
-                            <input type="hidden" name="csrf_token" value="ImQyNTY5OWIwNmEwYTRjZWYyZjJhMzVkODkwZjNlMjgwNGVmZGY3MTci.XLA1Ug.95c41w4AIAX_hHhEH_zqZoYoxtA"/>
+                        <form class="card" method="POST" enctype="multipart/form-data">
                             <div class="card-header">
-                                <h3 class="card-title">编辑</h3>
+                                <h3 class="card-title">新增</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -309,10 +308,8 @@
                     addOption($("#city"), options)
                 })
         });
-    });
-    
-    //提交新增
-    function submits(event){
+        /**提交表单**/
+        $("form.card").on("submit",function(event){
             var e=window.event||event; //消除浏览器差异
             e.preventDefault();
             var datas=serializeArray("form.card") //序列化表单;;
@@ -325,8 +322,9 @@
                 } else{
                     layer.msg(res.resultMsg,{icon:2})
                 }
-            },ipDress+"/des/admin/manufacturer")
-    }
+            },ipDress+"/des/admin/manufacturer")    
+        })
+    });
 </script>
 
 </body>

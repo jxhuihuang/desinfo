@@ -32,7 +32,7 @@
 <body ontouchstart class="submit-reort">
    
     <!--# include file="/include/headers.html" -->
-    <main role="main" class="container">
+    <main role="main" class="container ">
         <form method="post"   class="input-list " onsubmit="return formsubmits(event)">
             <!-- <input type="hidden" name="csrf_token" value="ImJiNWEzM2E4YWVhZjZkYzUzYjA1YmUzMTg2ZWNkZmY5MDg5MWRiMDgi.Dx3VnQ.efQ_abno0H3yXRKPK2LeUbSmK-E"/> -->
 
@@ -1310,9 +1310,14 @@
         function getFormData(callBack){
             var id=geturl("id");
             ajaxFns({id:id},function(res){
-                if(res.data && res.data.length>0){
-                    resultData=res.data[0];
-                    callBack(resultData)
+                if(res.data){
+                    if(res.data.length>0){
+                        resultData=res.data[0];
+                        callBack(resultData)
+                    }else{
+                        notpermission("main.container","抱歉，页面不存在");
+                    }
+                    
                 }
             },ipDress+"/des/report")
         }

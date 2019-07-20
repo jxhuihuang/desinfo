@@ -1,6 +1,6 @@
 var navData=[];
 // 自适应高度
-
+ismobiles=body_widths>=768 || isMobile=="false"?false:true;
 // querys();
 $(window).resize(function(){ 
     
@@ -127,12 +127,23 @@ function setNav(res){
             if(permission){
                 if(children.length<=0){
                     var link=checkNull(obj.link)?"javascript:void(0)":obj.link;
-                    navbarList+='<li class="nav-item">'
-                    navbarList+='<a class="nav-link " href="'+obj.link+'">'+obj.name+'</a>'
-                    navbarList+='</li>'   
+                    if(ismobiles){
+                        navbarList+='<li class="nav-item dropdown">'
+                        navbarList+='<a class="nav-link box" href="'+obj.link+'">'+obj.name+'</a>'
+                        navbarList+='<div class="dropdown-menu">'
+                        navbarList+='<a class="dropdown-item" href="'+obj.link+'">'+obj.name+'</a>'
+                        navbarList+='</div>'
+                        navbarList+='</li>'   
+
+                    }else{
+                        navbarList+='<li class="nav-item">'
+                        navbarList+='<a class="nav-link " href="'+obj.link+'">'+obj.name+'</a>'
+                        navbarList+='</li>'   
+                    }
+                   
                 }else{
                     navbarList+='<li class="nav-item dropdown">';
-                    navbarList+='<a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+obj.name+'</a>';
+                    navbarList+='<a class="nav-link dropdown-toggle box" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+obj.name+'</a>';
                     navbarList+='<div class="dropdown-menu">'
                     children.map(function(objs){
                         if(objs.permission){
@@ -147,8 +158,8 @@ function setNav(res){
         navbarList+='<li class="nav-item login-item">'
         navbarList+='<a class="nav-link  logout mobile-show" href="/">返回主页</a>'
 
-        navbarList+=!loginType?'<a class="nav-link  logout" href="../../auth/login">登录</a>':"";
-        navbarList+=!loginType?'<a class="nav-link  logout" href="../../auth/register">注册</a>':"";
+        navbarList+=!loginType?'<a class="nav-link  logout box" href="../../auth/login">登录</a>':"";
+        navbarList+=!loginType?'<a class="nav-link  logout box" href="../../auth/register">注册</a>':"";
 
         navbarList+=loginType?'<a class="nav-link  logout pc-show nav-username" href="javascript:void(0)"><span class="nav-avatar"><img src='+avatar+'></span><em>'+usernames+'</em></a>':"";
         navbarList+=loginType?'<a class="nav-link  logout" href="/auth/logout" onclick="loginOut(event)">登出</a>':"";
